@@ -12,7 +12,7 @@ A free, offline PWA that teaches about 300 survival Korean Expressions to one tr
 
 - Login, sync, backup, export/import. Progress is device-only, and losing it is accepted.
 - Teaching the Hangul alphabet, grammar, or casual speech.
-- Speech recognition or pronunciation scoring.
+- Speech recognition or pronunciation scoring. (Reopened for Echo, see ADR 0004.)
 - Generating content at runtime. The Catalog and Clips are fixed at build time.
 - Number drills with generated prices (a noted idea for later).
 - Leaderboards, badges, lives, hearts.
