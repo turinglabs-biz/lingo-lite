@@ -1,4 +1,4 @@
-# Korean Made Easy v1: spec
+# Lingo Lite v1: spec
 
 Status: open
 

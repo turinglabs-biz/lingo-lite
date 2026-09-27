@@ -1,22 +1,22 @@
 :root {
-  --bg: #f5f7f4;
+  --bg: #f6f5f9;
   --surface: #ffffff;
-  --text: #17201c;
-  --muted: #5b6862;
-  --line: #dde3df;
-  --accent: #1f6f5c;
-  --accent-soft: #e0eee8;
+  --text: #1c1826;
+  --muted: #625c70;
+  --line: #e0dce8;
+  --accent: #5b3f8c;
+  --accent-soft: #ece6f5;
   --on-accent: #ffffff;
   --seal: #b3402c;
   --seal-soft: #f7e4df;
   --gold: #c48a12;
   --radius: 14px;
   --tabs-height: 62px;
-  --heat-0: #e6ebe7;
-  --heat-1: #b9dccd;
-  --heat-2: #7fc0a6;
-  --heat-3: #3f9a7c;
-  --heat-4: #1f6f5c;
+  --heat-0: #e9e6ee;
+  --heat-1: #d3c6e8;
+  --heat-2: #a98fd1;
+  --heat-3: #7d5fb3;
+  --heat-4: #5b3f8c;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', Roboto, sans-serif;
   color: var(--text);
   background: var(--bg);
@@ -27,22 +27,22 @@
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
-    --bg: #101513;
-    --surface: #18201c;
-    --text: #e5ebe7;
-    --muted: #93a29b;
-    --line: #29332f;
-    --accent: #5cc3a4;
-    --accent-soft: #1a2f28;
-    --on-accent: #0b1a15;
+    --bg: #13111a;
+    --surface: #1c1924;
+    --text: #e9e6ef;
+    --muted: #9d96ab;
+    --line: #2e2a38;
+    --accent: #b39ddb;
+    --accent-soft: #2a2238;
+    --on-accent: #1a1226;
     --seal: #f08a73;
     --seal-soft: #3b221c;
     --gold: #e7b546;
-    --heat-0: #1f2824;
-    --heat-1: #1d4034;
-    --heat-2: #2a6752;
-    --heat-3: #3f9a7c;
-    --heat-4: #5cc3a4;
+    --heat-0: #221e2a;
+    --heat-1: #352a4a;
+    --heat-2: #533f78;
+    --heat-3: #7d5fb3;
+    --heat-4: #b39ddb;
   }
 }
 

@@ -1,8 +1,8 @@
-# Korean Made Easy
+# Lingo Lite
 
 A free, offline PWA with the ~240 survival Korean Expressions a traveller needs. Expressions are shown romanized first, with audio at normal and slow speed. There's no account: Progress stays on the device.
 
-Domain language: [`CONTEXT.md`](CONTEXT.md). Decisions: [`docs/adr/`](docs/adr). Spec and tickets: [`.scratch/korean-made-easy-v1/`](.scratch/korean-made-easy-v1).
+Domain language: [`CONTEXT.md`](CONTEXT.md). Decisions: [`docs/adr/`](docs/adr). Spec and tickets: [`.scratch/lingo-lite-v1/`](.scratch/lingo-lite-v1).
 
 ## Develop
 
@@ -44,7 +44,7 @@ Hosted on the turinglabs VPS: [`vps-infrastructure`](https://github.com/turingla
 To try the production image locally:
 
 ```sh
-docker build -t korean-made-easy . && docker run --rm -p 8080:80 korean-made-easy   # http://localhost:8080
+docker build -t lingo-lite . && docker run --rm -p 8080:80 lingo-lite   # http://localhost:8080
 ```
 
 Open the URL on your phone once, add it to the Home Screen (Safari: Share, then Add to Home Screen), and it works offline from then on.

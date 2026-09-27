@@ -46,7 +46,7 @@ export function SettingsScreen() {
           )}
         </li>
       </ul>
-      <p className="muted small about">Korean Made Easy · everything stays on this device.</p>
+      <p className="muted small about">Lingo Lite · everything stays on this device.</p>
     </section>
   )
 }

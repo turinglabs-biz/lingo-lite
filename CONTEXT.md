@@ -1,4 +1,4 @@
-# Korean Made Easy
+# Lingo Lite
 
 A minimal, offline trainer for the few hundred Korean expressions a traveller actually needs, shown romanized first with audio at normal and slow speed.
 

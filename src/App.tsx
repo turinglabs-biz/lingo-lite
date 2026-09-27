@@ -53,7 +53,7 @@ export function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <span className="brand">Korean Made Easy</span>
+        <span className="brand">Lingo Lite</span>
         <span className="badges">
           <span className="badge streak" title="Day streak">
             <svg viewBox="0 0 24 24" aria-hidden="true">
