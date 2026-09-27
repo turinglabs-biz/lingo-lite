@@ -3,6 +3,7 @@ import { stopClip } from './audio/player.ts'
 import { catalog, type TopicId } from './catalog/index.ts'
 import { dueCards, nextBatch, REVIEW_SESSION_SIZE } from './domain/progress.ts'
 import type { DirectionCard } from './domain/types.ts'
+import { EchoLab } from './echo/lab/EchoLab.tsx'
 import { useProgress } from './progress/useProgress.ts'
 import { Home } from './screens/Home.tsx'
 import { Phrasebook } from './screens/Phrasebook.tsx'
@@ -29,6 +30,7 @@ export function App() {
   const [tab, setTab] = useState<TabId>('home')
   const [phrasebookTopic, setPhrasebookTopic] = useState<TopicId | null>(null)
   const [active, setActive] = useState<Active>(null)
+  const [echoLab, setEchoLab] = useState(false)
 
   if (!progress) return <div className="app loading" />
 
@@ -40,6 +42,7 @@ export function App() {
     setActive(summary ? { kind: 'summary', data: { ...summary, streak: Math.max(progress.streak.current, 1) } } : null)
   }
 
+  if (echoLab) return <EchoLab onClose={() => setEchoLab(false)} />
   if (active?.kind === 'learn') return <LearnSession batch={active.batch} introduced={progress.introduced} onEnd={endSession} />
   if (active?.kind === 'review') return <ReviewSession due={active.due} introduced={progress.introduced} onEnd={endSession} />
   if (active?.kind === 'summary')
@@ -79,7 +82,7 @@ export function App() {
         )}
         {tab === 'phrasebook' && <Phrasebook topic={phrasebookTopic} onTopicChange={setPhrasebookTopic} />}
         {tab === 'stats' && <Stats progress={progress} />}
-        {tab === 'settings' && <SettingsScreen />}
+        {tab === 'settings' && <SettingsScreen onOpenEchoLab={() => setEchoLab(true)} />}
       </main>
       <nav className="tabs">
         {TABS.map((t) => (

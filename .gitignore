@@ -5,3 +5,8 @@ voice-test
 .env
 *.local
 .DS_Store
+
+# Echo models: fetched by scripts/echo-models.ts, never committed
+public/models
+.cache
+.venv

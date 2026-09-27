@@ -730,3 +730,152 @@ h2 {
 .row-main .expression {
   flex: 1;
 }
+
+/* Echo */
+.echo-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 56px;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+.echo-button svg {
+  width: 22px;
+  height: 22px;
+}
+.echo-button.listening {
+  background: var(--seal);
+  color: var(--surface);
+}
+.echo-button.starting,
+.echo-button.scoring {
+  opacity: 0.7;
+}
+.echo-button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.echo-score {
+  margin: 0;
+  text-align: center;
+}
+.echo-score b {
+  font-size: 2rem;
+  font-variant-numeric: tabular-nums;
+}
+.echo-score.missed {
+  color: var(--seal);
+  font-weight: 600;
+}
+
+/* Echo lab */
+.lab {
+  justify-content: flex-start;
+}
+.lab h2 {
+  margin-top: 22px;
+}
+.lab-title {
+  flex: 1;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.lab-setup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.lab-setup .small,
+.lab-setup .notice {
+  margin: 0;
+}
+.lab-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.lab-button {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-weight: 600;
+}
+.lab-button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.lab-list {
+  gap: 12px;
+}
+.lab-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.lab-card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.lab-card-head .expression {
+  flex: 1;
+  min-width: 0;
+}
+.lab-card .chips {
+  padding: 0;
+  flex-wrap: wrap;
+  overflow: visible;
+}
+.lab-meta {
+  margin: 0;
+  text-align: center;
+}
+.lab-link {
+  border: none;
+  background: none;
+  padding: 0;
+  color: var(--accent);
+  text-decoration: underline;
+  font-size: inherit;
+}
+.lab-fallback {
+  width: 100%;
+  height: 160px;
+  margin-top: 8px;
+  font: 0.75rem ui-monospace, monospace;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.lab-clips {
+  margin-top: 10px;
+  font-size: 0.85rem;
+}
+.lab-clips table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 6px;
+  font-variant-numeric: tabular-nums;
+}
+.lab-clips td {
+  padding: 3px 4px;
+  border-bottom: 1px solid var(--line);
+}

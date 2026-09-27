@@ -1,0 +1,2416 @@
+{
+ "native": {
+  "hello": {
+   "full": 0.772,
+   "zero": 0.241,
+   "hash": "60f91af2b23a"
+  },
+  "yes": {
+   "full": 0.995,
+   "zero": 0.038,
+   "hash": "34d70cc200fe"
+  },
+  "how-much": {
+   "full": 0.718,
+   "zero": 0.195,
+   "hash": "eb681cf0c7c2"
+  },
+  "sino-1": {
+   "full": 0.884,
+   "zero": 0.001,
+   "hash": "3310b4ae92f5"
+  },
+  "water-please": {
+   "full": 0.887,
+   "zero": 0.185,
+   "hash": "705cf6b0b5b9"
+  },
+  "iced-americano": {
+   "full": 0.905,
+   "zero": 0.043,
+   "hash": "fb5447a7c1c4"
+  },
+  "bathroom-where": {
+   "full": 0.918,
+   "zero": 0.063,
+   "hash": "a588e7a8f24b"
+  },
+  "to-this-address": {
+   "full": 0.996,
+   "zero": 0.073,
+   "hash": "ad8e09c86433"
+  },
+  "have-reservation": {
+   "full": 0.917,
+   "zero": 0.139,
+   "hash": "0c341f703712"
+  },
+  "help": {
+   "full": 0.831,
+   "zero": 0.125,
+   "hash": "72036feacf25"
+  },
+  "nice-to-meet-you": {
+   "full": 0.881,
+   "zero": 0.06,
+   "hash": "a4b703a9bc8b"
+  },
+  "sino-2": {
+   "full": 0.914,
+   "zero": 0,
+   "hash": "669aa3901878"
+  },
+  "thank-you": {
+   "full": 0.817,
+   "zero": 0.125,
+   "hash": "80a54f4e5d7a"
+  },
+  "no": {
+   "full": 0.922,
+   "zero": 0.245,
+   "hash": "a21d36fcd684"
+  },
+  "this-one-please": {
+   "full": 0.998,
+   "zero": 0.239,
+   "hash": "0b86b49bf928"
+  },
+  "bill-please": {
+   "full": 0.901,
+   "zero": 0.189,
+   "hash": "0e02668fc3a6"
+  },
+  "where-is-it": {
+   "full": 0.971,
+   "zero": 0.191,
+   "hash": "1447443ea614"
+  },
+  "stop-here": {
+   "full": 0.992,
+   "zero": 0.115,
+   "hash": "c030848d15d0"
+  },
+  "sino-3": {
+   "full": 0.836,
+   "zero": 0.006,
+   "hash": "df5bfdd341f4"
+  },
+  "it-hurts": {
+   "full": 0.998,
+   "zero": 0.214,
+   "hash": "ed7059cd4d3d"
+  },
+  "cheers": {
+   "full": 0.815,
+   "zero": 0.018,
+   "hash": "495ab69f3204"
+  },
+  "sorry": {
+   "full": 0.844,
+   "zero": 0.133,
+   "hash": "aed0b91e50da"
+  },
+  "its-okay": {
+   "full": 0.923,
+   "zero": 0.111,
+   "hash": "7063e50c7922"
+  },
+  "card-ok": {
+   "full": 0.776,
+   "zero": 0.134,
+   "hash": "e3d3b31217d7"
+  },
+  "delicious": {
+   "full": 0.976,
+   "zero": 0.143,
+   "hash": "39e1b72e1233"
+  },
+  "here": {
+   "full": 0.689,
+   "zero": 0.038,
+   "hash": "534c1a0eae89"
+  },
+  "native-1": {
+   "full": 0.899,
+   "zero": 0.015,
+   "hash": "cdfe0c89b9ac"
+  },
+  "excuse-me-attention": {
+   "full": 0.889,
+   "zero": 0.177,
+   "hash": "61150cbb6668"
+  },
+  "give-me-please": {
+   "full": 0.965,
+   "zero": 0.204,
+   "hash": "6d318698931f"
+  },
+  "one-person": {
+   "full": 0.825,
+   "zero": 0.147,
+   "hash": "2afac8d7b806"
+  },
+  "goodbye-leaving": {
+   "full": 0.801,
+   "zero": 0.235,
+   "hash": "e72f9a2615c1"
+  },
+  "dont-speak-korean": {
+   "full": 0.991,
+   "zero": 0.131,
+   "hash": "ad644a44c510"
+  },
+  "two-people": {
+   "full": 0.84,
+   "zero": 0.153,
+   "hash": "f5247a661451"
+  },
+  "native-2": {
+   "full": 0.383,
+   "zero": 0.002,
+   "hash": "65f31d8a77a3"
+  },
+  "goodbye-staying": {
+   "full": 0.549,
+   "zero": 0.129,
+   "hash": "dd02065365c9"
+  },
+  "speak-english": {
+   "full": 0.942,
+   "zero": 0.214,
+   "hash": "c7a771dddc0c"
+  },
+  "menu-please": {
+   "full": 0.944,
+   "zero": 0.156,
+   "hash": "0a81a79b3d1c"
+  },
+  "this-one": {
+   "full": 0.93,
+   "zero": 0.008,
+   "hash": "3a45f2ee2fc2"
+  },
+  "pardon": {
+   "full": 0.992,
+   "zero": 0.038,
+   "hash": "52ec58924812"
+  },
+  "thank-you-2": {
+   "full": 0.894,
+   "zero": 0.066,
+   "hash": "a2d396c71f0a"
+  },
+  "i-dont-understand": {
+   "full": 0.938,
+   "zero": 0.195,
+   "hash": "cd81e76e0c71"
+  },
+  "won": {
+   "full": 0.748,
+   "zero": 0.002,
+   "hash": "5cbcfa50180c"
+  },
+  "too-expensive": {
+   "full": 0.998,
+   "zero": 0.131,
+   "hash": "3a74e007a2c1"
+  },
+  "how-many-heard": {
+   "full": 0.907,
+   "zero": 0.195,
+   "hash": "96cf50ecb01f"
+  },
+  "for-here-heard": {
+   "full": 0.991,
+   "zero": 0.146,
+   "hash": "949f9ac6116e"
+  },
+  "left": {
+   "full": 0.498,
+   "zero": 0.022,
+   "hash": "57e5f152747e"
+  },
+  "subway": {
+   "full": 0.687,
+   "zero": 0.082,
+   "hash": "b224dfaed9a4"
+  },
+  "check-in": {
+   "full": 0.869,
+   "zero": 0.114,
+   "hash": "056f7c4f92f0"
+  },
+  "sino-1000": {
+   "full": 0.806,
+   "zero": 0.009,
+   "hash": "256303a7df15"
+  },
+  "what-time-open": {
+   "full": 0.904,
+   "zero": 0.097,
+   "hash": "508da4599eef"
+  },
+  "pharmacy-where": {
+   "full": 0.867,
+   "zero": 0.16,
+   "hash": "31a51cc6f35b"
+  },
+  "where-from-heard": {
+   "full": 0.771,
+   "zero": 0.115,
+   "hash": "3466e96c1d94"
+  },
+  "excuse-me-passing": {
+   "full": 0.943,
+   "zero": 0.193,
+   "hash": "5d36f9e8dc9d"
+  },
+  "i-dont-know": {
+   "full": 0.982,
+   "zero": 0.084,
+   "hash": "33196cec4be8"
+  },
+  "receipt": {
+   "full": 0.938,
+   "zero": 0.137,
+   "hash": "544fb62ac463"
+  },
+  "one-of-this": {
+   "full": 0.812,
+   "zero": 0.15,
+   "hash": "98b5d6aab84a"
+  },
+  "sino-10000": {
+   "full": 0.788,
+   "zero": 0.01,
+   "hash": "f075d4ebad63"
+  },
+  "for-here": {
+   "full": 0.784,
+   "zero": 0.081,
+   "hash": "21af98fe6031"
+  },
+  "right": {
+   "full": 0.696,
+   "zero": 0.087,
+   "hash": "f63b8d92c223"
+  },
+  "taxi": {
+   "full": 0.979,
+   "zero": 0,
+   "hash": "5fb3f135c65c"
+  },
+  "check-out": {
+   "full": 0.64,
+   "zero": 0.127,
+   "hash": "278c8e286f8b"
+  },
+  "what-time-close": {
+   "full": 0.864,
+   "zero": 0.085,
+   "hash": "e334044f657c"
+  },
+  "hospital": {
+   "full": 0.624,
+   "zero": 0,
+   "hash": "00a08660e182"
+  },
+  "from-europe": {
+   "full": 0.939,
+   "zero": 0.09,
+   "hash": "523d0c2358d4"
+  },
+  "sino-4": {
+   "full": 0.406,
+   "zero": 0.004,
+   "hash": "8015df264b85"
+  },
+  "welcome-heard": {
+   "full": 0.805,
+   "zero": 0.141,
+   "hash": "786c31d4687c"
+  },
+  "slowly-please": {
+   "full": 0.85,
+   "zero": 0.138,
+   "hash": "5938bc76919d"
+  },
+  "bag-please": {
+   "full": 0.968,
+   "zero": 0.181,
+   "hash": "4f240fce9bf7"
+  },
+  "not-spicy": {
+   "full": 0.775,
+   "zero": 0.119,
+   "hash": "cf83b9dbda6e"
+  },
+  "take-away": {
+   "full": 0.84,
+   "zero": 0.115,
+   "hash": "5ab7f64ee81b"
+  },
+  "go-straight": {
+   "full": 0.743,
+   "zero": 0.15,
+   "hash": "2b62881f122b"
+  },
+  "sino-5": {
+   "full": 0.411,
+   "zero": 0,
+   "hash": "f9a9bfc2b54b"
+  },
+  "bus": {
+   "full": 0.868,
+   "zero": 0.005,
+   "hash": "41681c9c0e60"
+  },
+  "checkout-time": {
+   "full": 0.765,
+   "zero": 0.195,
+   "hash": "36799e0c3e80"
+  },
+  "open-now": {
+   "full": 0.993,
+   "zero": 0.016,
+   "hash": "bd8bb6298eb6"
+  },
+  "allergy": {
+   "full": 0.831,
+   "zero": 0.127,
+   "hash": "7cabcf688f45"
+  },
+  "im-a-tourist": {
+   "full": 0.847,
+   "zero": 0.055,
+   "hash": "19b165de735e"
+  },
+  "sorry-light": {
+   "full": 0.944,
+   "zero": 0.202,
+   "hash": "748d5f4c6139"
+  },
+  "once-more": {
+   "full": 0.927,
+   "zero": 0.121,
+   "hash": "414734aa2f07"
+  },
+  "native-3": {
+   "full": 0.807,
+   "zero": 0.031,
+   "hash": "1cd42b99afdf"
+  },
+  "no-bag": {
+   "full": 0.864,
+   "zero": 0.086,
+   "hash": "641bf059c2f1"
+  },
+  "is-it-spicy": {
+   "full": 0.649,
+   "zero": 0.125,
+   "hash": "a7966adb36d7"
+  },
+  "wifi-password": {
+   "full": 0.854,
+   "zero": 0.075,
+   "hash": "c93712e8a2b8"
+  },
+  "over-there": {
+   "full": 0.858,
+   "zero": 0.152,
+   "hash": "68cfb9749230"
+  },
+  "t-money": {
+   "full": 0.953,
+   "zero": 0.104,
+   "hash": "cc869b764231"
+  },
+  "keep-luggage": {
+   "full": 0.89,
+   "zero": 0.081,
+   "hash": "88f29e2e948c"
+  },
+  "sino-6": {
+   "full": 0.078,
+   "zero": 0.003,
+   "hash": "7ec2951e6601"
+  },
+  "today": {
+   "full": 0.692,
+   "zero": 0.002,
+   "hash": "b781218fc85e"
+  },
+  "call-ambulance": {
+   "full": 0.872,
+   "zero": 0.063,
+   "hash": "5126b52a2ea0"
+  },
+  "first-time-korea": {
+   "full": 0.972,
+   "zero": 0.066,
+   "hash": "0e6a573e364b"
+  },
+  "not-at-all": {
+   "full": 0.608,
+   "zero": 0.261,
+   "hash": "3940cc2166f3"
+  },
+  "got-it": {
+   "full": 0.946,
+   "zero": 0.185,
+   "hash": "a90874211ff4"
+  },
+  "just-looking": {
+   "full": 0.944,
+   "zero": 0.087,
+   "hash": "5e218d2f8948"
+  },
+  "one-more": {
+   "full": 0.955,
+   "zero": 0.098,
+   "hash": "f122bae31cc3"
+  },
+  "sino-7": {
+   "full": 0.671,
+   "zero": 0.002,
+   "hash": "aa9a761c18a3"
+  },
+  "one-cup": {
+   "full": 0.965,
+   "zero": 0.076,
+   "hash": "1338c821b0b0"
+  },
+  "subway-station": {
+   "full": 0.67,
+   "zero": 0.14,
+   "hash": "de89d93baf0f"
+  },
+  "top-up": {
+   "full": 0.865,
+   "zero": 0.154,
+   "hash": "fae243acb608"
+  },
+  "tomorrow": {
+   "full": 0.698,
+   "zero": 0.002,
+   "hash": "75b101246bf9"
+  },
+  "call-police": {
+   "full": 0.875,
+   "zero": 0.074,
+   "hash": "e1f95d361ebd"
+  },
+  "can-i-take-photo": {
+   "full": 0.776,
+   "zero": 0.07,
+   "hash": "8bff0c381eea"
+  },
+  "sino-8": {
+   "full": 0.704,
+   "zero": 0.007,
+   "hash": "1b1fc5bf6390"
+  },
+  "thanks-for-help": {
+   "full": 0.918,
+   "zero": 0.051,
+   "hash": "0812c7caa7d2"
+  },
+  "good": {
+   "full": 0.811,
+   "zero": 0.249,
+   "hash": "c873983340e4"
+  },
+  "ill-take-this": {
+   "full": 0.848,
+   "zero": 0.178,
+   "hash": "532140bf799c"
+  },
+  "english-menu": {
+   "full": 0.844,
+   "zero": 0.1,
+   "hash": "097366733fd2"
+  },
+  "hot-one": {
+   "full": 0.775,
+   "zero": 0.039,
+   "hash": "fe5794c9cce6"
+  },
+  "is-it-close": {
+   "full": 0.985,
+   "zero": 0.103,
+   "hash": "cf2f9428202e"
+  },
+  "to-seoul-station": {
+   "full": 0.897,
+   "zero": 0.053,
+   "hash": "f68d5e2f62ee"
+  },
+  "sino-9": {
+   "full": 0.576,
+   "zero": 0.001,
+   "hash": "12d4b3cc6884"
+  },
+  "now": {
+   "full": 0.992,
+   "zero": 0.017,
+   "hash": "edffd0a936c2"
+  },
+  "emergency-119": {
+   "full": 0.659,
+   "zero": 0.014,
+   "hash": "ddcef17be59d"
+  },
+  "take-our-photo": {
+   "full": 0.91,
+   "zero": 0.042,
+   "hash": "bf82be4ac7fd"
+  },
+  "that-one": {
+   "full": 0.713,
+   "zero": 0.008,
+   "hash": "8a623c8d826e"
+  },
+  "where-pay": {
+   "full": 0.939,
+   "zero": 0.142,
+   "hash": "3c63c8861d46"
+  },
+  "what-is-good": {
+   "full": 0.885,
+   "zero": 0.136,
+   "hash": "e16696f68a7a"
+  },
+  "sino-10": {
+   "full": 0.647,
+   "zero": 0.074,
+   "hash": "686730f7b16a"
+  },
+  "how-do-i-get-here": {
+   "full": 0.874,
+   "zero": 0.071,
+   "hash": "1c418e84808d"
+  },
+  "does-bus-go": {
+   "full": 0.98,
+   "zero": 0.045,
+   "hash": "bbda8635e716"
+  },
+  "what-time-now": {
+   "full": 0.949,
+   "zero": 0.097,
+   "hash": "eefc9e74f216"
+  },
+  "lost-phone": {
+   "full": 0.949,
+   "zero": 0.032,
+   "hash": "fb2858092616"
+  },
+  "there-is": {
+   "full": 0.881,
+   "zero": 0.238,
+   "hash": "e0bc22dacee3"
+  },
+  "two-of-them": {
+   "full": 0.918,
+   "zero": 0.209,
+   "hash": "6ee1bc34ed0d"
+  },
+  "ordering": {
+   "full": 0.813,
+   "zero": 0.158,
+   "hash": "5e07507ccf95"
+  },
+  "sino-100": {
+   "full": 0.715,
+   "zero": 0.015,
+   "hash": "aaf9bcd65483"
+  },
+  "which-exit": {
+   "full": 0.829,
+   "zero": 0.075,
+   "hash": "cd5471f18cbb"
+  },
+  "how-long": {
+   "full": 0.803,
+   "zero": 0.096,
+   "hash": "fb046d8bf968"
+  },
+  "there-isnt": {
+   "full": 0.921,
+   "zero": 0.19,
+   "hash": "6f5227696831"
+  },
+  "more-side-dishes": {
+   "full": 0.996,
+   "zero": 0.084,
+   "hash": "3bfeca5bff0f"
+  },
+  "convenience-store": {
+   "full": 0.85,
+   "zero": 0.048,
+   "hash": "7d00a758c52e"
+  },
+  "which-line": {
+   "full": 0.827,
+   "zero": 0.102,
+   "hash": "cfa1d2279ba8"
+  },
+  "native-4": {
+   "full": 0.789,
+   "zero": 0.049,
+   "hash": "da8ced32e753"
+  },
+  "is-it-possible": {
+   "full": 0.706,
+   "zero": 0.244,
+   "hash": "828d6619a074"
+  },
+  "to-go": {
+   "full": 0.82,
+   "zero": 0.145,
+   "hash": "219b2043f811"
+  },
+  "im-lost": {
+   "full": 0.873,
+   "zero": 0.066,
+   "hash": "280df101cf43"
+  },
+  "where-transfer": {
+   "full": 0.969,
+   "zero": 0.107,
+   "hash": "075869d7089b"
+  },
+  "not-possible": {
+   "full": 0.8,
+   "zero": 0.199,
+   "hash": "cb27e364a4d9"
+  },
+  "before-meal": {
+   "full": 0.894,
+   "zero": 0.054,
+   "hash": "bd06c7a5faa2"
+  },
+  "airport": {
+   "full": 0.883,
+   "zero": 0.057,
+   "hash": "f3eb53c555ff"
+  },
+  "native-5": {
+   "full": 0.883,
+   "zero": 0.18,
+   "hash": "5a4cde975fab"
+  },
+  "dont-need": {
+   "full": 0.948,
+   "zero": 0.111,
+   "hash": "5d2b718bef47"
+  },
+  "after-meal": {
+   "full": 0.894,
+   "zero": 0.034,
+   "hash": "bf15d3b988e7"
+  },
+  "what-is-this": {
+   "full": 0.867,
+   "zero": 0.146,
+   "hash": "35794b40957f"
+  },
+  "beer": {
+   "full": 0.823,
+   "zero": 0.049,
+   "hash": "3a0b93e8b37c"
+  },
+  "youre-welcome": {
+   "full": 0.865,
+   "zero": 0.222,
+   "hash": "c4e2a5806af9"
+  },
+  "a-little-korean": {
+   "full": 0.931,
+   "zero": 0.122,
+   "hash": "4a79aa5d3418"
+  },
+  "native-6": {
+   "full": 0.616,
+   "zero": 0.081,
+   "hash": "bec85386119b"
+  },
+  "pay-cash": {
+   "full": 0.756,
+   "zero": 0.126,
+   "hash": "0fb28f93714a"
+  },
+  "no-meat": {
+   "full": 0.987,
+   "zero": 0.092,
+   "hash": "322235fc0cc7"
+  },
+  "iced": {
+   "full": 0.991,
+   "zero": 0.015,
+   "hash": "f9f6f762cb06"
+  },
+  "there-near-you": {
+   "full": 0.988,
+   "zero": 0.077,
+   "hash": "6e2cfaa11faa"
+  },
+  "this-station-heard": {
+   "full": 0.928,
+   "zero": 0.014,
+   "hash": "536b71366ed3"
+  },
+  "more-towels": {
+   "full": 0.905,
+   "zero": 0.109,
+   "hash": "3a9ff792f89a"
+  },
+  "three-oclock": {
+   "full": 0.909,
+   "zero": 0.001,
+   "hash": "480861f024c2"
+  },
+  "native-7": {
+   "full": 0.679,
+   "zero": 0.173,
+   "hash": "5e21a38c85ea"
+  },
+  "headache": {
+   "full": 0.972,
+   "zero": 0.112,
+   "hash": "a46c72618faa"
+  },
+  "like-korea": {
+   "full": 0.831,
+   "zero": 0.136,
+   "hash": "08c60a25766f"
+  },
+  "hello-formal-heard": {
+   "full": 0.793,
+   "zero": 0.167,
+   "hash": "5e762312c5e9"
+  },
+  "write-it-please": {
+   "full": 0.914,
+   "zero": 0.127,
+   "hash": "19ffba407f61"
+  },
+  "cash": {
+   "full": 0.679,
+   "zero": 0.005,
+   "hash": "a91931763f75"
+  },
+  "vegetarian-menu": {
+   "full": 0.835,
+   "zero": 0.141,
+   "hash": "c50d33971aff"
+  },
+  "native-8": {
+   "full": 0.726,
+   "zero": 0.003,
+   "hash": "eae3b04444de"
+  },
+  "latte": {
+   "full": 0.822,
+   "zero": 0.095,
+   "hash": "73157fac1425"
+  },
+  "is-it-far": {
+   "full": 0.748,
+   "zero": 0.117,
+   "hash": "09f11b37efee"
+  },
+  "ticket": {
+   "full": 0.94,
+   "zero": 0.105,
+   "hash": "14c1b1dbc539"
+  },
+  "no-hot-water": {
+   "full": 0.938,
+   "zero": 0.093,
+   "hash": "ea54cdb9f88a"
+  },
+  "thirty-minutes": {
+   "full": 0.927,
+   "zero": 0.019,
+   "hash": "874afb99a44a"
+  },
+  "stomach-ache": {
+   "full": 0.936,
+   "zero": 0.145,
+   "hash": "256e22d40621"
+  },
+  "whats-your-name": {
+   "full": 0.847,
+   "zero": 0.14,
+   "hash": "bbb29d7d6aae"
+  },
+  "native-9": {
+   "full": 0.932,
+   "zero": 0.199,
+   "hash": "101197c8d978"
+  },
+  "see-you-again": {
+   "full": 0.632,
+   "zero": 0.152,
+   "hash": "4925785578cd"
+  },
+  "just-a-moment": {
+   "full": 0.84,
+   "zero": 0.128,
+   "hash": "a51a5678465c"
+  },
+  "discount": {
+   "full": 0.745,
+   "zero": 0.117,
+   "hash": "aae98d622999"
+  },
+  "eat-here": {
+   "full": 0.925,
+   "zero": 0.097,
+   "hash": "04f213989600"
+  },
+  "large-size": {
+   "full": 0.653,
+   "zero": 0.116,
+   "hash": "8fa2fccf83b4"
+  },
+  "can-i-walk": {
+   "full": 0.843,
+   "zero": 0.013,
+   "hash": "d9f3af8d02c0"
+  },
+  "native-10": {
+   "full": 0.519,
+   "zero": 0.001,
+   "hash": "4832817fabf5"
+  },
+  "ticket-to-busan": {
+   "full": 0.95,
+   "zero": 0.052,
+   "hash": "800c09cac52f"
+  },
+  "aircon-broken": {
+   "full": 0.779,
+   "zero": 0.128,
+   "hash": "2b030879c08a"
+  },
+  "yesterday": {
+   "full": 0.953,
+   "zero": 0.002,
+   "hash": "aeff4fd31adf"
+  },
+  "fever": {
+   "full": 0.997,
+   "zero": 0.168,
+   "hash": "3fd59aeccc8c"
+  },
+  "its-fun": {
+   "full": 0.943,
+   "zero": 0.146,
+   "hash": "c6c2792c4a2f"
+  },
+  "have-a-nice-day": {
+   "full": 0.752,
+   "zero": 0.119,
+   "hash": "4a7f48e8067e"
+  },
+  "help-me-please": {
+   "full": 0.73,
+   "zero": 0.092,
+   "hash": "1a5627b945dc"
+  },
+  "counter-one": {
+   "full": 0.894,
+   "zero": 0.011,
+   "hash": "a643f90e51e3"
+  },
+  "another-colour": {
+   "full": 0.895,
+   "zero": 0.134,
+   "hash": "2d8ac8e5b0f5"
+  },
+  "chopsticks": {
+   "full": 0.806,
+   "zero": 0.056,
+   "hash": "2227fc0d0c7a"
+  },
+  "less-sweet": {
+   "full": 0.872,
+   "zero": 0.116,
+   "hash": "322bf12e214e"
+  },
+  "exit": {
+   "full": 0.591,
+   "zero": 0.025,
+   "hash": "1e798b717785"
+  },
+  "train-station": {
+   "full": 0.829,
+   "zero": 0.063,
+   "hash": "e6162d9b175a"
+  },
+  "breakfast-time": {
+   "full": 0.881,
+   "zero": 0.189,
+   "hash": "dbce68afc9c8"
+  },
+  "morning": {
+   "full": 0.749,
+   "zero": 0.022,
+   "hash": "f2822da8cadd"
+  },
+  "counter-two": {
+   "full": 0.501,
+   "zero": 0.001,
+   "hash": "67c44e08c111"
+  },
+  "peanut-allergy": {
+   "full": 0.803,
+   "zero": 0.065,
+   "hash": "4907f28d2af1"
+  },
+  "its-pretty": {
+   "full": 0.825,
+   "zero": 0.201,
+   "hash": "c059d31a46a9"
+  },
+  "good-night": {
+   "full": 0.932,
+   "zero": 0.148,
+   "hash": "2096917fbf43"
+  },
+  "really": {
+   "full": 0.913,
+   "zero": 0.167,
+   "hash": "0d4815ab8c8d"
+  },
+  "bigger-one": {
+   "full": 0.95,
+   "zero": 0.102,
+   "hash": "b6d791e7a74a"
+  },
+  "spoon": {
+   "full": 0.817,
+   "zero": 0.061,
+   "hash": "46083e042d79"
+  },
+  "price-1000": {
+   "full": 0.956,
+   "zero": 0.003,
+   "hash": "c29fa3bed7cf"
+  },
+  "green-tea": {
+   "full": 0.983,
+   "zero": 0.007,
+   "hash": "8caf1572420a"
+  },
+  "entrance": {
+   "full": 0.996,
+   "zero": 0.006,
+   "hash": "e894ecdd8744"
+  },
+  "getting-off": {
+   "full": 0.918,
+   "zero": 0.091,
+   "hash": "a9320eb22deb"
+  },
+  "key-card": {
+   "full": 0.911,
+   "zero": 0.008,
+   "hash": "059706228ba0"
+  },
+  "afternoon": {
+   "full": 0.978,
+   "zero": 0.001,
+   "hash": "d99d07722acf"
+  },
+  "medicine": {
+   "full": 0.692,
+   "zero": 0,
+   "hash": "0453e3fc7b72"
+  },
+  "the-best": {
+   "full": 0.892,
+   "zero": 0.161,
+   "hash": "37c0e9a52b7b"
+  },
+  "price-10000": {
+   "full": 0.925,
+   "zero": 0.005,
+   "hash": "fe95454d000b"
+  },
+  "thanks-soft": {
+   "full": 0.81,
+   "zero": 0.157,
+   "hash": "f0084f94c2e4"
+  },
+  "try-on": {
+   "full": 0.79,
+   "zero": 0.103,
+   "hash": "d3c34c01258a"
+  },
+  "tissue": {
+   "full": 0.555,
+   "zero": 0.014,
+   "hash": "919752500f23"
+  },
+  "milk": {
+   "full": 0.195,
+   "zero": 0,
+   "hash": "223b87ad9169"
+  },
+  "which-floor": {
+   "full": 0.804,
+   "zero": 0.167,
+   "hash": "8190e5a8d0aa"
+  },
+  "elevator": {
+   "full": 0.697,
+   "zero": 0.042,
+   "hash": "c6b2f914fce4"
+  },
+  "counter-three": {
+   "full": 0.612,
+   "zero": 0.002,
+   "hash": "89bf3a39beb3"
+  },
+  "evening": {
+   "full": 0.753,
+   "zero": 0.065,
+   "hash": "fa3e60218d2c"
+  },
+  "cold-medicine": {
+   "full": 0.861,
+   "zero": 0.114,
+   "hash": "3548e3b61dd6"
+  },
+  "tired": {
+   "full": 0.928,
+   "zero": 0.227,
+   "hash": "331ae801f228"
+  },
+  "tax-refund": {
+   "full": 0.846,
+   "zero": 0.067,
+   "hash": "b2c4fa6a34e1"
+  },
+  "soju": {
+   "full": 0.659,
+   "zero": 0.03,
+   "hash": "8a6fd3ab7e1a"
+  },
+  "power-outlet": {
+   "full": 0.944,
+   "zero": 0.08,
+   "hash": "82d12fb9a3fc"
+  },
+  "atm-where": {
+   "full": 0.954,
+   "zero": 0.076,
+   "hash": "3e55e37a285d"
+  },
+  "counter-four": {
+   "full": 0.765,
+   "zero": 0.003,
+   "hash": "23d0b09920f1"
+  },
+  "weekend": {
+   "full": 0.886,
+   "zero": 0.014,
+   "hash": "da02ca30d767"
+  },
+  "lost-wallet": {
+   "full": 0.988,
+   "zero": 0.041,
+   "hash": "62c67b6e5bc4"
+  },
+  "its-hot": {
+   "full": 0.746,
+   "zero": 0.22,
+   "hash": "9e2e4103e2ca"
+  },
+  "cheap": {
+   "full": 0.988,
+   "zero": 0.297,
+   "hash": "3b3e795a40e5"
+  },
+  "rice": {
+   "full": 0.717,
+   "zero": 0.015,
+   "hash": "e20b2aa6cad0"
+  },
+  "bottle-of-water": {
+   "full": 0.934,
+   "zero": 0.11,
+   "hash": "77f459c9990e"
+  },
+  "price-50000": {
+   "full": 0.932,
+   "zero": 0.007,
+   "hash": "e014350dfe1c"
+  },
+  "map": {
+   "full": 0.979,
+   "zero": 0.046,
+   "hash": "66c1700b43c0"
+  },
+  "when": {
+   "full": 0.797,
+   "zero": 0.012,
+   "hash": "7041a4cf68bb"
+  },
+  "urgent": {
+   "full": 0.998,
+   "zero": 0.201,
+   "hash": "7148e37656ee"
+  },
+  "its-cold": {
+   "full": 0.641,
+   "zero": 0.225,
+   "hash": "3fdf31bf85a5"
+  },
+  "pork-belly": {
+   "full": 0.813,
+   "zero": 0.078,
+   "hash": "5925f795324a"
+  },
+  "open-sign": {
+   "full": 0.473,
+   "zero": 0.002,
+   "hash": "05cda58b9bbd"
+  },
+  "police-112": {
+   "full": 0.773,
+   "zero": 0.001,
+   "hash": "284aabc9736a"
+  },
+  "zero": {
+   "full": 0.432,
+   "zero": 0.002,
+   "hash": "84b67e6ba6bc"
+  },
+  "good-restaurant-nearby": {
+   "full": 0.833,
+   "zero": 0.083,
+   "hash": "3157e7635b0c"
+  },
+  "closed-sign": {
+   "full": 0.361,
+   "zero": 0.002,
+   "hash": "888d2ae107b8"
+  },
+  "hungry": {
+   "full": 0.843,
+   "zero": 0.136,
+   "hash": "3345226b60ba"
+  }
+ },
+ "learner": {
+  "hello": {
+   "full": 0.538,
+   "zero": 0.224,
+   "hash": "89543347d28f"
+  },
+  "yes": {
+   "full": 0.574,
+   "zero": 0.013,
+   "hash": "fa26f3fe1c94"
+  },
+  "how-much": {
+   "full": 0.258,
+   "zero": 0.176,
+   "hash": "d04432bef068"
+  },
+  "sino-1": {
+   "full": 0.649,
+   "zero": 0,
+   "hash": "6bcfdcf363bd"
+  },
+  "water-please": {
+   "full": 0.616,
+   "zero": 0.168,
+   "hash": "dbb5b1d447cc"
+  },
+  "iced-americano": {
+   "full": 0.662,
+   "zero": 0.042,
+   "hash": "28c2f3b09b8a"
+  },
+  "bathroom-where": {
+   "full": 0.426,
+   "zero": 0.005,
+   "hash": "4a0397141483"
+  },
+  "to-this-address": {
+   "full": 0.823,
+   "zero": 0.038,
+   "hash": "0c317fba7829"
+  },
+  "have-reservation": {
+   "full": 0.539,
+   "zero": 0.114,
+   "hash": "0f4e69bf1371"
+  },
+  "help": {
+   "full": 0.536,
+   "zero": 0.115,
+   "hash": "51586a3d2be1"
+  },
+  "nice-to-meet-you": {
+   "full": 0.595,
+   "zero": 0.003,
+   "hash": "d28d9d7fde85"
+  },
+  "sino-2": {
+   "full": 0.863,
+   "zero": 0,
+   "hash": "e6766fa57c33"
+  },
+  "thank-you": {
+   "full": 0.906,
+   "zero": 0.085,
+   "hash": "bf813d6decf6"
+  },
+  "no": {
+   "full": 0.475,
+   "zero": 0.127,
+   "hash": "4b5d0d1aba27"
+  },
+  "this-one-please": {
+   "full": 0.821,
+   "zero": 0.199,
+   "hash": "c7f35cf18cb9"
+  },
+  "bill-please": {
+   "full": 0.765,
+   "zero": 0.158,
+   "hash": "6e1950de06ac"
+  },
+  "where-is-it": {
+   "full": 0.633,
+   "zero": 0.096,
+   "hash": "db496017f8f2"
+  },
+  "stop-here": {
+   "full": 0.751,
+   "zero": 0.078,
+   "hash": "6ad415a49e01"
+  },
+  "sino-3": {
+   "full": 0.615,
+   "zero": 0.003,
+   "hash": "79fc92896673"
+  },
+  "it-hurts": {
+   "full": 0.714,
+   "zero": 0.091,
+   "hash": "3e19a1b02020"
+  },
+  "cheers": {
+   "full": 0.54,
+   "zero": 0.009,
+   "hash": "53dd9743f736"
+  },
+  "sorry": {
+   "full": 0.854,
+   "zero": 0.083,
+   "hash": "bf07ed502c69"
+  },
+  "its-okay": {
+   "full": 0.699,
+   "zero": 0.034,
+   "hash": "02544b8c0f71"
+  },
+  "card-ok": {
+   "full": 0.61,
+   "zero": 0.137,
+   "hash": "68f008036587"
+  },
+  "delicious": {
+   "full": 0.755,
+   "zero": 0.127,
+   "hash": "7d7ac58ae1ce"
+  },
+  "here": {
+   "full": 0.832,
+   "zero": 0.028,
+   "hash": "e07409d89051"
+  },
+  "native-1": {
+   "full": 0.598,
+   "zero": 0,
+   "hash": "d0e03409148e"
+  },
+  "excuse-me-attention": {
+   "full": 0.418,
+   "zero": 0.145,
+   "hash": "62ed580d45ae"
+  },
+  "give-me-please": {
+   "full": 0.759,
+   "zero": 0.177,
+   "hash": "3fa68a4a64dc"
+  },
+  "one-person": {
+   "full": 0.507,
+   "zero": 0.128,
+   "hash": "7b7896bceee2"
+  },
+  "goodbye-leaving": {
+   "full": 0.532,
+   "zero": 0.161,
+   "hash": "89cdc88c219e"
+  },
+  "dont-speak-korean": {
+   "full": 0.935,
+   "zero": 0.024,
+   "hash": "2153ef3c4b4c"
+  },
+  "two-people": {
+   "full": 0.681,
+   "zero": 0.112,
+   "hash": "7c47294dce1c"
+  },
+  "native-2": {
+   "full": 0.686,
+   "zero": 0.002,
+   "hash": "ca296bfb851a"
+  },
+  "goodbye-staying": {
+   "full": 0.423,
+   "zero": 0.11,
+   "hash": "90ddda25b42f"
+  },
+  "speak-english": {
+   "full": 0.517,
+   "zero": 0.192,
+   "hash": "f983fc762af2"
+  },
+  "menu-please": {
+   "full": 0.676,
+   "zero": 0.103,
+   "hash": "a7313e520430"
+  },
+  "this-one": {
+   "full": 0.979,
+   "zero": 0.033,
+   "hash": "b3a87f2e31c0"
+  },
+  "pardon": {
+   "full": 0.655,
+   "zero": 0.013,
+   "hash": "7fb8c9aaa225"
+  },
+  "thank-you-2": {
+   "full": 0.834,
+   "zero": 0.009,
+   "hash": "9ca022076fdb"
+  },
+  "i-dont-understand": {
+   "full": 0.616,
+   "zero": 0.148,
+   "hash": "8474a914c72c"
+  },
+  "won": {
+   "full": 0.676,
+   "zero": 0,
+   "hash": "688bc1f314b9"
+  },
+  "too-expensive": {
+   "full": 0.895,
+   "zero": 0.109,
+   "hash": "11a43c56448b"
+  },
+  "how-many-heard": {
+   "full": 0.731,
+   "zero": 0.131,
+   "hash": "90e631be68c9"
+  },
+  "for-here-heard": {
+   "full": 0.851,
+   "zero": 0.055,
+   "hash": "cce355519003"
+  },
+  "left": {
+   "full": 0.397,
+   "zero": 0.02,
+   "hash": "8180c1b92959"
+  },
+  "subway": {
+   "full": 0.676,
+   "zero": 0.133,
+   "hash": "50e15b07ee93"
+  },
+  "check-in": {
+   "full": 0.634,
+   "zero": 0.173,
+   "hash": "0b351dd88ed9"
+  },
+  "sino-1000": {
+   "full": 0.313,
+   "zero": 0.002,
+   "hash": "548db4eda156"
+  },
+  "what-time-open": {
+   "full": 0.637,
+   "zero": 0.1,
+   "hash": "86b8b06ffb26"
+  },
+  "pharmacy-where": {
+   "full": 0.618,
+   "zero": 0.104,
+   "hash": "f4102bb50514"
+  },
+  "where-from-heard": {
+   "full": 0.569,
+   "zero": 0.075,
+   "hash": "4d60709e675b"
+  },
+  "excuse-me-passing": {
+   "full": 0.828,
+   "zero": 0.074,
+   "hash": "8bd8c593f1b8"
+  },
+  "i-dont-know": {
+   "full": 0.689,
+   "zero": 0.027,
+   "hash": "cf0a9fcd424d"
+  },
+  "receipt": {
+   "full": 0.551,
+   "zero": 0.145,
+   "hash": "00b3abe50153"
+  },
+  "one-of-this": {
+   "full": 0.691,
+   "zero": 0.155,
+   "hash": "7ad4939f32f5"
+  },
+  "sino-10000": {
+   "full": 0.839,
+   "zero": 0.001,
+   "hash": "33248cb740fc"
+  },
+  "for-here": {
+   "full": 0.55,
+   "zero": 0.087,
+   "hash": "b10c7be813f7"
+  },
+  "right": {
+   "full": 0.705,
+   "zero": 0.116,
+   "hash": "53607155054c"
+  },
+  "taxi": {
+   "full": 0.479,
+   "zero": 0.001,
+   "hash": "615a48a3adcb"
+  },
+  "check-out": {
+   "full": 0.475,
+   "zero": 0.159,
+   "hash": "abb458bfe367"
+  },
+  "what-time-close": {
+   "full": 0.746,
+   "zero": 0.091,
+   "hash": "2bdefe993989"
+  },
+  "hospital": {
+   "full": 0.994,
+   "zero": 0,
+   "hash": "2b4633bfa6ac"
+  },
+  "from-europe": {
+   "full": 0.658,
+   "zero": 0.066,
+   "hash": "5aaa34ab5131"
+  },
+  "sino-4": {
+   "full": 0.48,
+   "zero": 0.003,
+   "hash": "fa47ab006b41"
+  },
+  "welcome-heard": {
+   "full": 0.614,
+   "zero": 0.136,
+   "hash": "b4aac55ffadf"
+  },
+  "slowly-please": {
+   "full": 0.71,
+   "zero": 0.111,
+   "hash": "4beb7aa165b1"
+  },
+  "bag-please": {
+   "full": 0.528,
+   "zero": 0.185,
+   "hash": "97d50c8b3be4"
+  },
+  "not-spicy": {
+   "full": 0.427,
+   "zero": 0.101,
+   "hash": "eb1d1d972afc"
+  },
+  "take-away": {
+   "full": 0.766,
+   "zero": 0.123,
+   "hash": "4e38645afa56"
+  },
+  "go-straight": {
+   "full": 0.642,
+   "zero": 0.125,
+   "hash": "2037a1158147"
+  },
+  "sino-5": {
+   "full": 0.339,
+   "zero": 0,
+   "hash": "908d6eb29dcb"
+  },
+  "bus": {
+   "full": 0.324,
+   "zero": 0.007,
+   "hash": "f1aec47a1e30"
+  },
+  "checkout-time": {
+   "full": 0.401,
+   "zero": 0.176,
+   "hash": "9ed348ddd27f"
+  },
+  "open-now": {
+   "full": 0.875,
+   "zero": 0.002,
+   "hash": "c41980dcc77b"
+  },
+  "allergy": {
+   "full": 0.713,
+   "zero": 0.088,
+   "hash": "dbe2a499ee02"
+  },
+  "im-a-tourist": {
+   "full": 0.499,
+   "zero": 0.001,
+   "hash": "84550eef8e55"
+  },
+  "sorry-light": {
+   "full": 0.74,
+   "zero": 0.205,
+   "hash": "ec998a411897"
+  },
+  "once-more": {
+   "full": 0.627,
+   "zero": 0.1,
+   "hash": "b5fc5dc35767"
+  },
+  "native-3": {
+   "full": 0.514,
+   "zero": 0.139,
+   "hash": "1e9068873e2b"
+  },
+  "no-bag": {
+   "full": 0.539,
+   "zero": 0.064,
+   "hash": "e876815e227d"
+  },
+  "is-it-spicy": {
+   "full": 0.52,
+   "zero": 0.057,
+   "hash": "a00ddeb26f21"
+  },
+  "wifi-password": {
+   "full": 0.667,
+   "zero": 0.053,
+   "hash": "059291277d3e"
+  },
+  "over-there": {
+   "full": 0.625,
+   "zero": 0.053,
+   "hash": "28348cc79d2d"
+  },
+  "t-money": {
+   "full": 0.696,
+   "zero": 0.099,
+   "hash": "be9b31e7be3a"
+  },
+  "keep-luggage": {
+   "full": 0.723,
+   "zero": 0.085,
+   "hash": "b4a6b61cbd02"
+  },
+  "sino-6": {
+   "full": 0.935,
+   "zero": 0.002,
+   "hash": "88762f13b352"
+  },
+  "today": {
+   "full": 0.508,
+   "zero": 0.003,
+   "hash": "41287e48f031"
+  },
+  "call-ambulance": {
+   "full": 0.694,
+   "zero": 0.009,
+   "hash": "58f1c07638ba"
+  },
+  "first-time-korea": {
+   "full": 0.746,
+   "zero": 0.059,
+   "hash": "f7cdfa514ede"
+  },
+  "not-at-all": {
+   "full": 0.579,
+   "zero": 0.286,
+   "hash": "b14595cacd7d"
+  },
+  "got-it": {
+   "full": 0.757,
+   "zero": 0.136,
+   "hash": "6294587f7d34"
+  },
+  "just-looking": {
+   "full": 0.74,
+   "zero": 0.07,
+   "hash": "cd46491e1940"
+  },
+  "one-more": {
+   "full": 0.674,
+   "zero": 0.099,
+   "hash": "2f18a6c359a5"
+  },
+  "sino-7": {
+   "full": 0.531,
+   "zero": 0.001,
+   "hash": "c9e27163d57e"
+  },
+  "one-cup": {
+   "full": 0.665,
+   "zero": 0.128,
+   "hash": "b487b83f42c8"
+  },
+  "subway-station": {
+   "full": 0.572,
+   "zero": 0.217,
+   "hash": "b2307e9c8c78"
+  },
+  "top-up": {
+   "full": 0.592,
+   "zero": 0.09,
+   "hash": "c9228e76a516"
+  },
+  "tomorrow": {
+   "full": 0.519,
+   "zero": 0.002,
+   "hash": "e5a9e7c3ebaf"
+  },
+  "call-police": {
+   "full": 0.657,
+   "zero": 0.061,
+   "hash": "9055bdd92ee2"
+  },
+  "can-i-take-photo": {
+   "full": 0.719,
+   "zero": 0.013,
+   "hash": "f0e6da3841bd"
+  },
+  "sino-8": {
+   "full": 0.914,
+   "zero": 0.013,
+   "hash": "b997d3a502f6"
+  },
+  "thanks-for-help": {
+   "full": 0.843,
+   "zero": 0.048,
+   "hash": "e9960236d655"
+  },
+  "good": {
+   "full": 0.688,
+   "zero": 0.148,
+   "hash": "11fde5fc9aa5"
+  },
+  "ill-take-this": {
+   "full": 0.724,
+   "zero": 0.174,
+   "hash": "febe48d2103e"
+  },
+  "english-menu": {
+   "full": 0.818,
+   "zero": 0.079,
+   "hash": "d488ff71ac77"
+  },
+  "hot-one": {
+   "full": 0.72,
+   "zero": 0.096,
+   "hash": "d2ae498e3a35"
+  },
+  "is-it-close": {
+   "full": 0.641,
+   "zero": 0.021,
+   "hash": "1f4a5c7a974b"
+  },
+  "to-seoul-station": {
+   "full": 0.724,
+   "zero": 0,
+   "hash": "75fc99f4deea"
+  },
+  "sino-9": {
+   "full": 0.86,
+   "zero": 0.001,
+   "hash": "a8fbdfde99c2"
+  },
+  "now": {
+   "full": 0.997,
+   "zero": 0.038,
+   "hash": "8c2897b60983"
+  },
+  "emergency-119": {
+   "full": 0.299,
+   "zero": 0.009,
+   "hash": "f84bf79590fd"
+  },
+  "take-our-photo": {
+   "full": 0.736,
+   "zero": 0.015,
+   "hash": "2cdfed6d0f2a"
+  },
+  "that-one": {
+   "full": 0.542,
+   "zero": 0.023,
+   "hash": "ac2e58321da2"
+  },
+  "where-pay": {
+   "full": 0.712,
+   "zero": 0.133,
+   "hash": "49237a920235"
+  },
+  "what-is-good": {
+   "full": 0.73,
+   "zero": 0.047,
+   "hash": "1c4d47e30802"
+  },
+  "sino-10": {
+   "full": 0.775,
+   "zero": 0.084,
+   "hash": "9b1ff533579a"
+  },
+  "how-do-i-get-here": {
+   "full": 0.699,
+   "zero": 0.004,
+   "hash": "b96cd6b580ed"
+  },
+  "does-bus-go": {
+   "full": 0.759,
+   "zero": 0.054,
+   "hash": "ef4318ce09be"
+  },
+  "what-time-now": {
+   "full": 0.808,
+   "zero": 0.092,
+   "hash": "1ded0353fcf0"
+  },
+  "lost-phone": {
+   "full": 0.66,
+   "zero": 0,
+   "hash": "725d1fe7f4f8"
+  },
+  "there-is": {
+   "full": 0.937,
+   "zero": 0.19,
+   "hash": "8aac461517b2"
+  },
+  "two-of-them": {
+   "full": 0.694,
+   "zero": 0.208,
+   "hash": "6e887ee95ea2"
+  },
+  "ordering": {
+   "full": 0.533,
+   "zero": 0.13,
+   "hash": "5952de47fcff"
+  },
+  "sino-100": {
+   "full": 0.725,
+   "zero": 0.11,
+   "hash": "ef32be41abbf"
+  },
+  "which-exit": {
+   "full": 0.609,
+   "zero": 0.01,
+   "hash": "910f183002d5"
+  },
+  "how-long": {
+   "full": 0.649,
+   "zero": 0.005,
+   "hash": "30b03697fae1"
+  },
+  "there-isnt": {
+   "full": 0.862,
+   "zero": 0.086,
+   "hash": "6a86c0a173de"
+  },
+  "more-side-dishes": {
+   "full": 0.811,
+   "zero": 0.076,
+   "hash": "edbe8756f5a7"
+  },
+  "convenience-store": {
+   "full": 0.667,
+   "zero": 0.012,
+   "hash": "24d23392d9da"
+  },
+  "which-line": {
+   "full": 0.68,
+   "zero": 0.03,
+   "hash": "8eebee61a92d"
+  },
+  "native-4": {
+   "full": 0.708,
+   "zero": 0.026,
+   "hash": "e0215f5e00b0"
+  },
+  "is-it-possible": {
+   "full": 0.453,
+   "zero": 0.036,
+   "hash": "23068b133e35"
+  },
+  "to-go": {
+   "full": 0.627,
+   "zero": 0.125,
+   "hash": "09a62468c05e"
+  },
+  "im-lost": {
+   "full": 0.7,
+   "zero": 0.002,
+   "hash": "28ea4eda8026"
+  },
+  "where-transfer": {
+   "full": 0.854,
+   "zero": 0.07,
+   "hash": "58c63dd8abe6"
+  },
+  "not-possible": {
+   "full": 0.764,
+   "zero": 0.14,
+   "hash": "35caa9be3c99"
+  },
+  "before-meal": {
+   "full": 0.774,
+   "zero": 0.002,
+   "hash": "cba898a416de"
+  },
+  "airport": {
+   "full": 0.788,
+   "zero": 0.073,
+   "hash": "a8fc58b1af2a"
+  },
+  "native-5": {
+   "full": 0.812,
+   "zero": 0.2,
+   "hash": "01b8ad942fc2"
+  },
+  "dont-need": {
+   "full": 0.516,
+   "zero": 0.072,
+   "hash": "d8bf5bffdaab"
+  },
+  "after-meal": {
+   "full": 0.736,
+   "zero": 0.002,
+   "hash": "f3fe633d7a43"
+  },
+  "what-is-this": {
+   "full": 0.623,
+   "zero": 0.12,
+   "hash": "362844915958"
+  },
+  "beer": {
+   "full": 0.613,
+   "zero": 0.004,
+   "hash": "6f1f0dda8487"
+  },
+  "youre-welcome": {
+   "full": 0.707,
+   "zero": 0.191,
+   "hash": "a428e79ec49b"
+  },
+  "a-little-korean": {
+   "full": 0.905,
+   "zero": 0.068,
+   "hash": "eacc0a1c9862"
+  },
+  "native-6": {
+   "full": 0.534,
+   "zero": 0.23,
+   "hash": "d3a2487d7ced"
+  },
+  "pay-cash": {
+   "full": 0.567,
+   "zero": 0.126,
+   "hash": "e125b4f0ccde"
+  },
+  "no-meat": {
+   "full": 0.813,
+   "zero": 0.098,
+   "hash": "21ecfe4f0a22"
+  },
+  "iced": {
+   "full": 0.425,
+   "zero": 0.009,
+   "hash": "1916d426e403"
+  },
+  "there-near-you": {
+   "full": 0.56,
+   "zero": 0.057,
+   "hash": "4381a0346017"
+  },
+  "this-station-heard": {
+   "full": 0.848,
+   "zero": 0.01,
+   "hash": "c036633b7c37"
+  },
+  "more-towels": {
+   "full": 0.86,
+   "zero": 0.167,
+   "hash": "9805b001f4f6"
+  },
+  "three-oclock": {
+   "full": 0.937,
+   "zero": 0.001,
+   "hash": "aac503a8dab6"
+  },
+  "native-7": {
+   "full": 0.783,
+   "zero": 0.178,
+   "hash": "61894a571d40"
+  },
+  "headache": {
+   "full": 0.836,
+   "zero": 0.097,
+   "hash": "4b63322960ea"
+  },
+  "like-korea": {
+   "full": 0.764,
+   "zero": 0.106,
+   "hash": "9928077f73d1"
+  },
+  "hello-formal-heard": {
+   "full": 0.897,
+   "zero": 0.078,
+   "hash": "b5314252dce5"
+  },
+  "write-it-please": {
+   "full": 0.832,
+   "zero": 0.043,
+   "hash": "d7def748016c"
+  },
+  "cash": {
+   "full": 0.572,
+   "zero": 0.004,
+   "hash": "cd2580494d5e"
+  },
+  "vegetarian-menu": {
+   "full": 0.708,
+   "zero": 0.12,
+   "hash": "0159a158a6ec"
+  },
+  "native-8": {
+   "full": 0.842,
+   "zero": 0,
+   "hash": "8415cdb27a47"
+  },
+  "latte": {
+   "full": 0.593,
+   "zero": 0.028,
+   "hash": "61d4ee00cdef"
+  },
+  "is-it-far": {
+   "full": 0.761,
+   "zero": 0.043,
+   "hash": "59fb7e416dee"
+  },
+  "ticket": {
+   "full": 0.234,
+   "zero": 0.008,
+   "hash": "b85c6ddda887"
+  },
+  "no-hot-water": {
+   "full": 0.581,
+   "zero": 0.029,
+   "hash": "1a04f1fa326e"
+  },
+  "thirty-minutes": {
+   "full": 0.671,
+   "zero": 0.002,
+   "hash": "1d35878240df"
+  },
+  "stomach-ache": {
+   "full": 0.912,
+   "zero": 0.133,
+   "hash": "8cd9dadb850c"
+  },
+  "whats-your-name": {
+   "full": 0.806,
+   "zero": 0.129,
+   "hash": "22f851a57401"
+  },
+  "native-9": {
+   "full": 0.458,
+   "zero": 0.39,
+   "hash": "28bbb97bc296"
+  },
+  "see-you-again": {
+   "full": 0.568,
+   "zero": 0.082,
+   "hash": "7ce3ee4c3205"
+  },
+  "just-a-moment": {
+   "full": 0.592,
+   "zero": 0.008,
+   "hash": "50db6227b482"
+  },
+  "discount": {
+   "full": 0.81,
+   "zero": 0.137,
+   "hash": "6649861befbd"
+  },
+  "eat-here": {
+   "full": 0.83,
+   "zero": 0.079,
+   "hash": "68eeaa757b2b"
+  },
+  "large-size": {
+   "full": 0.72,
+   "zero": 0.037,
+   "hash": "a15a77c29093"
+  },
+  "can-i-walk": {
+   "full": 0.654,
+   "zero": 0,
+   "hash": "fccc84e1c82b"
+  },
+  "native-10": {
+   "full": 0.952,
+   "zero": 0,
+   "hash": "7f204d1e2d79"
+  },
+  "ticket-to-busan": {
+   "full": 0.829,
+   "zero": 0.044,
+   "hash": "dd358dad924a"
+  },
+  "aircon-broken": {
+   "full": 0.585,
+   "zero": 0.128,
+   "hash": "43744964fb6a"
+  },
+  "yesterday": {
+   "full": 0.96,
+   "zero": 0,
+   "hash": "c890f3062328"
+  },
+  "fever": {
+   "full": 0.944,
+   "zero": 0.138,
+   "hash": "f97be37d3912"
+  },
+  "its-fun": {
+   "full": 0.784,
+   "zero": 0.142,
+   "hash": "35f27a2de17f"
+  },
+  "have-a-nice-day": {
+   "full": 0.571,
+   "zero": 0.079,
+   "hash": "45ff837b61c7"
+  },
+  "help-me-please": {
+   "full": 0.574,
+   "zero": 0.069,
+   "hash": "634e6134436c"
+  },
+  "counter-one": {
+   "full": 0.63,
+   "zero": 0.001,
+   "hash": "3641abdbe259"
+  },
+  "another-colour": {
+   "full": 0.816,
+   "zero": 0.106,
+   "hash": "92cbee8a1059"
+  },
+  "chopsticks": {
+   "full": 0.973,
+   "zero": 0.065,
+   "hash": "729cc634a551"
+  },
+  "less-sweet": {
+   "full": 0.605,
+   "zero": 0.07,
+   "hash": "6d96ff3acfd7"
+  },
+  "exit": {
+   "full": 0.703,
+   "zero": 0.007,
+   "hash": "34c87c6e3c0b"
+  },
+  "train-station": {
+   "full": 0.736,
+   "zero": 0.161,
+   "hash": "74bdac82f4d5"
+  },
+  "breakfast-time": {
+   "full": 0.714,
+   "zero": 0.173,
+   "hash": "5f4946440caa"
+  },
+  "morning": {
+   "full": 0.418,
+   "zero": 0.004,
+   "hash": "f30afa2971f3"
+  },
+  "counter-two": {
+   "full": 0.956,
+   "zero": 0.001,
+   "hash": "46a7e8bdb834"
+  },
+  "peanut-allergy": {
+   "full": 0.598,
+   "zero": 0.031,
+   "hash": "30198d4715d4"
+  },
+  "its-pretty": {
+   "full": 0.466,
+   "zero": 0.157,
+   "hash": "1e8677d62bef"
+  },
+  "good-night": {
+   "full": 0.746,
+   "zero": 0.116,
+   "hash": "87207e78fa6b"
+  },
+  "really": {
+   "full": 0.847,
+   "zero": 0.144,
+   "hash": "c6fb655ab081"
+  },
+  "bigger-one": {
+   "full": 0.854,
+   "zero": 0.085,
+   "hash": "97e3ec6404cc"
+  },
+  "spoon": {
+   "full": 0.756,
+   "zero": 0.059,
+   "hash": "e8c40b34ffd9"
+  },
+  "price-1000": {
+   "full": 0.434,
+   "zero": 0,
+   "hash": "3a7fbf9a23cc"
+  },
+  "green-tea": {
+   "full": 0.833,
+   "zero": 0.012,
+   "hash": "f26c2feeec86"
+  },
+  "entrance": {
+   "full": 0.887,
+   "zero": 0.001,
+   "hash": "e7697d1fe2cf"
+  },
+  "getting-off": {
+   "full": 0.49,
+   "zero": 0.02,
+   "hash": "da76b3c00108"
+  },
+  "key-card": {
+   "full": 0.777,
+   "zero": 0.036,
+   "hash": "f90665db4bc8"
+  },
+  "afternoon": {
+   "full": 0.322,
+   "zero": 0.001,
+   "hash": "f68195219250"
+  },
+  "medicine": {
+   "full": 0.951,
+   "zero": 0.001,
+   "hash": "ad07231c2eee"
+  },
+  "the-best": {
+   "full": 0.511,
+   "zero": 0.101,
+   "hash": "5360c945e3dc"
+  },
+  "price-10000": {
+   "full": 0.723,
+   "zero": 0,
+   "hash": "b9098d86cce0"
+  },
+  "thanks-soft": {
+   "full": 0.651,
+   "zero": 0.076,
+   "hash": "85e418d78992"
+  },
+  "try-on": {
+   "full": 0.604,
+   "zero": 0.092,
+   "hash": "a5d7a12bd2ce"
+  },
+  "tissue": {
+   "full": 0.283,
+   "zero": 0.003,
+   "hash": "b56f40d112cf"
+  },
+  "milk": {
+   "full": 0.017,
+   "zero": 0,
+   "hash": "ddb859eecdeb"
+  },
+  "which-floor": {
+   "full": 0.644,
+   "zero": 0.113,
+   "hash": "368e448fa423"
+  },
+  "elevator": {
+   "full": 0.231,
+   "zero": 0.005,
+   "hash": "d9bb0bae04b5"
+  },
+  "counter-three": {
+   "full": 0.737,
+   "zero": 0.001,
+   "hash": "4a296ecfe051"
+  },
+  "evening": {
+   "full": 0.663,
+   "zero": 0.171,
+   "hash": "e4a06017a492"
+  },
+  "cold-medicine": {
+   "full": 0.773,
+   "zero": 0.149,
+   "hash": "81f2bb4b078c"
+  },
+  "tired": {
+   "full": 0.579,
+   "zero": 0.147,
+   "hash": "8083eb38f3a5"
+  },
+  "tax-refund": {
+   "full": 0.694,
+   "zero": 0.019,
+   "hash": "e959085c8771"
+  },
+  "soju": {
+   "full": 0.498,
+   "zero": 0.019,
+   "hash": "a53226721fa6"
+  },
+  "power-outlet": {
+   "full": 0.456,
+   "zero": 0.049,
+   "hash": "c53523e765ca"
+  },
+  "atm-where": {
+   "full": 0.49,
+   "zero": 0.002,
+   "hash": "21fd91941251"
+  },
+  "counter-four": {
+   "full": 0.498,
+   "zero": 0,
+   "hash": "b655967bb8a4"
+  },
+  "weekend": {
+   "full": 0.796,
+   "zero": 0.008,
+   "hash": "0c78cbf206d0"
+  },
+  "lost-wallet": {
+   "full": 0.74,
+   "zero": 0.001,
+   "hash": "4fb2b0951d6c"
+  },
+  "its-hot": {
+   "full": 0.963,
+   "zero": 0.077,
+   "hash": "e960f3d4ebb9"
+  },
+  "cheap": {
+   "full": 0.943,
+   "zero": 0.181,
+   "hash": "9a42a8f95ce3"
+  },
+  "rice": {
+   "full": 0.624,
+   "zero": 0.019,
+   "hash": "931217a8e767"
+  },
+  "bottle-of-water": {
+   "full": 0.733,
+   "zero": 0.111,
+   "hash": "15131a0b62db"
+  },
+  "price-50000": {
+   "full": 0.581,
+   "zero": 0,
+   "hash": "3d0baec4e2b4"
+  },
+  "map": {
+   "full": 0.643,
+   "zero": 0.016,
+   "hash": "004beed56131"
+  },
+  "when": {
+   "full": 0.909,
+   "zero": 0.002,
+   "hash": "437c26be9f58"
+  },
+  "urgent": {
+   "full": 0.975,
+   "zero": 0.156,
+   "hash": "6a2c9e00966c"
+  },
+  "its-cold": {
+   "full": 0.244,
+   "zero": 0.042,
+   "hash": "d867b3a2cc39"
+  },
+  "pork-belly": {
+   "full": 0.576,
+   "zero": 0.068,
+   "hash": "93d0fb6375c4"
+  },
+  "open-sign": {
+   "full": 0.713,
+   "zero": 0.001,
+   "hash": "cfa82897bfc7"
+  },
+  "police-112": {
+   "full": 0.335,
+   "zero": 0.001,
+   "hash": "875c98866da6"
+  },
+  "zero": {
+   "full": 0.886,
+   "zero": 0.002,
+   "hash": "194a0b34c3c6"
+  },
+  "good-restaurant-nearby": {
+   "full": 0.713,
+   "zero": 0.063,
+   "hash": "038fd3395481"
+  },
+  "closed-sign": {
+   "full": 0.303,
+   "zero": 0,
+   "hash": "305ad5af3912"
+  },
+  "hungry": {
+   "full": 0.95,
+   "zero": 0.134,
+   "hash": "454d7d7ad87a"
+  }
+ }
+}
