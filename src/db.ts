@@ -11,7 +11,7 @@ export interface Settings {
 export const defaultSettings: Settings = { id: 'settings', hangulFirst: false }
 
 /** Everything the app remembers about the learner (Progress). Device-only; losing it is accepted. */
-export const db = new Dexie('korean-made-easy') as Dexie & {
+export const db = new Dexie('lingo-lite') as Dexie & {
   settings: EntityTable<Settings, 'id'>
   introductions: EntityTable<Introduction, 'expressionId'>
   cards: EntityTable<DirectionCard, 'key'>

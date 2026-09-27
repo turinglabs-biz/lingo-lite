@@ -9,8 +9,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['icon.svg', 'apple-touch-icon.png'],
       manifest: {
-        name: 'Korean Made Easy',
-        short_name: 'Korean',
+        name: 'Lingo Lite',
+        short_name: 'Lingo Lite',
         description: 'The few hundred Korean expressions a traveller actually needs.',
         theme_color: '#5b3f8c',
         background_color: '#f6f5f9',
