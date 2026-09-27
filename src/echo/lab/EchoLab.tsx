@@ -1,19 +1,22 @@
-// The Echo lab (spec stage 1): a separate page where testers try Echo with extra measuring tools. It never touches
-// Progress. Removed in stage 2, whichever way the verdict goes.
-import { useEffect, useRef, useState } from 'react'
+// The Echo lab: a test page, opened from Settings, for trying Echo with extra detail (raw scores, each sound's rating,
+// timings, recording playback, a Clip check). It has its own Echo switch, shares the downloaded files with Echo in the
+// main flow, and never touches Progress.
+import { useEffect, useState } from 'react'
 import { VOICES, clipUrl } from '../../audio/voices.ts'
 import { expressionById } from '../../catalog/index.ts'
 import { ExpressionView } from '../../components/ExpressionView.tsx'
 import { PlayButtons } from '../../components/PlayButtons.tsx'
+import { db } from '../../db.ts'
 import { EchoButton, EchoScore } from '../EchoButton.tsx'
+import { EchoSetup } from '../EchoSetup.tsx'
 import { loadModel, unloadModel, type LoadedModel } from '../engine.ts'
 import { ECHO_MODELS, echoModelById, type EchoModel, type EchoModelId } from '../models.ts'
-import { decode, requestMicrophone } from '../recorder.ts'
+import { decode } from '../recorder.ts'
 import { referencePoints } from '../reference.ts'
 import { scoreEcho } from '../scorer.ts'
 import { expectedSounds } from '../sounds.ts'
-import { bytesToDownload, download, isDownloaded, remove } from '../store.ts'
 import { useEcho, type EchoAttempt } from '../useEcho.ts'
+import { useEchoSetup } from '../useEchoSetup.ts'
 import { lab, resultsText, type AttemptKind, type ClipCheckRow, type Fairness, type LabAttempt } from './results.ts'
 
 /** Near-identical pairs, one-syllable numbers, tense and aspirated consonants, a long one, and ordinary ones. */
@@ -23,51 +26,44 @@ const TEST_EXPRESSIONS = [
   'bathroom-where', 'thanks-for-help',
 ]
 
-type Setup =
-  | { kind: 'checking' }
-  | { kind: 'off'; bytes: number; outdated: boolean }
-  | { kind: 'downloading'; loaded: number; total: number }
-  | { kind: 'needs-mic'; refused: boolean; asking?: boolean }
-  | { kind: 'on' }
-  | { kind: 'error'; message: string }
-
 type Loaded = { kind: 'none' } | { kind: 'loading' } | { kind: 'ready'; model: LoadedModel } | { kind: 'failed'; message: string }
 
-const mb = (bytes: number) => `${Math.round(bytes / 1e6)} MB`
 const seconds = (ms: number) => `${(ms / 1000).toFixed(1)} s`
 const message = (err: unknown) => (err instanceof Error ? err.message : String(err))
+/** Whether Echo is on in the main flow (Settings), which also needs the downloaded files and the loaded model. */
+const echoOnInApp = async () => !!(await db.settings.get('settings'))?.echo
 
 export function EchoLab({ onClose }: { onClose: () => void }) {
   const [modelId, setModelId] = useState<EchoModelId>(lab.model)
-  const model = echoModelById.get(modelId)!
-  const [setup, setSetup] = useState<Setup>({ kind: 'checking' })
+  const model = echoModelById.get(modelId) ?? ECHO_MODELS[0]
+  const { setup, turnOn, allowMic, turnOff } = useEchoSetup(model, {
+    isOn: () => lab.on().includes(model.id),
+    setOn: (on) => lab.setOn(model.id, on),
+    othersNeedFiles: echoOnInApp,
+  })
   const [loaded, setLoaded] = useState<Loaded>({ kind: 'none' })
   const [tester, setTester] = useState(lab.tester)
   const [attempts, setAttempts] = useState(() => lab.attempts().length)
   const ready = loaded.kind === 'ready' ? loaded.model : null
 
-  useEffect(() => () => void unloadModel(), [])
+  // Free the model when leaving, unless Echo in the main flow uses it too.
+  useEffect(
+    () => () => {
+      echoOnInApp().then((on) => {
+        if (!on) unloadModel()
+      })
+    },
+    [],
+  )
 
   useEffect(() => {
+    if (setup.kind !== 'on') return setLoaded({ kind: 'none' })
     let live = true
-    setLoaded({ kind: 'none' })
-    setSetup({ kind: 'checking' })
-    ;(async () => {
-      const downloaded = await isDownloaded(model)
-      const wasOn = lab.on().includes(model.id)
-      if (!live) return
-      if (downloaded && wasOn) {
-        setSetup({ kind: 'on' })
-        load(model, () => live)
-      } else {
-        if (wasOn) lab.setOn(model.id, false)
-        setSetup({ kind: 'off', bytes: await bytesToDownload(model), outdated: wasOn })
-      }
-    })()
+    load(model, () => live)
     return () => {
       live = false
     }
-  }, [model])
+  }, [setup.kind, model])
 
   async function load(m: EchoModel, live = () => true) {
     setLoaded({ kind: 'loading' })
@@ -77,37 +73,6 @@ export function EchoLab({ onClose }: { onClose: () => void }) {
     } catch (err) {
       if (live()) setLoaded({ kind: 'failed', message: message(err) })
     }
-  }
-
-  const lastProgress = useRef(0)
-  async function turnOn() {
-    try {
-      await download(model, (loaded, total) => {
-        const now = performance.now()
-        if (loaded < total && now - lastProgress.current < 150) return
-        lastProgress.current = now
-        setSetup({ kind: 'downloading', loaded, total })
-      })
-      setSetup({ kind: 'needs-mic', refused: false })
-    } catch (err) {
-      setSetup({ kind: 'error', message: `The download stopped: ${message(err)}. Nothing was kept; try again.` })
-    }
-  }
-
-  async function allowMic() {
-    setSetup({ kind: 'needs-mic', refused: false, asking: true })
-    if (!(await requestMicrophone())) return setSetup({ kind: 'needs-mic', refused: true })
-    lab.setOn(model.id, true)
-    setSetup({ kind: 'on' })
-    load(model)
-  }
-
-  async function turnOff() {
-    await unloadModel()
-    setLoaded({ kind: 'none' })
-    await remove(model)
-    lab.setOn(model.id, false)
-    setSetup({ kind: 'off', bytes: await bytesToDownload(model), outdated: false })
   }
 
   function switchModel(id: EchoModelId) {
@@ -129,15 +94,38 @@ export function EchoLab({ onClose }: { onClose: () => void }) {
       </p>
 
       <h2>Model</h2>
-      <div className="chips" role="radiogroup" aria-label="Model">
-        {ECHO_MODELS.map((m) => (
-          <button key={m.id} type="button" role="radio" aria-checked={m.id === modelId} className={`chip ${m.id === modelId ? 'on' : ''}`} onClick={() => switchModel(m.id)}>
-            {m.name}
-          </button>
-        ))}
-      </div>
-      <p className="muted small">{model.description}</p>
-      <SetupRow setup={setup} loaded={loaded} onTurnOn={turnOn} onAllowMic={allowMic} onTurnOff={turnOff} onRetryLoad={() => load(model)} />
+      {ECHO_MODELS.length > 1 && (
+        <div className="chips" role="radiogroup" aria-label="Model">
+          {ECHO_MODELS.map((m) => (
+            <button key={m.id} type="button" role="radio" aria-checked={m.id === model.id} className={`chip ${m.id === model.id ? 'on' : ''}`} onClick={() => switchModel(m.id)}>
+              {m.name}
+            </button>
+          ))}
+        </div>
+      )}
+      <p className="muted small">
+        {model.name}: {model.description}
+      </p>
+      <EchoSetup
+        setup={setup}
+        onTurnOn={turnOn}
+        onAllowMic={allowMic}
+        onTurnOff={turnOff}
+        status={
+          <>
+            {loaded.kind === 'loading' && 'Echo is on. Loading the model…'}
+            {loaded.kind === 'ready' && `Echo is on · ${loaded.model.backend === 'webgpu' ? 'WebGPU' : 'WebAssembly'} · loaded in ${seconds(loaded.model.loadMs)}`}
+            {loaded.kind === 'failed' && `The model didn't load: ${loaded.message}`}
+          </>
+        }
+        actions={
+          loaded.kind === 'failed' && (
+            <button type="button" className="lab-button" onClick={() => load(model)}>
+              Retry
+            </button>
+          )
+        }
+      />
 
       <h2>Tester</h2>
       <input
@@ -156,94 +144,11 @@ export function EchoLab({ onClose }: { onClose: () => void }) {
       {!ready && <p className="muted small">Turn Echo on above to start echoing.</p>}
       <ul className="list lab-list">
         {TEST_EXPRESSIONS.map((id) => (
-          <TestCard key={`${id}-${modelId}`} expressionId={id} model={ready} tester={tester} onAttempt={() => setAttempts((n) => n + 1)} />
+          <TestCard key={`${id}-${model.id}`} expressionId={id} model={ready} tester={tester} onAttempt={() => setAttempts((n) => n + 1)} />
         ))}
       </ul>
     </div>
   )
-}
-
-function SetupRow({
-  setup,
-  loaded,
-  onTurnOn,
-  onAllowMic,
-  onTurnOff,
-  onRetryLoad,
-}: {
-  setup: Setup
-  loaded: Loaded
-  onTurnOn: () => void
-  onAllowMic: () => void
-  onTurnOff: () => void
-  onRetryLoad: () => void
-}) {
-  switch (setup.kind) {
-    case 'checking':
-      return <p className="muted small">Checking this phone…</p>
-    case 'off':
-      return (
-        <div className="lab-setup">
-          {setup.outdated && <p className="notice">A new model was deployed or the phone cleared it. Download it again to keep using Echo.</p>}
-          <button type="button" className="primary-action" onClick={onTurnOn}>
-            {setup.bytes > 0 ? `Turn on Echo (${mb(setup.bytes)})` : 'Turn on Echo (already downloaded)'}
-          </button>
-          <p className="muted small">Downloads once from our server and then works offline.</p>
-        </div>
-      )
-    case 'downloading': {
-      const pct = setup.total ? Math.floor((100 * setup.loaded) / setup.total) : 0
-      return (
-        <div className="lab-setup">
-          <div className="session-progress" aria-label="Download progress">
-            <i style={{ width: `${pct}%` }} />
-          </div>
-          <p className="muted small">
-            Downloading… {mb(setup.loaded)} of {mb(setup.total)} ({pct}%)
-          </p>
-        </div>
-      )
-    }
-    case 'needs-mic':
-      return (
-        <div className="lab-setup">
-          {setup.refused && <p className="notice">The microphone is blocked. Allow it for this site in Safari's settings, then tap Allow again.</p>}
-          <button type="button" className="primary-action" disabled={setup.asking} onClick={onAllowMic}>
-            {setup.asking ? 'Waiting for your answer…' : 'Allow the microphone'}
-          </button>
-          <p className="muted small">Last step. The mic is only on while you hold the button.</p>
-        </div>
-      )
-    case 'error':
-      return (
-        <div className="lab-setup">
-          <p className="notice">{setup.message}</p>
-          <button type="button" className="primary-action" onClick={onTurnOn}>
-            Try again
-          </button>
-        </div>
-      )
-    case 'on':
-      return (
-        <div className="lab-setup">
-          <p className="small">
-            {loaded.kind === 'loading' && 'Echo is on. Loading the model…'}
-            {loaded.kind === 'ready' && `Echo is on · ${loaded.model.backend === 'webgpu' ? 'WebGPU' : 'WebAssembly'} · loaded in ${seconds(loaded.model.loadMs)}`}
-            {loaded.kind === 'failed' && `The model didn't load: ${loaded.message}`}
-          </p>
-          <div className="lab-buttons">
-            {loaded.kind === 'failed' && (
-              <button type="button" className="lab-button" onClick={onRetryLoad}>
-                Retry
-              </button>
-            )}
-            <button type="button" className="danger" onClick={onTurnOff}>
-              Turn off (deletes the model)
-            </button>
-          </div>
-        </div>
-      )
-  }
 }
 
 function Tools({ model, tester, attempts, onCleared }: { model: LoadedModel | null; tester: string; attempts: number; onCleared: () => void }) {

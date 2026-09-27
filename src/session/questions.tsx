@@ -6,6 +6,7 @@ import { ExpressionView } from '../components/ExpressionView.tsx'
 import { Illustration } from '../components/Illustration.tsx'
 import { PlayButtons } from '../components/PlayButtons.tsx'
 import { choiceOptions } from '../domain/choices.ts'
+import { EchoBar } from '../echo/EchoMic.tsx'
 import { Prompt } from './parts.tsx'
 
 // The three checked question types. Each is mounted fresh per question (give it a `key`), reports the answer
@@ -54,7 +55,7 @@ function Choices({ options, answer, onPick, render }: { options: string[]; answe
   )
 }
 
-/** After answering: the full Expression with its picture and audio, then Next. */
+/** After answering: the full Expression with its picture and audio, Echo (when on), then Next. */
 function Answer({ expressionId, onNext }: { expressionId: string; onNext: () => void }) {
   return (
     <>
@@ -63,6 +64,7 @@ function Answer({ expressionId, onNext }: { expressionId: string; onNext: () => 
         <ExpressionView expression={expressionById.get(expressionId)!} />
         <PlayButtons expressionId={expressionId} />
       </div>
+      <EchoBar expressionId={expressionId} />
       <button type="button" className="primary-action" onClick={onNext}>
         Next
       </button>

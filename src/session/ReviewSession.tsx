@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import type { DirectionCard } from '../domain/types.ts'
-import { grade } from '../progress/store.ts'
+import { grade, touchSession } from '../progress/store.ts'
 import { SessionFrame } from './parts.tsx'
 import { ListenQuestion, SeeQuestion, SpeakQuestion } from './questions.tsx'
+import { SessionInput } from './sessionInput.ts'
 import type { SummaryData } from './SessionSummary.tsx'
 import { useSessionTracker } from './useSessionTracker.ts'
 
@@ -46,8 +47,10 @@ export function ReviewSession({
   if (!item) return null
   const Question = QUESTION[item.direction]
   return (
-    <SessionFrame title={TITLE[item.direction]} position={index} total={queue.length} onQuit={() => onEnd(null)}>
-      <Question key={index} expressionId={item.id} introduced={introduced} onAnswer={onAnswer} onNext={onNext} />
-    </SessionFrame>
+    <SessionInput.Provider value={() => tracker.sessionId && touchSession(tracker.sessionId)}>
+      <SessionFrame title={TITLE[item.direction]} position={index} total={queue.length} onQuit={() => onEnd(null)}>
+        <Question key={index} expressionId={item.id} introduced={introduced} onAnswer={onAnswer} onNext={onNext} />
+      </SessionFrame>
+    </SessionInput.Provider>
   )
 }

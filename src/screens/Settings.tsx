@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { EchoSettings } from '../echo/EchoSettings.tsx'
 import { resetProgress } from '../progress/store.ts'
 import { updateSettings, useSettings } from '../settings.ts'
 
@@ -18,11 +19,12 @@ export function SettingsScreen({ onOpenEchoLab }: { onOpenEchoLab: () => void })
             <input id="hangul-first" type="checkbox" checked={hangulFirst} onChange={(e) => updateSettings({ hangulFirst: e.target.checked })} />
           </label>
         </li>
+        <EchoSettings />
         <li>
           <button type="button" className="row" onClick={onOpenEchoLab}>
             <span>
               Echo lab
-              <span className="muted small block">Test page: say an Expression back and get a score.</span>
+              <span className="muted small block">Echo in detail: raw scores, each sound's rating, timings and your recordings.</span>
             </span>
             <span className="muted" aria-hidden="true">
               ›

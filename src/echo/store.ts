@@ -68,7 +68,9 @@ export async function remove(m: EchoModel): Promise<void> {
   await removeOutdated()
 }
 
-async function removeOutdated() {
+/** Deletes stored files this build no longer uses (old models and engines, dropped models). */
+export async function removeOutdated() {
+  if (typeof caches === 'undefined') return
   const cache = await caches.open(CACHE)
   const current = new Set([engineUrl(), ...ECHO_MODELS.map(modelUrl)])
   for (const request of await cache.keys()) if (!current.has(request.url)) await cache.delete(request)

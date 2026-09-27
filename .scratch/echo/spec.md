@@ -1,6 +1,8 @@
 # Echo: spec
 
-Status: ready-for-agent
+Status: done
+
+The Echo lab passed on 2026-09-27. At the user's request, stage 2 keeps the Echo lab as a detail view with its own switch and drops the debug toggle; the changed lines below say so.
 
 Vocabulary follows `CONTEXT.md` (see **Echo** and **Echo score**). The approach is recorded in ADR 0004, which stays *proposed* until the Echo lab passes. Romanization conventions are in ADR 0001.
 
@@ -16,7 +18,7 @@ It is built in two stages:
 
 1. **Echo lab.** A separate page, opened from a link in Settings, where both learners try Echo on their iPhones with extra measuring tools. Everything the real feature needs (the model download, the scorer, the reference points, the setup flow, hold-to-talk) is built for real here.
 2. **Then one of two things**, decided by the user after testing:
-   - **It works:** Echo moves into the app (first exposure, after every answer, the Phrasebook list), the setup moves into Settings, and the Echo lab is removed.
+   - **It works:** Echo moves into the app (first exposure, after every answer, the Phrasebook list) and gets its own switch in Settings. The Echo lab stays, as a detail view with its own switch. *(Changed: the Echo lab was going to be removed.)*
    - **It doesn't:** the Echo lab and everything built for it is removed, and the app goes back to what it was.
 
 ## User Stories
@@ -73,9 +75,9 @@ It is built in two stages:
 42. As a learner, I want Echo never to block me, so that a wrong score never stops me moving on.
 43. As a learner, I want Echo never to change my Grades or XP, so that an imperfect model can't damage my schedule.
 44. As a learner, I want time spent echoing in a session to count as Practice time, so that my Stats show the time I actually practised.
-45. As a learner, I want a debug setting that shows the raw score under the Echo score, so that I can check the scale when a score seems wrong.
+45. As a learner, I want to keep the Echo lab in Settings, with its own switch, so that I can come back to raw scores, each sound's rating and timings when a score seems wrong. *(Changed: this replaces a debug setting for the raw score.)*
 46. As a learner, I want my recordings never saved or sent anywhere, so that my voice stays on my phone.
-47. As the maintainer, I want the Echo lab and the losing model removed once Echo is in the app, so that no prototype code or dead weight ships.
+47. As the maintainer, I want the losing model removed once Echo is in the app, so that no dead weight ships. *(Changed: the Echo lab stays.)*
 48. As the maintainer, I want the README to explain how to change the model and redo the reference points, so that I can update Echo later without rediscovering the steps.
 
 ### If the Echo lab fails (stage 2, alternative)
@@ -184,7 +186,8 @@ Intonation is not scored, so 네 and 네? get the same Echo score.
 
 ### Echo in the app (stage 2, if it passes)
 
-- Settings gets an Echo row (the setup above) and a debug setting that shows the raw score under the Echo score.
+- Settings gets an Echo row (the setup above). *(Changed: there is no debug setting; the Echo lab covers it.)*
+- The Settings row and the Echo lab each have their own switch but share the downloaded files. Turning one off deletes the files only if the other is off too.
 - A hold-to-talk mic button sits next to the play buttons at:
   - first exposure,
   - the feedback after every answer (Speak, Listen and See, and the Learn session's checks),
@@ -193,7 +196,7 @@ Intonation is not scored, so 네 and 네? get the same Echo score.
 - The button shows the latest Echo score or "Didn't catch that, try again". Each new Echo replaces it.
 - In sessions, a hold counts as learner input for Practice time, through the same path answers use. In the Phrasebook it changes nothing.
 - Nothing is stored: no attempts, no scores, no audio. There is no XP, and no Grade or schedule changes.
-- The Echo lab, its Settings link, its storage and the losing model are removed. ADR 0004 becomes *accepted*. The README explains how to change the model and redo the reference points.
+- The losing model is removed; the Echo lab stays, without its model switch. ADR 0004 becomes *accepted*. The README explains how to change the model and redo the reference points. *(Changed: the Echo lab was going to be removed.)*
 
 ### If the Echo lab fails (stage 2, alternative)
 

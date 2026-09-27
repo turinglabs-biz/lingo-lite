@@ -1,10 +1,10 @@
 # On-device, sound-by-sound scoring for Echo instead of embedding matching
 
-Status: proposed. It becomes accepted once the Echo lab prototype passes on both test iPhones.
+Status: accepted (2026-09-27). The Echo lab passed on the user's iPhone; the native-speech model was kept.
 
 Echo lets the learner say an Expression right after hearing its Clip and shows an Echo score. We score it on the phone with a speech model that rates each sound of the recording against the Expression's expected sounds, scaled so the app's own Voices score about 100%. The score is advisory: it never blocks the learner or changes a Grade, so an imperfect model costs a misleading number, not a wrong schedule. This reverses the v1 non-goal "Speech recognition or pronunciation scoring".
 
-The models (slplab's Korean phone recognisers, Apache-2.0) are only published as PyTorch weights. We convert them to ONNX with 4-bit weights once, on a dev machine, and attach the converted files to a GitHub Release of this repo. The Docker build downloads them at a pinned sha256, and our own server serves them as static assets, together with the runtime's WebAssembly files. Learners download them once, by turning Echo on, and Echo then works offline. The app never contacts GitHub, Hugging Face or a CDN.
+The model (slplab's Korean phone recogniser trained on native read speech, Apache-2.0) is only published as PyTorch weights. We convert it to ONNX with 4-bit weights once, on a dev machine, and attach the converted file to a GitHub Release of this repo. The Docker build downloads it at a pinned sha256, and our own server serves it as a static asset, together with the runtime's WebAssembly files. Learners download it once, by turning Echo on, and Echo then works offline. A second candidate trained on learner speech was tried in the Echo lab and dropped: it scored the Voices' own Clips much lower. The app never contacts GitHub, Hugging Face or a CDN.
 
 ## Considered options
 
