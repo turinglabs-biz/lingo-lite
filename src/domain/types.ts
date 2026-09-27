@@ -36,7 +36,7 @@ export interface Answer {
   grade?: Grade
 }
 
-export type SessionType = 'learn' | 'review'
+export type SessionType = 'learn' | 'review' | 'focus'
 
 export interface Session {
   id: string
@@ -56,4 +56,10 @@ export interface Introduction {
 export interface TopicStars {
   topic: string
   stars: number
+}
+
+/** An Expression the learner put in Focus, and when. */
+export interface FocusMark {
+  expressionId: string
+  at: number
 }

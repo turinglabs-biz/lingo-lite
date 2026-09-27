@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { gradeCard, isLearned, LEARNED_STABILITY_DAYS, newDirectionCard } from './scheduler.ts'
+import { gradeCard, isLearned, LEARNED_STABILITY_DAYS, newDirectionCard, refocusCard } from './scheduler.ts'
+import type { DirectionCard } from './types.ts'
 
 const DAY = 86_400_000
 const t0 = new Date(2026, 8, 27, 9).getTime()
@@ -55,5 +56,41 @@ describe('See Direction', () => {
     }
     expect(card.stability).toBeGreaterThan(LEARNED_STABILITY_DAYS)
     expect(isLearned(card)).toBe(false)
+  })
+})
+
+describe('Focus', () => {
+  /** A card graded Good until it is past its learning steps and has a few days of stability. */
+  function reviewCard(): DirectionCard {
+    let card = newDirectionCard('beer', 'speak', t0)
+    let now = t0
+    while (card.state !== 2 || card.stability < 5) {
+      card = gradeCard(card, 'good', now)
+      now = Math.max(card.due, now + 60_000)
+    }
+    return card
+  }
+
+  it('schedules a Focus card graded Good sooner than the same card outside Focus', () => {
+    const card = reviewCard()
+    const when = card.due
+    expect(gradeCard(card, 'good', when, true).due).toBeLessThan(gradeCard(card, 'good', when, false).due)
+  })
+
+  it('brings a reviewed card forward when its Expression enters Focus, and back when it leaves', () => {
+    const card = reviewCard()
+    const focused = refocusCard(card, true)
+    expect(focused.due).toBeLessThan(card.due)
+    const back = refocusCard(focused, false)
+    expect(back.due).toBeGreaterThan(focused.due)
+    expect(Math.abs(back.due - card.due)).toBeLessThan(3 * DAY)
+  })
+
+  it('leaves new and learning cards alone', () => {
+    const fresh = newDirectionCard('beer', 'speak', t0)
+    expect(refocusCard(fresh, true)).toEqual(fresh)
+    const learning = gradeCard(fresh, 'good', t0)
+    expect(learning.state).not.toBe(2)
+    expect(refocusCard(learning, true)).toEqual(learning)
   })
 })

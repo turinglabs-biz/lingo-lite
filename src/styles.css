@@ -438,6 +438,13 @@ h2 {
   align-items: flex-start;
   gap: 10px;
 }
+.prompt-head {
+  display: flex;
+  align-self: stretch;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
 .english-prompt {
   margin: 0;
   font-size: 1.7rem;
@@ -729,6 +736,72 @@ h2 {
 .answer .expression,
 .row-main .expression {
   flex: 1;
+}
+
+/* Focus */
+.focus-pin {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  display: inline-grid;
+  place-items: center;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.focus-pin svg {
+  width: 20px;
+  height: 20px;
+}
+.focus-pin.on {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.row-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.row-controls-line {
+  display: flex;
+  gap: 8px;
+}
+.focus-page {
+  justify-content: flex-start;
+  gap: 12px;
+}
+.focus-page > p {
+  margin: 0;
+}
+.page-title {
+  flex: 1;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.focus-list {
+  margin-top: 8px;
+}
+.focus-expression {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+.focus-not-met {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--muted);
+  background: var(--line);
+  border-radius: 999px;
+  padding: 2px 8px;
 }
 
 /* Echo */

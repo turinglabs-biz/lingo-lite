@@ -2,8 +2,8 @@ import { catalog } from '../catalog/index.ts'
 import { BACKLOG_WARNING, BATCH_SIZE } from '../domain/progress.ts'
 import type { Progress } from '../progress/useProgress.ts'
 
-export function Home({ progress, onReview, onLearn }: { progress: Progress; onReview: () => void; onLearn: () => void }) {
-  const { dueCount, nextBatchSize, introduced, learned } = progress
+export function Home({ progress, onReview, onLearn, onFocus }: { progress: Progress; onReview: () => void; onLearn: () => void; onFocus: () => void }) {
+  const { dueCount, nextBatchSize, introduced, learned, focus } = progress
   const allIntroduced = nextBatchSize === 0
   const continueAction = dueCount > 0 ? onReview : allIntroduced ? null : onLearn
   const batchesDone = Math.ceil(introduced.size / BATCH_SIZE)
@@ -48,6 +48,10 @@ export function Home({ progress, onReview, onLearn }: { progress: Progress; onRe
           New Batch · {nextBatchSize} Expressions
         </button>
       )}
+
+      <button type="button" className="secondary-action focus-action" onClick={onFocus}>
+        Focus · {focus.size} {focus.size === 1 ? 'Expression' : 'Expressions'}
+      </button>
 
       {allIntroduced && dueCount === 0 && <p className="muted small">Every Expression is introduced. Come back when reviews are due.</p>}
     </section>

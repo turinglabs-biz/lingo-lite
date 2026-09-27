@@ -16,18 +16,23 @@ interface QueueItem {
 const QUESTION = { speak: SpeakQuestion, listen: ListenQuestion, see: SeeQuestion }
 const TITLE = { speak: 'Say it', listen: 'Listen', see: 'See' }
 
-/** Up to 20 due Directions, each a checked question. A Missed card comes back once at the end. */
+/**
+ * A Review session (up to 20 due Directions) or a Focus session (up to 20 Directions of Focus Expressions, due or not):
+ * each a checked question, graded into the schedule. A Missed card comes back once at the end.
+ */
 export function ReviewSession({
-  due,
+  cards,
+  type = 'review',
   introduced,
   onEnd,
 }: {
-  due: DirectionCard[]
+  cards: DirectionCard[]
+  type?: 'review' | 'focus'
   introduced: Set<string>
   onEnd: (summary: Omit<SummaryData, 'streak'> | null) => void
 }) {
-  const tracker = useSessionTracker('review')
-  const [queue, setQueue] = useState<QueueItem[]>(() => due.map((c) => ({ id: c.expressionId, direction: c.direction, retry: false })))
+  const tracker = useSessionTracker(type)
+  const [queue, setQueue] = useState<QueueItem[]>(() => cards.map((c) => ({ id: c.expressionId, direction: c.direction, retry: false })))
   const [index, setIndex] = useState(0)
   const item = queue[index]
 

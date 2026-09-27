@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { newDirectionCard } from './scheduler.ts'
-import { accuracyBy, computeStars, dayKey, dueCards, earnedStars, nextBatch, streaks, totalXp, withInput } from './progress.ts'
+import { gradeCard, newDirectionCard } from './scheduler.ts'
+import { accuracyBy, computeStars, dayKey, dueCards, earnedStars, focusQueue, FOCUS_PER_BATCH, nextBatch, streaks, totalXp, withInput } from './progress.ts'
 import type { Answer, DirectionCard, Session } from './types.ts'
 
 const at = (d: number, h = 12) => new Date(2026, 8, d, h).getTime()
@@ -8,7 +8,10 @@ const session = (end?: number): Session => ({ id: String(Math.random()), type: '
 const learnedCard = (id: string): DirectionCard => ({ ...newDirectionCard(id, 'speak', at(1)), stability: 10, learnedAt: at(2) })
 
 describe('nextBatch', () => {
-  const ordered = Array.from({ length: 40 }, (_, i) => ({ id: `e${i}` }))
+  const ordered = Array.from({ length: 40 }, (_, i) => ({ id: `e${i}`, topic: 'food' }))
+  const ids = (batch: { id: string }[]) => batch.map((e) => e.id)
+  /** A fixed random source, so picks are repeatable. */
+  const seeded = (seed: number) => () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646
   it('takes the next 15 never-introduced Expressions in Catalog order', () => {
     const batch = nextBatch(ordered, new Set(['e0', 'e2']))
     expect(batch).toHaveLength(15)
@@ -19,12 +22,63 @@ describe('nextBatch', () => {
     expect(nextBatch(ordered, new Set(ordered.slice(0, 30).map((e) => e.id)))).toHaveLength(10)
     expect(nextBatch(ordered, new Set(ordered.map((e) => e.id)))).toHaveLength(0)
   })
+  it('is exactly the Catalog order when nothing is in Focus', () => {
+    expect(ids(nextBatch(ordered, new Set(), new Set(), seeded(1)))).toEqual(ids(ordered.slice(0, 15)))
+  })
+  it('takes up to 5 not-yet-introduced Focus Expressions, then Catalog order, keeping Catalog order', () => {
+    const focus = new Set(['e20', 'e25', 'e30', 'e31', 'e32', 'e33', 'e39'])
+    const batch = ids(nextBatch(ordered, new Set(), focus, seeded(7)))
+    expect(batch).toHaveLength(15)
+    expect(batch.filter((id) => focus.has(id))).toHaveLength(FOCUS_PER_BATCH)
+    expect(batch.slice(0, 10)).toEqual(ids(ordered.slice(0, 10)))
+    expect(batch).toEqual([...batch].sort((a, b) => Number(a.slice(1)) - Number(b.slice(1))))
+  })
+  it('picks the Focus Expressions at random', () => {
+    const focus = new Set(ordered.slice(20).map((e) => e.id))
+    const picks = new Set([1, 2, 3, 4, 5].map((seed) => ids(nextBatch(ordered, new Set(), focus, seeded(seed))).join()))
+    expect(picks.size).toBeGreaterThan(1)
+  })
+  it('never picks a Focus Expression that was already introduced', () => {
+    const batch = ids(nextBatch(ordered, new Set(['e30']), new Set(['e30', 'e31']), seeded(3)))
+    expect(batch).toContain('e31')
+    expect(batch).not.toContain('e30')
+  })
+  it('keeps at most 3 Numbers Expressions in the Batch, Focus picks included', () => {
+    const mixed = ordered.map((e, i) => ({ ...e, topic: i % 4 === 0 || i >= 30 ? 'numbers' : 'food' }))
+    const focus = new Set(mixed.slice(30).map((e) => e.id))
+    const batch = nextBatch(mixed, new Set(), focus, seeded(5))
+    expect(batch).toHaveLength(15)
+    expect(batch.filter((e) => e.topic === 'numbers')).toHaveLength(3)
+  })
 })
 
 describe('dueCards', () => {
+  const cards = [5, 1, 9, 3].map((d, i) => ({ ...newDirectionCard(`e${i}`, 'speak', 0), due: at(d) }))
   it('returns due cards, most overdue first, up to the limit', () => {
-    const cards = [5, 1, 9, 3].map((d, i) => ({ ...newDirectionCard(`e${i}`, 'speak', 0), due: at(d) }))
     expect(dueCards(cards, at(6), 2).map((c) => c.expressionId)).toEqual(['e1', 'e3'])
+  })
+  it('puts due Focus Directions first, even when less overdue', () => {
+    expect(dueCards(cards, at(6), 2, new Set(['e0'])).map((c) => c.expressionId)).toEqual(['e0', 'e1'])
+    expect(dueCards(cards, at(6), Infinity, new Set(['e0', 'e3'])).map((c) => c.expressionId)).toEqual(['e3', 'e0', 'e1'])
+  })
+  it('never selects a Focus Direction that is not due', () => {
+    expect(dueCards(cards, at(6), Infinity, new Set(['e2'])).map((c) => c.expressionId)).toEqual(['e1', 'e3', 'e0'])
+  })
+})
+
+describe('focusQueue', () => {
+  const now = at(20)
+  /** A card last reviewed on `day`: the longer ago, the less likely it is remembered now. */
+  const reviewed = (id: string, day: number, direction: 'speak' | 'listen' = 'speak') => gradeCard(newDirectionCard(id, direction, at(day)), 'good', at(day))
+  it('takes only Focus Expressions, least likely remembered first', () => {
+    const cards = [reviewed('a', 19), reviewed('b', 10), reviewed('c', 15), reviewed('x', 1), newDirectionCard('d', 'speak', at(19))]
+    expect(focusQueue(cards, new Set(['a', 'b', 'c', 'd']), now).map((c) => c.expressionId)).toEqual(['d', 'b', 'c', 'a'])
+  })
+  it('takes every existing Direction, due or not, up to the limit', () => {
+    const notDue = { ...reviewed('a', 19, 'speak'), due: at(30) }
+    const cards = [notDue, reviewed('a', 12, 'listen'), ...Array.from({ length: 30 }, (_, i) => reviewed(`f${i}`, 18))]
+    expect(focusQueue(cards, new Set(['a']), now).map((c) => c.direction)).toEqual(['listen', 'speak'])
+    expect(focusQueue(cards, new Set(cards.map((c) => c.expressionId)), now)).toHaveLength(20)
   })
 })
 

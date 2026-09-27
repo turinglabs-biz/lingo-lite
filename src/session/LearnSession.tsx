@@ -66,7 +66,7 @@ export function LearnSession({
       <SessionFrame title={TITLE[step.kind]} position={index} total={steps.length} onQuit={() => onEnd(null)}>
         {step.kind === 'expose' && (
           <>
-            <Prompt label="New Expression">
+            <Prompt label="New Expression" expressionId={step.id}>
               <Illustration expressionId={step.id} size="large" />
               <ExpressionView expression={expression} />
             </Prompt>
