@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { illustrationSiblings } from '../../catalog/illustrations.ts'
 import { playClip } from '../audio/player.ts'
 import { catalog, expressionById } from '../catalog/index.ts'
@@ -57,11 +57,17 @@ function Choices({ options, answer, onPick, render }: { options: string[]; answe
 
 /** After answering: the full Expression with its picture and audio, Echo (when on), then Next. */
 function Answer({ expressionId, onNext }: { expressionId: string; onNext: () => void }) {
+  // On a small screen the card lands below the options; bring it into view (above the pinned Next).
+  const card = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    card.current?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'nearest' })
+  }, [])
   return (
     <>
-      <div className="answer">
+      <div className="answer" ref={card}>
         <Illustration expressionId={expressionId} size="small" />
-        <ExpressionView expression={expressionById.get(expressionId)!} />
+        <ExpressionView expression={expressionById.get(expressionId)!} size="medium" />
         <PlayButtons expressionId={expressionId} />
       </div>
       <EchoBar expressionId={expressionId} />

@@ -331,6 +331,18 @@ h2 {
   font-size: 1.1rem;
   margin-top: 10px;
 }
+.expression.medium .primary {
+  font-size: 1.4rem;
+  line-height: 1.25;
+}
+.expression.medium .secondary {
+  font-size: 1rem;
+  margin-top: 2px;
+}
+.expression.medium .english {
+  font-size: 1rem;
+  margin-top: 6px;
+}
 .expression.compact .primary {
   font-size: 1.05rem;
 }
@@ -432,6 +444,31 @@ h2 {
   gap: 18px;
   padding-top: 16px;
 }
+/* The main action (Next, "I said it") stays in reach at the bottom of the screen when the content is taller than it,
+   with the page background fading in above and filling in below, so content scrolls away underneath cleanly. */
+.session-body > .primary-action {
+  position: sticky;
+  bottom: calc(12px + env(safe-area-inset-bottom));
+  z-index: 1;
+}
+.session-body > .primary-action::before,
+.session-body > .primary-action::after {
+  content: '';
+  position: absolute;
+  left: -16px;
+  right: -16px;
+  pointer-events: none;
+}
+.session-body > .primary-action::before {
+  bottom: 100%;
+  height: 18px;
+  background: linear-gradient(to bottom, transparent, var(--bg));
+}
+.session-body > .primary-action::after {
+  top: 100%;
+  height: calc(12px + env(safe-area-inset-bottom));
+  background: var(--bg);
+}
 .prompt {
   display: flex;
   flex-direction: column;
@@ -461,6 +498,8 @@ h2 {
   align-items: center;
   gap: 12px;
   padding: 16px;
+  /* Room for the pinned Next when the card is scrolled into view. */
+  scroll-margin-bottom: calc(100px + env(safe-area-inset-bottom));
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);

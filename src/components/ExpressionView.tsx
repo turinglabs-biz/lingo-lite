@@ -1,7 +1,7 @@
 import type { Expression } from '../catalog/index.ts'
 import { useSettings } from '../settings.ts'
 
-/** An Expression as the learner sees it: Romanization large, Hangul subtle (or swapped in Settings). */
+/** An Expression as the learner sees it: Romanization prominent, Hangul subtle (or swapped in Settings). */
 export function ExpressionView({
   expression,
   showEnglish = true,
@@ -9,7 +9,7 @@ export function ExpressionView({
 }: {
   expression: Expression
   showEnglish?: boolean
-  size?: 'large' | 'compact'
+  size?: 'large' | 'medium' | 'compact'
 }) {
   const { hangulFirst } = useSettings()
   const primary = hangulFirst ? expression.hangul : expression.romanization
