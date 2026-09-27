@@ -778,6 +778,39 @@ h2 {
   font-weight: 600;
 }
 
+/* Echo setup (Settings and the Echo lab) */
+.echo-setup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.echo-setup .small,
+.echo-setup .notice {
+  margin: 0;
+}
+.echo-settings {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* Echo in the main flow */
+.echo-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.echo-button.round {
+  width: 44px;
+  min-height: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  padding: 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
 /* Echo lab */
 .lab {
   justify-content: flex-start;
@@ -792,15 +825,7 @@ h2 {
   font-weight: 600;
   color: var(--text);
 }
-.lab-setup {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.lab-setup .small,
-.lab-setup .notice {
-  margin: 0;
-}
+
 .lab-buttons {
   display: flex;
   flex-wrap: wrap;

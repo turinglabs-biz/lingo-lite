@@ -3,6 +3,7 @@ import { catalog, expressionById, topics, type TopicId } from '../catalog/index.
 import { ExpressionView } from '../components/ExpressionView.tsx'
 import { Illustration } from '../components/Illustration.tsx'
 import { PlayButtons } from '../components/PlayButtons.tsx'
+import { EchoRound } from '../echo/EchoMic.tsx'
 
 const normalize = (s: string) => s.toLowerCase().replace(/[-?!.,'’]/g, '').replace(/\s+/g, ' ').trim()
 
@@ -80,6 +81,7 @@ export function Phrasebook({ topic, onTopicChange }: { topic: TopicId | null; on
                       <ExpressionView expression={e} size="compact" />
                     </button>
                     <PlayButtons expressionId={e.id} />
+                    <EchoRound expressionId={e.id} />
                   </li>
                 ))}
             </ul>

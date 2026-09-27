@@ -1,8 +1,9 @@
-// The Echo candidate models (ADR 0004). Both are slplab's Korean phone recognisers (Apache-2.0), converted to ONNX
-// with 4-bit weights by scripts/echo-export.py and attached to a GitHub Release of this repo. The build downloads
-// them from there at pinned checksums and serves them from our own server; learners never download from GitHub.
+// The Echo model (ADR 0004): slplab's Korean phone recogniser (Apache-2.0), converted to ONNX with 4-bit weights by
+// scripts/echo-export.py and attached to a GitHub Release of this repo. The build downloads it from there at a pinned
+// checksum and serves it from our own server; learners never download from GitHub. The Echo lab also compared a model
+// trained on learner speech; it scored the Voices' own Clips much lower and was dropped.
 
-export type EchoModelId = 'native' | 'learner'
+export type EchoModelId = 'native'
 
 export interface EchoModel {
   id: EchoModelId
@@ -31,19 +32,12 @@ export const ECHO_MODELS: readonly EchoModel[] = [
     blankTokens: ['|', '[UNK]', '[PAD]'],
     sampleRate: 16_000,
   },
-  {
-    id: 'learner',
-    name: 'Learner speech',
-    description: 'Trained on 10 hours of Korean spoken by learners from Asian countries.',
-    source: { repo: 'slplab/wav2vec2-xls-r-300m_phoneme-mfa_korean_nia13-asia-9634_001', revision: 'b83432f0b06c1c07668250ac11b701cc4a1bd856' },
-    file: { bytes: 241_257_227, sha256: '129aeed03b7ea66a96adb58cee22fca86df11db468efe5eda2cebb43a62762e5' },
-    vocabulary: [...MFA_SOUNDS, 'UE', 'euI', 'iA', 'iE', 'iEO', 'iO', 'iU', 'k', 'oA', 'oE', 'p', 't', 'uEO', '|', '[UNK]', '[PAD]'],
-    blankTokens: ['|', '[UNK]', '[PAD]'],
-    sampleRate: 16_000,
-  },
 ]
 
 export const echoModelById = new Map(ECHO_MODELS.map((m) => [m.id, m]))
+
+/** The model Echo uses in the main flow. */
+export const ECHO_MODEL = ECHO_MODELS[0]
 
 /**
  * The GitHub Release holding the converted files. Never replace a file there in place: builds pin its sha256. A new

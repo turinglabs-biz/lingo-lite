@@ -1,6 +1,6 @@
 # 01 Echo lab
 
-Status: in-progress
+Status: done
 Blocked by: none
 
 ## What
@@ -39,8 +39,15 @@ Stage 1 of the spec. Build the Echo lab: a separate page, opened from a link in 
   - hold-to-talk, a score, and Copy results
   - the Voices' Clips scoring about 100%
 - [x] Airplane mode: after setup, the Echo lab still scores offline.
-- [ ] *(user)* The user has deployed. Both testers have installed the app from the Home Screen on the iPhone 14 Pro and 16 Pro, gone through setup, recorded the test set (careful, deliberate mistake, different Expression) and pasted their results.
-- [ ] *(user)* The verdict is recorded under `## Answer`: pass or fail against the spec's pass bar, the chosen model, and any reference-point tuning.
+- [x] *(user)* The user has deployed. Both testers have installed the app from the Home Screen on the iPhone 14 Pro and 16 Pro, gone through setup, recorded the test set (careful, deliberate mistake, different Expression) and pasted their results.
+- [x] *(user)* The verdict is recorded under `## Answer`: pass or fail against the spec's pass bar, the chosen model, and any reference-point tuning.
+
+## Answer
+
+**Pass.** The user deployed the lab and tested it on their iPhone: "it works pretty fine", so Echo goes into the main flow (ticket 02).
+- **Model:** native speech. The learner-speech model is dropped; it was clearly weaker on the Voices' Clips.
+- **Reference points:** no tuning; the current scale ships as is. No "Copy results" data was collected, and the user may come back to tuning later through the Echo lab.
+- **Changes to stage 2:** the Echo lab stays, as a detail view with its own switch. The Settings debug toggle is dropped.
 
 ## Comments
 

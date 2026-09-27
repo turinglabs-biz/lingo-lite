@@ -4,10 +4,12 @@ import { expressionById } from '../catalog/index.ts'
 import { ExpressionView } from '../components/ExpressionView.tsx'
 import { Illustration } from '../components/Illustration.tsx'
 import { PlayButtons } from '../components/PlayButtons.tsx'
+import { EchoBar } from '../echo/EchoMic.tsx'
 import { afterSpeakGrade, planLearnSession, type LearnStep } from '../domain/learnPlan.ts'
-import { grade, introduce, recordCheck } from '../progress/store.ts'
+import { grade, introduce, recordCheck, touchSession } from '../progress/store.ts'
 import { Prompt, SessionFrame } from './parts.tsx'
 import { ListenQuestion, SpeakQuestion } from './questions.tsx'
+import { SessionInput } from './sessionInput.ts'
 import type { SummaryData } from './SessionSummary.tsx'
 import { useSessionTracker } from './useSessionTracker.ts'
 
@@ -58,25 +60,29 @@ export function LearnSession({
 
   if (!step) return null
   const expression = expressionById.get(step.id)!
+  const recordInput = () => tracker.sessionId && touchSession(tracker.sessionId)
   return (
-    <SessionFrame title={TITLE[step.kind]} position={index} total={steps.length} onQuit={() => onEnd(null)}>
-      {step.kind === 'expose' && (
-        <>
-          <Prompt label="New Expression">
-            <Illustration expressionId={step.id} size="large" />
-            <ExpressionView expression={expression} />
-          </Prompt>
-          <PlayButtons expressionId={step.id} size="large" />
-          <p className="hint">Listen, then say it out loud.</p>
-          <button type="button" className="primary-action" onClick={next}>
-            Next
-          </button>
-        </>
-      )}
-      {step.kind === 'check' && (
-        <ListenQuestion key={index} expressionId={step.id} introduced={known} onAnswer={onCheck} onNext={next} />
-      )}
-      {step.kind === 'speak' && <SpeakQuestion key={index} expressionId={step.id} introduced={known} onAnswer={onSpeak} onNext={next} />}
-    </SessionFrame>
+    <SessionInput.Provider value={recordInput}>
+      <SessionFrame title={TITLE[step.kind]} position={index} total={steps.length} onQuit={() => onEnd(null)}>
+        {step.kind === 'expose' && (
+          <>
+            <Prompt label="New Expression">
+              <Illustration expressionId={step.id} size="large" />
+              <ExpressionView expression={expression} />
+            </Prompt>
+            <PlayButtons expressionId={step.id} size="large" />
+            <p className="hint">Listen, then say it out loud.</p>
+            <EchoBar key={index} expressionId={step.id} />
+            <button type="button" className="primary-action" onClick={next}>
+              Next
+            </button>
+          </>
+        )}
+        {step.kind === 'check' && (
+          <ListenQuestion key={index} expressionId={step.id} introduced={known} onAnswer={onCheck} onNext={next} />
+        )}
+        {step.kind === 'speak' && <SpeakQuestion key={index} expressionId={step.id} introduced={known} onAnswer={onSpeak} onNext={next} />}
+      </SessionFrame>
+    </SessionInput.Provider>
   )
 }

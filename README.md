@@ -12,7 +12,7 @@ npm run dev          # http://localhost:5173
 npm test             # unit tests (domain logic, Catalog order)
 npm run build        # production build with service worker (precaches app + all Clips)
 npm run preview -- --host   # try the build on a phone over LAN (install needs HTTPS, see Deploy)
-npm run echo:models  # only for the Echo lab: fetch its models into public/models/ (see Echo)
+npm run echo:models  # only for Echo: fetch its model into public/models/ (see Echo)
 ```
 
 ## Catalog
@@ -38,13 +38,16 @@ npm run audio:check  # verify every Expression has all 4 Clips
 npm run voice-test   # regenerate the voice comparison page in voice-test/ (gitignored)
 ```
 
-## Echo (prototype)
+## Echo
 
-Echo lets a learner say an Expression right after hearing its Clip and shows an Echo score: how close their sounds were, where 100% is as close as the app's own Voices. It runs entirely on the phone and works offline (ADR 0004; spec and tickets in [`.scratch/echo/`](.scratch/echo)). For now it only lives in the Echo lab, a test page opened from Settings.
+Echo lets a learner say an Expression right after hearing its Clip and shows an Echo score: how close their sounds were, where 100% is as close as the app's own Voices. It runs entirely on the phone and works offline (ADR 0004; spec and tickets in [`.scratch/echo/`](.scratch/echo)).
+
+- **In the main flow:** turn it on in Settings (Echo). A mic then appears at first exposure, in the feedback after every answer, and in the Phrasebook list.
+- **The Echo lab** (Settings → Echo lab) shows the details: raw scores, each sound's rating, timings, recording playback and a check of the Voices' own Clips. It has its own switch but shares the downloaded files with the main flow.
 
 ### How the models get to the phone
 
-The models are slplab's Korean phone recognisers (Apache-2.0), listed in `src/echo/models.ts`. slplab only publishes PyTorch weights, so we convert them to ONNX with 4-bit weights once, on a dev machine, and attach the files to a GitHub Release of this repo:
+The model is slplab's Korean phone recogniser trained on native speech (Apache-2.0), listed in `src/echo/models.ts`. slplab only publishes PyTorch weights, so we convert it to ONNX with 4-bit weights once, on a dev machine, and attach the file to a GitHub Release of this repo:
 
 ```
 slplab model (Hugging Face, PyTorch)
@@ -62,17 +65,17 @@ A file's name contains the start of its sha256, so a changed file always gets a 
 ### Commands
 
 ```sh
-npm run echo:models      # put the models into public/models/ (gitignored): from .cache/echo-models/ if there, else from the release
+npm run echo:models      # put the model into public/models/ (gitignored): from .cache/echo-models/ if there, else from the release
 npm run echo:reference   # recompute catalog/echo-reference.json, every Expression's 100% and 0% points (about 5 min, needs ffmpeg)
 npm run echo:reference -- --report   # the same, plus the Expressions whose own Clips score lowest
-npm run echo:check       # verify the models' checksums and that the reference table is fresh (runs in the Docker build)
+npm run echo:check       # verify the model's checksum and that the reference table is fresh (runs in the Docker build)
 ```
 
-To try the Echo lab locally, run `npm run echo:models` once (about 480 MB), then `npm run dev`.
+To try Echo locally, run `npm run echo:models` once (about 240 MB), then `npm run dev`.
 
 ### Deploying
 
-Nothing changes: deploy as usual from `vps-infrastructure`. The Docker build downloads the models from the release in their own layer. That happens on the first build and whenever the pins in `src/echo/models.ts` change (about 480 MB); otherwise Docker reuses the layer. The build fails if a file is missing or doesn't match its checksum, so it never ships a model it didn't expect.
+Nothing changes: deploy as usual from `vps-infrastructure`. The Docker build downloads the models from the release in their own layer. That happens on the first build and whenever the pins in `src/echo/models.ts` change (about 240 MB); otherwise Docker reuses the layer. The build fails if a file is missing or doesn't match its checksum, so it never ships a model it didn't expect.
 
 ### Recomputing the reference table
 
@@ -97,11 +100,11 @@ Otherwise the Docker build fails on `echo:check`, which lists the stale Expressi
 2. **Put it in the local cache:** copy the file to `.cache/echo-models/<id>-<first 8 of sha256>.onnx`. The build uses the cache before the release, so you can test before publishing.
 3. **Pin it** in `src/echo/models.ts`: `source` (repo and revision), `file.bytes`, `file.sha256`, and `vocabulary` if the model's tokens differ (in output order, from `<out-dir>/vocab.json`). Point `ECHO_RELEASE_URL` at the new release, e.g. `echo-models-2`.
 4. **Check it:** run `npm run echo:models && npm run echo:reference && npm test`, then try it in the Echo lab.
-5. **Publish a new release** that contains every model the app still uses, not only the changed one, because `ECHO_RELEASE_URL` points at a single release:
+5. **Publish a new release** that contains every model the app uses (today, just the native one), because `ECHO_RELEASE_URL` points at a single release:
 
    ```sh
    gh release create echo-models-2 --repo turinglabs-biz/lingo-lite --prerelease --title "Echo models 2" \
-     --notes-file notes.md .cache/echo-models/native-<sha>.onnx .cache/echo-models/learner-<sha>.onnx
+     --notes-file notes.md .cache/echo-models/native-<sha>.onnx
    ```
 
    Base the notes on echo-models-1's (`gh release view echo-models-1 --repo turinglabs-biz/lingo-lite`). The Apache-2.0 licence requires them to name each source model and revision, state the licence, and say what was changed.

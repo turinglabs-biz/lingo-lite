@@ -6,9 +6,11 @@ import type { Answer, DirectionCard, Introduction, Session, TopicStars } from '.
 export interface Settings {
   id: 'settings'
   hangulFirst: boolean
+  /** Echo in the main flow (turned on in Settings, after downloading the model and allowing the mic). */
+  echo?: boolean
 }
 
-export const defaultSettings: Settings = { id: 'settings', hangulFirst: false }
+export const defaultSettings: Settings = { id: 'settings', hangulFirst: false, echo: false }
 
 /** Everything the app remembers about the learner (Progress). Device-only; losing it is accepted. */
 export const db = new Dexie('lingo-lite') as Dexie & {
