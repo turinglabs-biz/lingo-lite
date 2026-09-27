@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { stopClip } from './audio/player.ts'
 import { catalog, type TopicId } from './catalog/index.ts'
-import { dueCards, nextBatch, REVIEW_SESSION_SIZE } from './domain/progress.ts'
+import { dueCards, focusQueue, nextBatch, REVIEW_SESSION_SIZE } from './domain/progress.ts'
 import type { DirectionCard } from './domain/types.ts'
 import { EchoLab } from './echo/lab/EchoLab.tsx'
+import { FocusPage } from './screens/FocusPage.tsx'
 import { useProgress } from './progress/useProgress.ts'
 import { Home } from './screens/Home.tsx'
 import { Phrasebook } from './screens/Phrasebook.tsx'
@@ -23,7 +24,11 @@ const TABS = [
 ] as const
 type TabId = (typeof TABS)[number]['id']
 
-type Active = { kind: 'learn'; batch: string[] } | { kind: 'review'; due: DirectionCard[] } | { kind: 'summary'; data: SummaryData } | null
+type Active =
+  | { kind: 'learn'; batch: string[] }
+  | { kind: 'review' | 'focus'; cards: DirectionCard[] }
+  | { kind: 'summary'; data: SummaryData }
+  | null
 
 export function App() {
   const progress = useProgress()
@@ -31,11 +36,13 @@ export function App() {
   const [phrasebookTopic, setPhrasebookTopic] = useState<TopicId | null>(null)
   const [active, setActive] = useState<Active>(null)
   const [echoLab, setEchoLab] = useState(false)
+  const [focusPage, setFocusPage] = useState(false)
 
   if (!progress) return <div className="app loading" />
 
-  const startLearn = () => setActive({ kind: 'learn', batch: nextBatch(catalog, progress.introduced).map((e) => e.id) })
-  const startReview = () => setActive({ kind: 'review', due: dueCards(progress.cards, Date.now(), REVIEW_SESSION_SIZE) })
+  const startLearn = () => setActive({ kind: 'learn', batch: nextBatch(catalog, progress.introduced, progress.focus).map((e) => e.id) })
+  const startReview = () => setActive({ kind: 'review', cards: dueCards(progress.cards, Date.now(), REVIEW_SESSION_SIZE, progress.focus) })
+  const startFocus = () => setActive({ kind: 'focus', cards: focusQueue(progress.cards, progress.focus, Date.now()) })
   const endSession = (summary: Omit<SummaryData, 'streak'> | null) => {
     stopClip()
     // Streak includes today's session once it is finished.
@@ -44,7 +51,8 @@ export function App() {
 
   if (echoLab) return <EchoLab onClose={() => setEchoLab(false)} />
   if (active?.kind === 'learn') return <LearnSession batch={active.batch} introduced={progress.introduced} onEnd={endSession} />
-  if (active?.kind === 'review') return <ReviewSession due={active.due} introduced={progress.introduced} onEnd={endSession} />
+  if (active?.kind === 'review' || active?.kind === 'focus')
+    return <ReviewSession cards={active.cards} type={active.kind} introduced={progress.introduced} onEnd={endSession} />
   if (active?.kind === 'summary')
     return (
       <SessionSummary
@@ -52,6 +60,8 @@ export function App() {
         onDone={() => setActive(null)}
       />
     )
+  // After a Focus session (and its summary), the learner is back on the Focus page.
+  if (focusPage) return <FocusPage progress={progress} onStart={startFocus} onClose={() => setFocusPage(false)} />
 
   return (
     <div className="app">
@@ -70,7 +80,7 @@ export function App() {
         </span>
       </header>
       <main>
-        {tab === 'home' && <Home progress={progress} onReview={startReview} onLearn={startLearn} />}
+        {tab === 'home' && <Home progress={progress} onReview={startReview} onLearn={startLearn} onFocus={() => setFocusPage(true)} />}
         {tab === 'topics' && (
           <Topics
             progress={progress}

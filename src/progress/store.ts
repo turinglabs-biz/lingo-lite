@@ -1,7 +1,7 @@
 import { catalog, expressionById, topics } from '../catalog/index.ts'
 import { db } from '../db.ts'
 import { computeStars, earnedStars, withInput } from '../domain/progress.ts'
-import { cardKey, gradeCard, isCorrect, newDirectionCard } from '../domain/scheduler.ts'
+import { cardKey, gradeCard, isCorrect, newDirectionCard, refocusCard } from '../domain/scheduler.ts'
 import type { Direction, Grade, Session, SessionType } from '../domain/types.ts'
 
 // Writes to Progress. Everything is keyed by Expression id, so Catalog edits keep Progress.
@@ -52,10 +52,10 @@ export interface GradeResult {
 export async function grade(sessionId: string, expressionId: string, direction: Direction, g: Grade): Promise<GradeResult> {
   const now = Date.now()
   let becameLearned = false
-  await db.transaction('rw', [db.cards, db.answers, db.stars, db.sessions], async () => {
+  await db.transaction('rw', [db.cards, db.answers, db.stars, db.sessions, db.focus], async () => {
     const key = cardKey(expressionId, direction)
     const card = (await db.cards.get(key)) ?? newDirectionCard(expressionId, direction, now)
-    const next = gradeCard(card, g, now)
+    const next = gradeCard(card, g, now, !!(await db.focus.get(expressionId)))
     becameLearned = !card.learnedAt && !!next.learnedAt
     await db.cards.put(next)
     await db.answers.add({ at: now, sessionId, expressionId, kind: direction, correct: isCorrect(g), grade: g })
@@ -82,9 +82,19 @@ async function updateStars(topic: string | undefined) {
   if (stars !== previous) await db.stars.put({ topic, stars })
 }
 
+/** Puts an Expression in Focus or takes it out, re-dating its Directions for the new recall target right away. */
+export async function setFocus(expressionId: string, on: boolean) {
+  await db.transaction('rw', [db.focus, db.cards], async () => {
+    if (on) await db.focus.put({ expressionId, at: Date.now() })
+    else await db.focus.delete(expressionId)
+    const cards = await db.cards.where('expressionId').equals(expressionId).toArray()
+    await db.cards.bulkPut(cards.map((c) => refocusCard(c, on)))
+  })
+}
+
 export async function resetProgress() {
-  await db.transaction('rw', [db.introductions, db.cards, db.answers, db.sessions, db.stars], async () => {
-    await Promise.all([db.introductions.clear(), db.cards.clear(), db.answers.clear(), db.sessions.clear(), db.stars.clear()])
+  await db.transaction('rw', [db.introductions, db.cards, db.answers, db.sessions, db.stars, db.focus], async () => {
+    await Promise.all([db.introductions.clear(), db.cards.clear(), db.answers.clear(), db.sessions.clear(), db.stars.clear(), db.focus.clear()])
   })
 }
 

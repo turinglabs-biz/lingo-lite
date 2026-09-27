@@ -1,13 +1,14 @@
 import { useMemo, useState } from 'react'
 import { catalog, expressionById, topics, type TopicId } from '../catalog/index.ts'
 import { ExpressionView } from '../components/ExpressionView.tsx'
+import { FocusPin } from '../components/FocusPin.tsx'
 import { Illustration } from '../components/Illustration.tsx'
 import { PlayButtons } from '../components/PlayButtons.tsx'
 import { EchoRound } from '../echo/EchoMic.tsx'
 
 const normalize = (s: string) => s.toLowerCase().replace(/[-?!.,'’]/g, '').replace(/\s+/g, ' ').trim()
 
-/** The whole Catalog for use on the street. Never changes Progress. */
+/** The whole Catalog for use on the street. Never changes Progress, except putting Expressions in Focus. */
 export function Phrasebook({ topic, onTopicChange }: { topic: TopicId | null; onTopicChange: (t: TopicId | null) => void }) {
   const [query, setQuery] = useState('')
   const [showing, setShowing] = useState<string | null>(null)
@@ -80,8 +81,13 @@ export function Phrasebook({ topic, onTopicChange }: { topic: TopicId | null; on
                       <Illustration expressionId={e.id} size="small" />
                       <ExpressionView expression={e} size="compact" />
                     </button>
-                    <PlayButtons expressionId={e.id} />
-                    <EchoRound expressionId={e.id} />
+                    <div className="row-controls">
+                      <PlayButtons expressionId={e.id} />
+                      <div className="row-controls-line">
+                        <FocusPin expressionId={e.id} />
+                        <EchoRound expressionId={e.id} />
+                      </div>
+                    </div>
                   </li>
                 ))}
             </ul>

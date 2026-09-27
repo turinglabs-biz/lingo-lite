@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { FocusPin } from '../components/FocusPin.tsx'
 
 export function SessionFrame({ title, position, total, onQuit, children }: { title: string; position: number; total: number; onQuit: () => void; children: ReactNode }) {
   return (
@@ -17,10 +18,14 @@ export function SessionFrame({ title, position, total, onQuit, children }: { tit
   )
 }
 
-export function Prompt({ label, children }: { label: string; children: ReactNode }) {
+/** A question's or exposure's prompt, with the Focus pin for its Expression (usable before and after answering). */
+export function Prompt({ label, expressionId, children }: { label: string; expressionId?: string; children: ReactNode }) {
   return (
     <div className="prompt">
-      <span className="eyebrow">{label}</span>
+      <div className="prompt-head">
+        <span className="eyebrow">{label}</span>
+        {expressionId && <FocusPin expressionId={expressionId} />}
+      </div>
       {children}
     </div>
   )

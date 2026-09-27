@@ -8,6 +8,8 @@ import type { Answer, DirectionCard, Session } from '../domain/types.ts'
 
 export interface Progress {
   introduced: Set<string>
+  /** Focus Expressions, in the order they were put in Focus. */
+  focus: Set<string>
   cards: DirectionCard[]
   speakCards: Map<string, DirectionCard>
   learned: Set<string>
@@ -39,14 +41,15 @@ function useNow(intervalMs = 60_000) {
 export function useProgress(): Progress | undefined {
   const now = useNow()
   const raw = useLiveQuery(async () => {
-    const [introductions, cards, answers, sessions, stars] = await Promise.all([
+    const [introductions, cards, answers, sessions, stars, focus] = await Promise.all([
       db.introductions.toArray(),
       db.cards.toArray(),
       db.answers.toArray(),
       db.sessions.toArray(),
       db.stars.toArray(),
+      db.focus.orderBy('at').toArray(),
     ])
-    return { introductions, cards, answers, sessions, stars }
+    return { introductions, cards, answers, sessions, stars, focus }
   }, [])
   if (!raw) return undefined
 
@@ -54,9 +57,11 @@ export function useProgress(): Progress | undefined {
   const known = new Set(catalog.map((e) => e.id))
   const cards = raw.cards.filter((c) => known.has(c.expressionId))
   const introduced = new Set(raw.introductions.map((i) => i.expressionId).filter((id) => known.has(id)))
+  const focus = new Set(raw.focus.map((f) => f.expressionId).filter((id) => known.has(id)))
   const speakCards = new Map(cards.filter((c) => c.direction === 'speak').map((c) => [c.expressionId, c]))
   return {
     introduced,
+    focus,
     cards,
     speakCards,
     learned: new Set([...speakCards.values()].filter(isLearned).map((c) => c.expressionId)),
@@ -64,7 +69,7 @@ export function useProgress(): Progress | undefined {
     sessions: raw.sessions,
     stars: new Map(raw.stars.map((s) => [s.topic, s.stars])),
     dueCount: dueCards(cards, now).length,
-    nextBatchSize: nextBatch(catalog, introduced).length,
+    nextBatchSize: nextBatch(catalog, introduced, focus).length,
     xp: totalXp(raw.answers, cards, raw.sessions),
     streak: streaks(raw.sessions, now),
   }

@@ -82,7 +82,7 @@ export function SpeakQuestion({ expressionId, introduced, options: fixed, onAnsw
   const [stage, setStage] = useState<'recall' | 'pick' | 'done'>('recall')
   return (
     <>
-      <Prompt label="Say it in Korean">
+      <Prompt label="Say it in Korean" expressionId={expressionId}>
         <p className="english-prompt">{e.english}</p>
         {e.usageNote && <p className="muted small">{e.usageNote}</p>}
       </Prompt>
@@ -116,7 +116,7 @@ export function ListenQuestion({ expressionId, introduced, options: fixed, onAns
   }, [expressionId])
   return (
     <>
-      <Prompt label="What does it mean?">
+      <Prompt label="What does it mean?" expressionId={expressionId}>
         <PlayButtons expressionId={expressionId} size="large" />
       </Prompt>
       <Choices
@@ -139,7 +139,7 @@ export function SeeQuestion({ expressionId, introduced, options: fixed, onAnswer
   const [done, setDone] = useState(false)
   return (
     <>
-      <Prompt label="Which one matches the picture?">
+      <Prompt label="Which one matches the picture?" expressionId={expressionId}>
         <Illustration expressionId={expressionId} size="large" />
       </Prompt>
       <Choices

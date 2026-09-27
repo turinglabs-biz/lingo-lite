@@ -1,21 +1,69 @@
+import { MAX_NUMBERS_PER_BATCH } from '../catalog/order.ts'
 import type { Answer, DirectionCard, Session } from './types.ts'
-import { isLearned } from './scheduler.ts'
+import { shuffle } from './choices.ts'
+import { isLearned, retrievability } from './scheduler.ts'
 
 export const BATCH_SIZE = 15
+/** At most this many not-yet-introduced Focus Expressions join a Batch, picked at random. */
+export const FOCUS_PER_BATCH = 5
 export const REVIEW_SESSION_SIZE = 20
 export const BACKLOG_WARNING = 50
 export const IDLE_GAP_MS = 60_000
 
 export const XP = { answer: 1, learned: 2, session: 5 } as const
 
-/** The next Batch: the first Expressions in Catalog order that were never introduced. */
-export function nextBatch<T extends { id: string }>(ordered: T[], introduced: Set<string>, size = BATCH_SIZE): T[] {
-  return ordered.filter((e) => !introduced.has(e.id)).slice(0, size)
+/**
+ * The next Batch: up to FOCUS_PER_BATCH never-introduced Focus Expressions picked at random, then the first
+ * never-introduced Expressions in Catalog order, with at most MAX_NUMBERS_PER_BATCH Numbers Expressions in all. The
+ * Batch keeps Catalog order.
+ */
+export function nextBatch<T extends { id: string; topic: string }>(
+  ordered: T[],
+  introduced: Set<string>,
+  focus: Set<string> = new Set(),
+  random = Math.random,
+  size = BATCH_SIZE,
+): T[] {
+  const fresh = ordered.filter((e) => !introduced.has(e.id))
+  const chosen = new Set<T>()
+  let numbers = 0
+  const take = (e: T) => {
+    if (e.topic === 'numbers') {
+      if (numbers >= MAX_NUMBERS_PER_BATCH) return false
+      numbers++
+    }
+    chosen.add(e)
+    return true
+  }
+  let picked = 0
+  for (const e of shuffle(fresh.filter((e) => focus.has(e.id)), random)) {
+    if (picked >= Math.min(FOCUS_PER_BATCH, size)) break
+    if (take(e)) picked++
+  }
+  for (const e of fresh) {
+    if (chosen.size >= size) break
+    if (!chosen.has(e)) take(e)
+  }
+  return fresh.filter((e) => chosen.has(e))
 }
 
-/** Due Directions, most overdue first. */
-export function dueCards(cards: DirectionCard[], now: number, limit = Infinity): DirectionCard[] {
-  return cards.filter((c) => c.due <= now).sort((a, b) => a.due - b.due).slice(0, limit)
+/** Due Directions, those of Focus Expressions first, each group most overdue first. */
+export function dueCards(cards: DirectionCard[], now: number, limit = Infinity, focus: Set<string> = new Set()): DirectionCard[] {
+  const due = cards.filter((c) => c.due <= now).sort((a, b) => a.due - b.due)
+  return [...due.filter((c) => focus.has(c.expressionId)), ...due.filter((c) => !focus.has(c.expressionId))].slice(0, limit)
+}
+
+/**
+ * A Focus session: the Directions of Focus Expressions (only those that exist, so introduced and unlocked), due or
+ * not, least likely to be remembered right now first.
+ */
+export function focusQueue(cards: DirectionCard[], focus: Set<string>, now: number, limit = REVIEW_SESSION_SIZE): DirectionCard[] {
+  return cards
+    .filter((c) => focus.has(c.expressionId))
+    .map((c) => ({ c, r: retrievability(c, now) }))
+    .sort((a, b) => a.r - b.r)
+    .slice(0, limit)
+    .map(({ c }) => c)
 }
 
 /** Stars a Topic has earned right now (before applying "never drops"). */
