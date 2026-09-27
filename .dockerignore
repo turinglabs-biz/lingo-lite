@@ -1,0 +1,13 @@
+node_modules
+dist
+dev-dist
+voice-test
+.env
+*.local
+.DS_Store
+.git
+.scratch
+.claude
+.agents
+.pi
+docs

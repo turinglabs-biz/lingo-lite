@@ -1,0 +1,544 @@
+<title>Korean Voice Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root {
+  --paper: #f5f7f4;
+  --surface: #ffffff;
+  --ink: #17201c;
+  --muted: #5b6862;
+  --line: #dde3df;
+  --jade: #1f6f5c;
+  --jade-soft: #e0eee8;
+  --on-jade: #ffffff;
+  --seal: #b3402c;
+  --seal-soft: #f7e4df;
+  --warn: #9a6a00;
+  --sans: 'IBM Plex Sans', 'IBM Plex Sans KR', -apple-system, 'Segoe UI', sans-serif;
+  --ko: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #101513;
+    --surface: #18201c;
+    --ink: #e5ebe7;
+    --muted: #93a29b;
+    --line: #29332f;
+    --jade: #5cc3a4;
+    --jade-soft: #1a2f28;
+    --on-jade: #0b1a15;
+    --seal: #f08a73;
+    --seal-soft: #3b221c;
+    --warn: #e0b24a;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #101513;
+  --surface: #18201c;
+  --ink: #e5ebe7;
+  --muted: #93a29b;
+  --line: #29332f;
+  --jade: #5cc3a4;
+  --jade-soft: #1a2f28;
+  --on-jade: #0b1a15;
+  --seal: #f08a73;
+  --seal-soft: #3b221c;
+  --warn: #e0b24a;
+}
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font: 15px/1.5 var(--sans); }
+.wrap { max-width: 1080px; margin: 0 auto; padding-inline: 16px; padding-block: 24px 64px; }
+[lang="ko"], .ko { font-family: var(--ko); }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+h1 { font-size: 1.9rem; font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: 1.25rem; font-weight: 600; }
+h3 { font-size: 1.05rem; font-weight: 600; }
+p { margin: 0; }
+.muted { color: var(--muted); }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.eyebrow { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
+
+header.top { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: flex-end; justify-content: space-between; }
+header.top .lede { max-width: 62ch; margin-top: 6px; color: var(--muted); }
+.status { font-size: 0.8rem; padding: 4px 10px; border-radius: 999px; background: var(--jade-soft); color: var(--jade); white-space: nowrap; }
+.status.local { background: var(--seal-soft); color: var(--seal); }
+
+nav.tabs { display: flex; gap: 4px; margin: 24px 0 20px; border-bottom: 1px solid var(--line); }
+nav.tabs a { padding: 10px 14px; text-decoration: none; color: var(--muted); font-weight: 500; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+nav.tabs a.active { color: var(--ink); border-bottom-color: var(--jade); }
+nav.tabs .count { font-family: var(--mono); font-size: 0.78rem; margin-left: 6px; color: var(--muted); }
+
+section.panel { display: flex; flex-direction: column; gap: 20px; }
+
+/* Picks */
+.picks { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.pick { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; }
+.pick .who { font-weight: 600; }
+.pick.set { border-color: var(--seal); }
+.pick .cost { font-family: var(--mono); font-size: 0.85rem; }
+
+/* Comparison table */
+.table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 760px; font-size: 0.9rem; }
+th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+tr:last-child td { border-bottom: none; }
+td.num, th.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+td .sub { display: block; font-size: 0.78rem; color: var(--muted); font-family: var(--mono); }
+.stars-inline { font-family: var(--mono); color: var(--seal); }
+
+/* Model cards */
+.model { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+.model > header { padding: 14px 16px; display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; justify-content: space-between; border-bottom: 1px solid var(--line); }
+.model > header .meta { font-family: var(--mono); font-size: 0.8rem; color: var(--muted); }
+.voices { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.voice { padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--line); }
+@media (min-width: 640px) { .voice { border-top: none; } .voice + .voice { border-left: 1px solid var(--line); } }
+.voice-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.voice-name { font-weight: 600; overflow-wrap: anywhere; }
+.chip { font-size: 0.72rem; padding: 2px 8px; border-radius: 999px; background: var(--jade-soft); color: var(--jade); font-weight: 600; letter-spacing: 0.02em; }
+.chip.male { background: var(--seal-soft); color: var(--seal); }
+.phrases { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.phrase { display: flex; align-items: center; gap: 10px; }
+.phrase .txt { flex: 1; min-width: 0; line-height: 1.3; }
+.phrase .rom { font-weight: 500; }
+.phrase .en { font-size: 0.8rem; color: var(--muted); }
+.phrase .dur { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+.play { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); background: var(--paper); display: inline-grid; place-items: center; flex-shrink: 0; font-size: 0.8rem; }
+.play.slow { font-size: 0.66rem; font-family: var(--mono); font-weight: 600; }
+.play.playing { background: var(--jade); color: var(--on-jade); border-color: var(--jade); }
+.row-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.btn { border: 1px solid var(--line); background: var(--paper); border-radius: 8px; padding: 6px 12px; font-size: 0.85rem; font-weight: 500; }
+.btn.primary { background: var(--jade); color: var(--on-jade); border-color: var(--jade); }
+.btn.seal { border-color: var(--seal); color: var(--seal); background: transparent; }
+.btn.seal.on { background: var(--seal); color: var(--surface); }
+.rating { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.rating button { border: none; background: var(--paper); width: 32px; height: 30px; font-family: var(--mono); font-size: 0.85rem; border-right: 1px solid var(--line); }
+.rating button:last-child { border-right: none; }
+.rating button.on { background: var(--jade); color: var(--on-jade); }
+input.note { width: 100%; border: 1px solid var(--line); background: var(--paper); color: var(--ink); border-radius: 8px; padding: 7px 10px; font: inherit; font-size: 0.85rem; }
+.failed { padding: 14px 16px; color: var(--warn); font-size: 0.9rem; }
+
+/* Catalog */
+.decisions { display: flex; flex-direction: column; gap: 16px; }
+.decision-group { display: flex; flex-direction: column; gap: 6px; }
+.decision { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+.decision .txt { flex: 1 1 320px; min-width: 0; }
+.decision .rec { font-size: 0.75rem; color: var(--muted); }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.seg button { border: none; background: var(--paper); padding: 5px 12px; font-size: 0.82rem; font-weight: 500; }
+.seg button + button { border-left: 1px solid var(--line); }
+.seg button.on.yes { background: var(--jade); color: var(--on-jade); }
+.seg button.on.no { background: var(--seal); color: var(--surface); }
+
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; position: sticky; top: env(safe-area-inset-top, 0px); background: var(--paper); padding-block: 10px; z-index: 2; border-bottom: 1px solid var(--line); }
+.progress { font-family: var(--mono); font-size: 0.85rem; }
+.bar { height: 4px; background: var(--line); border-radius: 2px; overflow: hidden; width: 160px; display: inline-block; vertical-align: middle; margin-left: 8px; }
+.bar i { display: block; height: 100%; background: var(--jade); }
+.topic { display: flex; flex-direction: column; gap: 6px; }
+.topic h3 { margin-top: 12px; display: flex; gap: 8px; align-items: baseline; }
+.expr { display: grid; grid-template-columns: 34px 1fr auto; gap: 4px 12px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+.expr.ok { border-left: 3px solid var(--jade); }
+.expr.flag { border-left: 3px solid var(--seal); }
+.expr .batch { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); text-align: center; line-height: 1.1; }
+.expr .batch b { display: block; font-size: 0.95rem; color: var(--ink); font-weight: 500; }
+.expr .body { min-width: 0; }
+.expr .rom { font-weight: 600; font-size: 1.05rem; overflow-wrap: anywhere; }
+.expr .hangul { color: var(--muted); }
+.expr .en { font-size: 0.9rem; }
+.expr .note { font-size: 0.8rem; color: var(--muted); }
+.expr .idtag { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+.expr .acts { display: flex; gap: 6px; align-items: center; }
+.expr .flagnote { grid-column: 2 / -1; }
+.mark { width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--line); background: var(--paper); font-size: 0.95rem; }
+.mark.ok.on { background: var(--jade); color: var(--on-jade); border-color: var(--jade); }
+.mark.flag.on { background: var(--seal); color: var(--surface); border-color: var(--seal); }
+@media (max-width: 520px) {
+  .expr { grid-template-columns: 1fr auto; }
+  .expr .batch { display: none; }
+  .expr .flagnote { grid-column: 1 / -1; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <p class="eyebrow">Korean Made Easy · ticket 01</p>
+      <h1>Voice Lab</h1>
+      <p class="lede">Listen to every voice on the same five Expressions, rate them, and pick one female and one male Voice for all Clips. Then review the Catalog below.</p>
+    </div>
+    <span class="status local" id="save-status">Connecting…</span>
+  </header>
+
+  <nav class="tabs" aria-label="Sections">
+    <a href="#voices" data-tab="voices">Voices<span class="count" id="voices-count"></span></a>
+    <a href="#catalog" data-tab="catalog">Catalog<span class="count" id="catalog-count"></span></a>
+  </nav>
+
+  <section class="panel" id="panel-voices">
+    <div class="picks" id="picks"></div>
+    <div>
+      <h2>Price and speed</h2>
+      <p class="muted" style="margin:4px 0 10px">Test cost is what OpenRouter actually billed for these clips. The full-Catalog figure scales that to all <span id="catalog-chars" class="mono"></span> Hangul characters, per Voice. Slow Clips are made locally with ffmpeg and cost nothing.</p>
+      <div class="table-scroll"><table id="compare"></table></div>
+    </div>
+    <div id="models" style="display:flex;flex-direction:column;gap:16px"></div>
+  </section>
+
+  <section class="panel" id="panel-catalog" hidden>
+    <div>
+      <h2>Open decisions</h2>
+      <p class="muted" style="margin:4px 0 10px">From the independent review of the Catalog. The recommendation is preselected in grey; tap Accept or Reject to decide.</p>
+      <div class="decisions" id="decisions"></div>
+    </div>
+    <div>
+      <div class="toolbar">
+        <div class="seg" id="filter">
+          <button type="button" data-f="all" class="on yes">All</button>
+          <button type="button" data-f="todo">Not reviewed</button>
+          <button type="button" data-f="flag">Flagged</button>
+        </div>
+        <span class="progress" id="progress"></span>
+      </div>
+      <div id="catalog" style="display:flex;flex-direction:column;gap:6px"></div>
+    </div>
+  </section>
+</div>
+
+<script type="application/json" id="data">__DATA__</script>
+<script>
+(() => {
+  const DATA = JSON.parse(document.getElementById('data').textContent)
+  const $ = (sel, el = document) => el.querySelector(sel)
+  const h = (tag, attrs = {}, ...kids) => {
+    const el = document.createElement(tag)
+    for (const [k, v] of Object.entries(attrs)) {
+      if (v == null || v === false) continue
+      if (k === 'class') el.className = v
+      else if (k.startsWith('on')) el.addEventListener(k.slice(2), v)
+      else el.setAttribute(k, v === true ? '' : v)
+    }
+    for (const kid of kids.flat()) if (kid != null && kid !== false) el.append(kid)
+    return el
+  }
+  const usd = (n) => (n >= 0.01 ? '$' + n.toFixed(2) : n >= 0.0001 ? '$' + n.toFixed(4) : '$' + n.toFixed(6))
+  const docId = (s) => s.replace(/[^A-Za-z0-9_\-.~:@+]+/g, '_')
+  const voiceKey = (label, voice) => docId(label + '__' + voice)
+
+  // ---------- State: db when available, else this browser only ----------
+  const state = { ratings: {}, picks: {}, marks: {}, decisions: {} }
+  const COLLECTIONS = { ratings: 'voiceRatings', marks: 'catalogMarks', decisions: 'flagDecisions' }
+  let db = null
+  const local = {
+    load() { try { Object.assign(state, JSON.parse(localStorage.getItem('voice-lab') || '{}')) } catch {} },
+    save() { try { localStorage.setItem('voice-lab', JSON.stringify(state)) } catch {} },
+  }
+  const setStatus = (text, isLocal) => { const s = $('#save-status'); s.textContent = text; s.classList.toggle('local', !!isLocal) }
+
+  const pending = new Map()
+  function save(kind, id, value) {
+    if (kind === 'picks') state.picks = value
+    else if (value == null) delete state[kind][id]
+    else state[kind][id] = value
+    refresh()
+    if (!db) { local.save(); return }
+    const path = kind === 'picks' ? 'picks/current' : COLLECTIONS[kind] + '/' + id
+    // Coalesce bursts (typing) into one write per pause, one write at a time per document.
+    clearTimeout(pending.get(path))
+    pending.set(path, setTimeout(async () => {
+      const body = kind === 'picks' ? state.picks : state[kind][id]
+      try {
+        setStatus('Saving…')
+        if (body == null) await db.doc(path).delete()
+        else await db.doc(path).set(body)
+        setStatus('Saved · Claude can read your choices')
+      } catch (e) {
+        setStatus('Not saved: ' + (e && e.code || 'error'), true)
+      }
+    }, 600))
+  }
+
+  function subscribe() {
+    for (const [kind, coll] of Object.entries(COLLECTIONS)) {
+      db.collection(coll).onSnapshot((snap) => {
+        const next = {}
+        for (const d of snap.docs) next[d.id] = d.data()
+        state[kind] = next
+        refresh()
+      }, () => setStatus('Live updates stopped; reload the page', true))
+    }
+    db.doc('picks/current').onSnapshot((snap) => { state.picks = snap.exists ? snap.data() : {}; refresh() }, () => {})
+  }
+
+  // ---------- Audio ----------
+  const audio = new Audio()
+  let playingBtn = null
+  let queue = []
+  audio.addEventListener('ended', () => { setPlaying(null); if (queue.length) queue.shift()() })
+  function setPlaying(btn) { if (playingBtn) playingBtn.classList.remove('playing'); playingBtn = btn; if (btn) btn.classList.add('playing') }
+  function play(src, btn) {
+    queue = []
+    audio.src = src
+    setPlaying(btn)
+    audio.play().catch(() => setPlaying(null))
+  }
+  function playAll(items) {
+    queue = items.map(([src, btn]) => () => { audio.src = src; setPlaying(btn); audio.play().catch(() => setPlaying(null)) })
+    queue.shift()()
+  }
+  const koVoice = () => (typeof speechSynthesis !== 'undefined' ? speechSynthesis.getVoices().find((v) => v.lang && v.lang.startsWith('ko')) : null)
+  function speakDevice(text, rate) {
+    if (typeof speechSynthesis === 'undefined') return
+    speechSynthesis.cancel()
+    const u = new SpeechSynthesisUtterance(text)
+    u.lang = 'ko-KR'
+    const v = koVoice(); if (v) u.voice = v
+    u.rate = rate
+    speechSynthesis.speak(u)
+  }
+
+  // ---------- Voices tab ----------
+  const clipsFor = (label, voice) => DATA.clips.filter((c) => c.label === label && c.voice === voice)
+  const voicesOf = (label) => [...new Map(DATA.clips.filter((c) => c.label === label).map((c) => [c.voice, c])).values()]
+  const modelOf = (label) => DATA.models.find((m) => m.label === label)
+
+  function renderPicks() {
+    const el = $('#picks'); el.replaceChildren()
+    for (const gender of ['female', 'male']) {
+      const key = state.picks[gender]
+      const [label, voice] = key ? key.split('|') : []
+      const voiceName = key ? (DATA.clips.find((c) => c.label === label && c.voice === voice) || {}).voiceName || voice : ''
+      const m = label && modelOf(label)
+      el.append(h('div', { class: 'pick' + (key ? ' set' : '') },
+        h('span', { class: 'eyebrow' }, gender === 'female' ? 'Female Voice' : 'Male Voice'),
+        key ? h('span', { class: 'who' }, voiceName) : h('span', { class: 'muted' }, 'Not picked yet'),
+        key ? h('span', { class: 'muted' }, label) : null,
+        m ? h('span', { class: 'cost' }, 'Full Catalog: ' + usd(m.projectedPerVoice)) : null,
+      ))
+    }
+    const total = ['female', 'male'].reduce((s, g) => { const k = state.picks[g]; const m = k && modelOf(k.split('|')[0]); return s + (m ? m.projectedPerVoice : 0) }, 0)
+    el.append(h('div', { class: 'pick' },
+      h('span', { class: 'eyebrow' }, 'Both Voices, whole Catalog'),
+      h('span', { class: 'who mono' }, total ? usd(total) : '—'),
+      h('span', { class: 'muted' }, 'Normal Clips only; Slow Clips are free.'),
+    ))
+  }
+
+  function renderCompare() {
+    const t = $('#compare'); t.replaceChildren()
+    t.append(h('thead', {}, h('tr', {},
+      h('th', {}, 'Model'), h('th', {}, 'List price'), h('th', { class: 'num' }, 'Test cost'),
+      h('th', { class: 'num' }, 'Full Catalog / Voice'), h('th', { class: 'num' }, 'Median wait'), h('th', {}, 'Your ratings'))))
+    const tb = h('tbody')
+    for (const m of DATA.models) {
+      const ratings = voicesOf(m.label).map((c) => (state.ratings[voiceKey(m.label, c.voice)] || {}).rating).filter(Boolean)
+      tb.append(h('tr', {},
+        h('td', {}, m.label, h('span', { class: 'sub' }, m.model)),
+        h('td', {}, h('span', { class: 'mono', style: 'font-size:0.82rem' }, m.listPrice)),
+        h('td', { class: 'num' }, usd(m.testCost), h('span', { class: 'sub' }, m.testClips + ' clips')),
+        h('td', { class: 'num' }, m.testClips ? usd(m.projectedPerVoice) : '—'),
+        h('td', { class: 'num' }, m.testClips ? (m.medianLatencyMs / 1000).toFixed(1) + ' s' : '—'),
+        h('td', {}, ratings.length ? h('span', { class: 'stars-inline' }, ratings.map((r) => r + '/5').join(' · ')) : h('span', { class: 'muted' }, m.failed && !m.testClips ? 'failed' : 'not rated')),
+      ))
+    }
+    t.append(tb)
+  }
+
+  const voiceEls = new Map()
+  function renderModels() {
+    const root = $('#models'); root.replaceChildren()
+    for (const m of DATA.models) {
+      const card = h('article', { class: 'model' },
+        h('header', {}, h('h3', {}, m.label), h('span', { class: 'meta' }, m.model + ' · ' + m.listPrice),
+          m.note ? h('p', { class: 'muted', style: 'flex-basis:100%;font-size:0.85rem' }, m.note) : null))
+      if (!m.testClips) { card.append(h('p', { class: 'failed' }, 'No clips: ' + (m.error || 'the model returned an error.'))); root.append(card); continue }
+      const grid = h('div', { class: 'voices' })
+      for (const v of voicesOf(m.label)) {
+        const key = voiceKey(m.label, v.voice)
+        const clips = clipsFor(m.label, v.voice)
+        const list = h('ul', { class: 'phrases' })
+        const playable = []
+        for (const p of DATA.phrases) {
+          const c = clips.find((x) => x.phrase === p.id); if (!c) continue
+          const bn = h('button', { type: 'button', class: 'play', 'aria-label': 'Play ' + p.romanization, onclick: (e) => play(c.src, e.currentTarget) }, '▶')
+          const bs = h('button', { type: 'button', class: 'play slow', 'aria-label': 'Play slowly', onclick: (e) => play(c.slow, e.currentTarget) }, '.75')
+          playable.push([c.src, bn])
+          list.append(h('li', { class: 'phrase' }, bn, bs,
+            h('span', { class: 'txt' }, h('span', { class: 'rom' }, p.romanization), ' ', h('span', { class: 'ko muted', lang: 'ko' }, p.hangul),
+              h('span', { class: 'en', style: 'display:block' }, p.english)),
+            h('span', { class: 'dur' }, c.duration ? c.duration.toFixed(1) + 's' : '')))
+        }
+        const rating = h('div', { class: 'rating', role: 'group', 'aria-label': 'Rating' },
+          [1, 2, 3, 4, 5].map((n) => h('button', { type: 'button', 'data-n': n, onclick: () => {
+            const cur = state.ratings[key] || {}
+            save('ratings', key, { ...cur, label: m.label, voice: v.voice, model: m.model, rating: cur.rating === n ? null : n })
+          } }, String(n))))
+        const note = h('input', { class: 'note', id: 'note-' + key, placeholder: 'Notes: accent, clarity, naturalness…', oninput: (e) => {
+          const cur = state.ratings[key] || {}
+          save('ratings', key, { ...cur, label: m.label, voice: v.voice, model: m.model, note: e.target.value })
+        } })
+        const pickKey = m.label + '|' + v.voice
+        const pickBtns = (v.gender === 'unknown' ? ['female', 'male'] : [v.gender]).map((g) => {
+          const b = h('button', { type: 'button', class: 'btn seal', onclick: () => {
+            save('picks', null, { ...state.picks, [g]: state.picks[g] === pickKey ? null : pickKey })
+          } })
+          b.dataset.gender = g
+          return b
+        })
+        voiceEls.set(key, { rating, note, pickBtns, pickKey })
+        grid.append(h('div', { class: 'voice' },
+          h('div', { class: 'voice-head' },
+            h('span', { class: 'voice-name' }, v.voiceName || v.voice),
+            h('span', { class: 'chip' + (v.gender === 'male' ? ' male' : '') }, v.gender === 'unknown' ? 'gender not stated' : v.gender)),
+          list,
+          h('div', { class: 'row-actions' },
+            h('button', { type: 'button', class: 'btn primary', onclick: () => playAll(playable) }, 'Play all 5'),
+            rating, ...pickBtns),
+          note))
+      }
+      card.append(grid)
+      root.append(card)
+    }
+  }
+
+  function refreshVoices() {
+    for (const [key, el] of voiceEls) {
+      const r = state.ratings[key] || {}
+      el.rating.querySelectorAll('button').forEach((b) => b.classList.toggle('on', Number(b.dataset.n) <= (r.rating || 0)))
+      if (document.activeElement !== el.note) el.note.value = r.note || ''
+      for (const b of el.pickBtns) {
+        const g = b.dataset.gender
+        const picked = state.picks[g] === el.pickKey
+        b.classList.toggle('on', picked)
+        b.textContent = picked ? '✓ Picked ' + g : 'Pick as ' + g
+      }
+    }
+    renderPicks(); renderCompare()
+  }
+
+  // ---------- Catalog tab ----------
+  const decisionEls = new Map()
+  function renderDecisions() {
+    const root = $('#decisions'); root.replaceChildren()
+    for (const group of ['Corrections', 'Rule', 'Additions', 'Cuts']) {
+      const g = h('div', { class: 'decision-group' }, h('span', { class: 'eyebrow' }, group))
+      for (const d of DATA.decisions.filter((x) => x.group === group)) {
+        const seg = h('div', { class: 'seg' },
+          h('button', { type: 'button', class: 'yes', onclick: () => save('decisions', d.id, { decision: state.decisions[d.id]?.decision === 'accept' ? null : 'accept', text: d.text }) }, group === 'Cuts' ? 'Cut' : group === 'Additions' ? 'Add' : 'Accept'),
+          h('button', { type: 'button', class: 'no', onclick: () => save('decisions', d.id, { decision: state.decisions[d.id]?.decision === 'reject' ? null : 'reject', text: d.text }) }, group === 'Cuts' ? 'Keep' : group === 'Additions' ? 'Skip' : 'Reject'))
+        const speak = d.hangul ? h('button', { type: 'button', class: 'play', 'aria-label': 'Play with device voice', onclick: () => speakDevice(d.hangul, 0.9) }, '▶') : null
+        decisionEls.set(d.id, seg)
+        const recWord = d.rec === 'accept' ? (group === 'Cuts' ? 'cut' : group === 'Additions' ? 'add' : 'accept') : (group === 'Cuts' ? 'keep' : 'reject')
+        g.append(h('div', { class: 'decision' },
+          speak,
+          h('div', { class: 'txt' },
+            d.rom ? h('div', {}, h('b', {}, d.rom), ' ', h('span', { class: 'ko muted', lang: 'ko' }, d.hangul), ' — ', d.text) : h('div', {}, d.text),
+            h('div', { class: 'rec' }, 'Recommended: ' + recWord)),
+          seg))
+      }
+      root.append(g)
+    }
+  }
+  function refreshDecisions() {
+    for (const [id, seg] of decisionEls) {
+      const dec = state.decisions[id]?.decision
+      const d = DATA.decisions.find((x) => x.id === id)
+      const [yes, no] = seg.querySelectorAll('button')
+      yes.classList.toggle('on', dec === 'accept'); no.classList.toggle('on', dec === 'reject')
+      yes.style.outline = !dec && d.rec === 'accept' ? '1px dashed var(--muted)' : ''
+      no.style.outline = !dec && d.rec !== 'accept' ? '1px dashed var(--muted)' : ''
+    }
+  }
+
+  let filter = 'all'
+  const exprEls = new Map()
+  function renderCatalog() {
+    const root = $('#catalog'); root.replaceChildren()
+    const hasDevice = typeof speechSynthesis !== 'undefined'
+    for (const t of DATA.topics) {
+      const items = DATA.catalog.filter((e) => e.topic === t.id).sort((a, b) => a.batch - b.batch)
+      const section = h('div', { class: 'topic' }, h('h3', {}, t.name, h('span', { class: 'mono muted', style: 'font-size:0.8rem;font-weight:400' }, items.length)))
+      for (const e of items) {
+        const ok = h('button', { type: 'button', class: 'mark ok', 'aria-label': 'Looks good', onclick: () => save('marks', e.id, state.marks[e.id]?.status === 'ok' ? null : { status: 'ok' }) }, '✓')
+        const fl = h('button', { type: 'button', class: 'mark flag', 'aria-label': 'Flag an issue', onclick: () => save('marks', e.id, state.marks[e.id]?.status === 'flag' ? null : { status: 'flag', note: state.marks[e.id]?.note || '' }) }, '⚑')
+        const note = h('input', { class: 'note flagnote', id: 'flag-' + e.id, placeholder: 'What is wrong with it?', oninput: (ev) => save('marks', e.id, { status: 'flag', note: ev.target.value }) })
+        const speak = hasDevice ? h('button', { type: 'button', class: 'play', 'aria-label': 'Play with device voice', title: 'Device voice (not the final Voice)', onclick: () => speakDevice(e.hangul, 0.9) }, '▶') : null
+        const row = h('div', { class: 'expr' },
+          h('div', { class: 'batch' }, 'batch', h('b', {}, e.batch)),
+          h('div', { class: 'body' },
+            h('div', { class: 'rom' }, e.romanization),
+            h('div', { class: 'hangul ko', lang: 'ko' }, e.hangul),
+            h('div', { class: 'en' }, e.english),
+            e.usageNote ? h('div', { class: 'note' }, e.usageNote) : null,
+            h('div', { class: 'idtag' }, e.id)),
+          h('div', { class: 'acts' }, speak, ok, fl),
+          note)
+        exprEls.set(e.id, { row, ok, fl, note })
+        section.append(row)
+      }
+      root.append(section)
+    }
+  }
+  function refreshCatalog() {
+    let reviewed = 0, flagged = 0
+    for (const [id, el] of exprEls) {
+      const m = state.marks[id]
+      const status = m?.status
+      if (status) reviewed++
+      if (status === 'flag') flagged++
+      el.row.classList.toggle('ok', status === 'ok'); el.row.classList.toggle('flag', status === 'flag')
+      el.ok.classList.toggle('on', status === 'ok'); el.fl.classList.toggle('on', status === 'flag')
+      el.note.hidden = status !== 'flag'
+      if (document.activeElement !== el.note) el.note.value = m?.note || ''
+      el.row.hidden = (filter === 'todo' && status) || (filter === 'flag' && status !== 'flag')
+    }
+    document.querySelectorAll('#catalog .topic').forEach((s) => { s.hidden = ![...s.querySelectorAll('.expr')].some((r) => !r.hidden) })
+    const total = DATA.catalog.length
+    $('#progress').replaceChildren(reviewed + ' / ' + total + ' reviewed' + (flagged ? ' · ' + flagged + ' flagged' : ''), h('span', { class: 'bar' }, h('i', { style: 'width:' + (reviewed / total * 100).toFixed(1) + '%' })))
+    $('#catalog-count').textContent = reviewed + '/' + total
+    const rated = Object.values(state.ratings).filter((r) => r.rating).length
+    $('#voices-count').textContent = rated + '/' + voiceEls.size
+  }
+  $('#filter').addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return
+    filter = b.dataset.f
+    $('#filter').querySelectorAll('button').forEach((x) => x.classList.toggle('on', x === b)); $('#filter').querySelectorAll('button').forEach((x) => x.classList.toggle('yes', x === b))
+    refreshCatalog()
+  })
+
+  function refresh() { refreshVoices(); refreshDecisions(); refreshCatalog() }
+
+  // ---------- Tabs ----------
+  function showTab() {
+    const tab = location.hash === '#catalog' ? 'catalog' : 'voices'
+    $('#panel-voices').hidden = tab !== 'voices'
+    $('#panel-catalog').hidden = tab !== 'catalog'
+    document.querySelectorAll('nav.tabs a').forEach((a) => a.classList.toggle('active', a.dataset.tab === tab))
+  }
+  window.addEventListener('hashchange', showTab)
+
+  // ---------- Boot ----------
+  $('#catalog-chars').textContent = DATA.catalogChars.toLocaleString('en-US')
+  renderModels(); renderDecisions(); renderCatalog()
+  local.load()
+  showTab(); refresh()
+  setStatus('Saved in this browser only', true)
+  const use = window.claude && window.claude.use
+  if (use) {
+    window.claude.use('db').then((d) => {
+      if (!d) return
+      db = d
+      setStatus('Saved · Claude can read your choices')
+      state.ratings = {}; state.marks = {}; state.decisions = {}; state.picks = {}
+      subscribe()
+    }).catch(() => {})
+  }
+})()
+</script>
