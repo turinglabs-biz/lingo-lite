@@ -1,8 +1,13 @@
+import { statSync } from 'node:fs'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vitest/config'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
+  define: {
+    // The Echo lab shows the speech engine's size before it downloads it (src/echo/store.ts).
+    __ECHO_ENGINE_BYTES__: statSync('node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.jsep.wasm').size,
+  },
   plugins: [
     react(),
     VitePWA({
@@ -26,6 +31,8 @@ export default defineConfig({
       workbox: {
         // Precache everything, including every Clip, so the app works fully offline after the first load.
         globPatterns: ['**/*.{js,css,html,svg,png,mp3,webmanifest}'],
+        // Echo's model and engine are downloaded only when the learner turns Echo on (ADR 0004).
+        globIgnores: ['models/**', '**/*.wasm', '**/*.onnx'],
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
       },
     }),

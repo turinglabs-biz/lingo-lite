@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { resetProgress } from '../progress/store.ts'
 import { updateSettings, useSettings } from '../settings.ts'
 
-export function SettingsScreen() {
+export function SettingsScreen({ onOpenEchoLab }: { onOpenEchoLab: () => void }) {
   const { hangulFirst } = useSettings()
   const [confirming, setConfirming] = useState(false)
   return (
@@ -17,6 +17,17 @@ export function SettingsScreen() {
             </span>
             <input id="hangul-first" type="checkbox" checked={hangulFirst} onChange={(e) => updateSettings({ hangulFirst: e.target.checked })} />
           </label>
+        </li>
+        <li>
+          <button type="button" className="row" onClick={onOpenEchoLab}>
+            <span>
+              Echo lab
+              <span className="muted small block">Test page: say an Expression back and get a score.</span>
+            </span>
+            <span className="muted" aria-hidden="true">
+              ›
+            </span>
+          </button>
         </li>
         <li className="row danger-zone">
           <span>

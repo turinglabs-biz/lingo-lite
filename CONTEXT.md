@@ -70,6 +70,14 @@ _Avoid_: Recognition, comprehension
 The Direction where the learner sees only the Illustration and picks the matching Korean from four options; the app checks the answer and then plays the phrase. It unlocks after the first successful Speak answer.
 _Avoid_: Picture naming, picture card
 
+**Echo**:
+An optional step where the learner says an Expression right after hearing its Clip and gets an Echo score. It is not a Direction: it has no schedule and never changes a Grade or XP; it only counts toward Practice time.
+_Avoid_: Shadowing, repeat, pronunciation check
+
+**Echo score**:
+How close the sounds of one Echo were to the Expression, as a percentage where 100% is as close as the app's own Voices. Each new Echo replaces it.
+_Avoid_: Accuracy, match, pronunciation score
+
 **Grade**:
 The outcome of one answer, checked by the app: Missed or Got it. Options never include an Expression that shares the answer's Illustration.
 
@@ -103,7 +111,7 @@ Points earned only by practising: 1 per answer, 2 when an Expression becomes Lea
 The number of consecutive days with at least one finished session.
 
 **Practice time**:
-Time spent actively answering, excluding any gap of more than 60 seconds without input.
+Time spent actively answering or echoing in sessions, excluding any gap of more than 60 seconds without input.
 _Avoid_: Time in app, screen time
 
 ### Reference

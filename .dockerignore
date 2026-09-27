@@ -11,3 +11,6 @@ voice-test
 .agents
 .pi
 docs
+public/models
+.cache
+.venv
