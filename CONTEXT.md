@@ -82,18 +82,25 @@ _Avoid_: Accuracy, match, pronunciation score
 The outcome of one answer, checked by the app: Missed or Got it. Options never include an Expression that shares the answer's Illustration.
 
 **Batch**:
-The next 15 new Expressions in Catalog order. The learner may take as many Batches per day as they like.
+The next 15 new Expressions: up to 5 not-yet-introduced Focus Expressions picked at random, then the rest in Catalog order. The learner may take as many Batches per day as they like.
 
 **Learn session**:
 A session introducing one Batch: first exposure with audio, one listen-and-pick check, then repeated Speak attempts.
 _Avoid_: Lesson
 
 **Review session**:
-A session of up to 20 due Directions, scheduled by spaced repetition.
+A session of up to 20 due Directions, scheduled by spaced repetition, with Focus Directions first.
+
+**Focus session**:
+A session of up to 20 Directions of Focus Expressions, due or not, started on demand, least likely to be remembered first. It is graded and counted like a Review session.
 
 **Learned**:
 An Expression whose Speak Direction is expected to be remembered for at least 7 days.
 _Avoid_: Known, mastered
+
+**Focus**:
+A mark the learner puts on an Expression they want to practise harder. All of a Focus Expression's Directions are scheduled for higher recall, go first in a Review session when due, and can be practised on demand. The learner can set or clear it wherever an Expression is shown.
+_Avoid_: Star, favourite, bookmark, pin
 
 ### Progress
 
@@ -117,5 +124,5 @@ _Avoid_: Time in app, screen time
 ### Reference
 
 **Phrasebook**:
-A browsable, searchable view of the whole Catalog for use on the trip, with playback and a large-text view to show to other people. Using it never changes Progress.
+A browsable, searchable view of the whole Catalog for use on the trip, with playback and a large-text view to show to other people. Using it never changes Progress, except for putting Expressions in Focus or taking them out.
 _Avoid_: Dictionary, reference mode
