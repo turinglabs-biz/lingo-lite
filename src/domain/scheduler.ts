@@ -6,7 +6,7 @@ export const LEARNED_STABILITY_DAYS = 7
 
 const scheduler = fsrs({ request_retention: 0.9, enable_fuzz: true, enable_short_term: true })
 
-const RATING: Record<Grade, FsrsGrade> = { missed: Rating.Again, hard: Rating.Hard, good: Rating.Good }
+const RATING: Record<Grade, FsrsGrade> = { missed: Rating.Again, good: Rating.Good }
 
 export const cardKey = (expressionId: string, direction: Direction) => `${expressionId}:${direction}`
 

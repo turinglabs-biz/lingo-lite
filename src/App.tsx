@@ -40,7 +40,7 @@ export function App() {
     setActive(summary ? { kind: 'summary', data: { ...summary, streak: Math.max(progress.streak.current, 1) } } : null)
   }
 
-  if (active?.kind === 'learn') return <LearnSession batch={active.batch} onEnd={endSession} />
+  if (active?.kind === 'learn') return <LearnSession batch={active.batch} introduced={progress.introduced} onEnd={endSession} />
   if (active?.kind === 'review') return <ReviewSession due={active.due} introduced={progress.introduced} onEnd={endSession} />
   if (active?.kind === 'summary')
     return (

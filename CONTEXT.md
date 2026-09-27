@@ -59,11 +59,11 @@ One of exactly two synthetic speakers (one female, one male) used for all Clips.
 One way of practising an Expression, with its own schedule. Every Expression has three: Speak, Listen and See.
 
 **Speak**:
-The Direction where the learner sees the English meaning, says the Korean aloud, reveals the answer and self-grades.
+The Direction where the learner sees the English meaning, says the Korean aloud, then picks it from four Korean options; the app checks the answer and plays the phrase.
 _Avoid_: Recall, production
 
 **Listen**:
-The Direction where the learner hears a Normal Clip, recalls the meaning, reveals it and self-grades. It unlocks after the first successful Speak answer.
+The Direction where the learner hears a Normal Clip and picks its meaning from four English options; the app checks the answer. It unlocks after the first successful Speak answer.
 _Avoid_: Recognition, comprehension
 
 **See**:
@@ -71,7 +71,7 @@ The Direction where the learner sees only the Illustration and picks the matchin
 _Avoid_: Picture naming, picture card
 
 **Grade**:
-The learner's self-assessment of one answer: Missed, Hard or Got it.
+The outcome of one answer, checked by the app: Missed or Got it. Options never include an Expression that shares the answer's Illustration.
 
 **Batch**:
 The next 15 new Expressions in Catalog order. The learner may take as many Batches per day as they like.

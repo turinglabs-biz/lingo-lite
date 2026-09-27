@@ -82,7 +82,7 @@ export function Stats({ progress }: { progress: Progress }) {
           <span>Listen-and-pick · {acc.check.answers}</span>
         </div>
       </div>
-      <p className="muted small">Speak, Listen and See are self-graded; Listen-and-pick is checked by the app.</p>
+      <p className="muted small">Every answer is checked by the app. Listen-and-pick is the check in Learn sessions.</p>
 
       <h2>Activity</h2>
       <div className="heatmap" role="img" aria-label={`Answers per day over the last ${WEEKS} weeks`}>

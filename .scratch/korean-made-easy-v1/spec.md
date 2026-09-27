@@ -148,6 +148,15 @@ Playback rules:
 - Existing Progress gets See cards for every Expression that already has Listen unlocked (a Dexie upgrade).
 - A "name what you see" card with pictures alone as the only prompt for Speak was rejected; the English prompt stays for Speak.
 
+## Checked answers (added 2026-09-27)
+
+Every question is now checked by the app. Self-grading (Missed / Hard / Got it) is gone.
+- **Speak:** English prompt → say it aloud → "I said it, show options" → pick the Korean from four → the phrase plays.
+- **Listen:** the Clip plays → pick the English from four.
+- **See:** the Illustration → pick the Korean from four → the phrase plays.
+- Options come from `choiceOptions`: same Topic first, then introduced Expressions, never Expressions that share the Illustration.
+- Right = Got it (FSRS Good), wrong = Missed (FSRS Again). See ADR 0003.
+
 ## Tickets
 
 See `issues/`. Tickets 01 and 02 can run in parallel. Everything else depends on them or on ticket 04.

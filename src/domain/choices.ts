@@ -13,11 +13,11 @@ interface Candidate {
 }
 
 /**
- * Four options for a See card: the target plus three distractors. Expressions sharing the target's Illustration
- * are never distractors (they would also be correct). Distractors come from the same Topic first, then from
+ * Four options for a question: the target plus three distractors. Expressions sharing the target's Illustration
+ * mean the same thing, so they are never distractors (they would also be correct). Distractors come from the same Topic first, then from
  * `preferred` (e.g. already introduced Expressions), then from anything else.
  */
-export function seeOptions(
+export function choiceOptions(
   target: Candidate,
   candidates: Candidate[],
   excluded: Set<string>,

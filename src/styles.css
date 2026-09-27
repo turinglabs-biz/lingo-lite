@@ -458,30 +458,6 @@ h2 {
   border: 1px solid var(--line);
   border-radius: var(--radius);
 }
-.grades {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-}
-.grade {
-  border: none;
-  border-radius: 12px;
-  padding: 16px 8px;
-  font-weight: 600;
-  font-size: 1rem;
-}
-.grade.missed {
-  background: var(--seal-soft);
-  color: var(--seal);
-}
-.grade.hard {
-  background: var(--surface);
-  border: 1px solid var(--line);
-}
-.grade.good {
-  background: var(--accent);
-  color: var(--on-accent);
-}
 .options {
   display: flex;
   flex-direction: column;

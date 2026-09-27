@@ -4,7 +4,7 @@ import { afterSpeakGrade, planLearnSession, SPEAK_ROUNDS } from './learnPlan.ts'
 const ids = Array.from({ length: 15 }, (_, i) => `e${i}`)
 
 describe('planLearnSession', () => {
-  const steps = planLearnSession(ids, ['x1', 'x2', 'x3'])
+  const steps = planLearnSession(ids)
 
   it('shows each Expression before checking it', () => {
     for (const id of ids) {
@@ -12,14 +12,6 @@ describe('planLearnSession', () => {
       const checked = steps.findIndex((s) => s.kind === 'check' && s.id === id)
       expect(shown).toBeGreaterThanOrEqual(0)
       expect(checked).toBeGreaterThan(shown)
-    }
-  })
-
-  it('gives every check 4 distinct options including the answer', () => {
-    for (const s of steps) {
-      if (s.kind !== 'check') continue
-      expect(new Set(s.options).size).toBe(4)
-      expect(s.options).toContain(s.id)
     }
   })
 
@@ -31,14 +23,14 @@ describe('planLearnSession', () => {
   })
 
   it('handles a short final Batch', () => {
-    const short = planLearnSession(['a', 'b'], ['c', 'd', 'e'])
-    expect(short.filter((s) => s.kind === 'check').every((s) => s.kind === 'check' && s.options.length === 4)).toBe(true)
+    const short = planLearnSession(['a', 'b'])
+    expect(short.filter((s) => s.kind === 'check')).toHaveLength(2)
   })
 })
 
 describe('afterSpeakGrade', () => {
   it('adds one more attempt only for a Missed answer in the last round', () => {
-    const steps = planLearnSession(['a', 'b'], ['c', 'd', 'e'])
+    const steps = planLearnSession(['a', 'b'])
     expect(afterSpeakGrade(steps, { kind: 'speak', id: 'a', round: 1 }, true)).toBe(steps)
     expect(afterSpeakGrade(steps, { kind: 'speak', id: 'a', round: SPEAK_ROUNDS }, false)).toBe(steps)
     const more = afterSpeakGrade(steps, { kind: 'speak', id: 'a', round: SPEAK_ROUNDS }, true)

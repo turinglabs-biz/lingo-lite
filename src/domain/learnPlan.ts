@@ -1,7 +1,7 @@
 /** One step of a Learn session. */
 export type LearnStep =
   | { kind: 'expose'; id: string }
-  | { kind: 'check'; id: string; options: string[] }
+  | { kind: 'check'; id: string }
   | { kind: 'speak'; id: string; round: number }
 
 const GROUP_SIZE = 5
@@ -18,18 +18,14 @@ function shuffle<T>(items: T[], random: () => number): T[] {
 
 /**
  * Plans a Learn session for one Batch: groups of five are first shown (exposure with audio), then checked by
- * listen-and-pick; afterwards every Expression gets SPEAK_ROUNDS spaced Speak attempts. `optionPool` supplies
- * wrong answers for the check (Expression ids; the Batch itself when large enough).
+ * listen-and-pick; afterwards every Expression gets SPEAK_ROUNDS spaced Speak attempts.
  */
-export function planLearnSession(ids: string[], optionPool: string[], random = Math.random): LearnStep[] {
+export function planLearnSession(ids: string[], random = Math.random): LearnStep[] {
   const steps: LearnStep[] = []
   for (let i = 0; i < ids.length; i += GROUP_SIZE) {
     const group = ids.slice(i, i + GROUP_SIZE)
     for (const id of group) steps.push({ kind: 'expose', id })
-    for (const id of shuffle(group, random)) {
-      const wrong = shuffle([...new Set([...ids, ...optionPool])].filter((x) => x !== id), random).slice(0, 3)
-      steps.push({ kind: 'check', id, options: shuffle([id, ...wrong], random) })
-    }
+    for (const id of shuffle(group, random)) steps.push({ kind: 'check', id })
   }
   for (let round = 1; round <= SPEAK_ROUNDS; round++) {
     let order = shuffle(ids, random)

@@ -1,8 +1,8 @@
 /** One way of practising an Expression, with its own schedule. */
 export type Direction = 'speak' | 'listen' | 'see'
 
-/** The learner's self-assessment of one answer. */
-export type Grade = 'missed' | 'hard' | 'good'
+/** The outcome of one answer, checked by the app. */
+export type Grade = 'missed' | 'good'
 
 /** A Direction's spaced-repetition state (FSRS card fields, with dates as epoch ms so they can be indexed). */
 export interface DirectionCard {
