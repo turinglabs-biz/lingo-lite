@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#2b1b4e" />
+    <meta name="description" content="Lingo Lite teaches the few hundred phrases a trip needs: spelled the way they sound, spoken slowly when you need it, checked as you practise and kept on your phone offline. Korean only, for now." />
+    <meta property="og:title" content="Lingo Lite: say the phrases your trip needs" />
+    <meta property="og:description" content="A few hundred everyday phrases, spelled the way they sound, practised a few minutes a day and ready offline when you land. Korean only, for now." />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <title>Lingo Lite: say the phrases your trip needs</title>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="wordmark" href="#top" aria-label="Lingo Lite, back to top">Lingo Lite</a>
+      <a class="button small" data-start href="/?start">Start learning</a>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="sky" aria-hidden="true"></div>
+        <div class="hero-inner">
+          <h1 id="hero-title">Say the phrases your trip needs.</h1>
+
+          <figure class="player" aria-label="Try a phrase">
+            <figcaption class="player-meaning player-english"></figcaption>
+            <p class="phrase" lang="ko-Latn"></p>
+            <p class="phrase-hangul" lang="ko"></p>
+            <div class="player-controls">
+              <button type="button" class="button play" data-play="normal">Play</button>
+              <button type="button" class="button ghost" data-play="slow">Slow</button>
+              <span class="player-step">
+                <button type="button" class="round" data-step="-1" aria-label="Previous phrase">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+                </button>
+                <span class="player-count" aria-live="polite"></span>
+                <button type="button" class="round" data-step="1" aria-label="Next phrase">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+                </button>
+              </span>
+            </div>
+          </figure>
+
+          <div class="hero-foot">
+            <p class="lede">
+              A few hundred everyday phrases, spelled the way they sound and spoken slowly when you need it. Practise a few
+              minutes a day, and they're on your phone, offline, when you land.
+            </p>
+            <div class="hero-cta">
+              <a class="button sun" data-start href="/?start">Start learning Korean</a>
+              <p class="language-note">Korean is the only language so far.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="situations" aria-labelledby="situations-title">
+        <div class="section-head">
+          <h2 id="situations-title"><span data-count="phrases"></span> phrases for <span data-count="topics"></span> situations</h2>
+          <p>Each one is something you'd actually say on a trip, not a textbook sentence. Tap a phrase to hear it.</p>
+        </div>
+        <div class="rows"></div>
+      </section>
+
+      <section class="practice" aria-labelledby="practice-title">
+        <div class="section-head">
+          <h2 id="practice-title">A few minutes a day, then you're ready</h2>
+        </div>
+        <div class="practice-body">
+          <div class="phone-stage">
+            <div class="phone" data-active="1" aria-hidden="true">
+              <div class="phone-screen"></div>
+            </div>
+          </div>
+          <ol class="steps">
+            <li class="step" data-step-index="1">
+              <h3>Meet 15 at a time</h3>
+              <p>Each new phrase arrives with its audio, spelled syllable by syllable the way it sounds. Hear it, say it out loud, then pick what it means.</p>
+            </li>
+            <li class="step" data-step-index="2">
+              <h3>Say it, then check</h3>
+              <p>You see the English, say the phrase, then pick it from four. The app checks every answer, so you never have to grade yourself.</p>
+            </li>
+            <li class="step" data-step-index="3">
+              <h3>Back just before you forget</h3>
+              <p>Spaced reviews bring each phrase back right before it would slip away. Misses come back sooner, easy ones later.</p>
+            </li>
+            <li class="step" data-step-index="4">
+              <h3>Ready when you land</h3>
+              <p>Search the phrasebook offline, play any phrase slowly, or show it in big letters to the person in front of you.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="echo" aria-labelledby="echo-title">
+        <div class="echo-visual" aria-hidden="true">
+          <svg class="ring" viewBox="0 0 200 200">
+            <circle class="ring-track" cx="100" cy="100" r="86" />
+            <circle class="ring-fill" cx="100" cy="100" r="86" />
+          </svg>
+          <p class="ring-score"><span data-score>0</span>%</p>
+          <p class="ring-phrase">ma-si-sseo-yo</p>
+        </div>
+        <div class="echo-copy">
+          <h2 id="echo-title">Hear how close you were</h2>
+          <p>Hold the mic, say the phrase right after hearing it, and get a score for how close your sounds were to the recording.</p>
+          <p>It runs on your phone. Your voice is never uploaded, and it works without a connection too.</p>
+          <p class="fine">Optional, and a one-time download of about 270 MB.</p>
+        </div>
+      </section>
+
+      <section class="extras" aria-label="More">
+        <article class="focus-demo" aria-labelledby="focus-title">
+          <h2 id="focus-title">Pin the phrases that matter</h2>
+          <p>Pinned phrases come up two to three times as often, and go first when they're due. Try it:</p>
+          <ul class="focus-list"></ul>
+        </article>
+
+        <article class="offline-demo" aria-labelledby="offline-title">
+          <h2 id="offline-title">No signal? Still works.</h2>
+          <p>No account, and your progress stays on this phone. Once it's loaded, everything below works without a connection.</p>
+          <button type="button" class="switch" role="switch" aria-checked="false">
+            <span class="switch-track"><span class="switch-knob"></span></span>
+            Airplane mode
+          </button>
+          <ul class="offline-list">
+            <li><span>All <span data-count="phrases"></span> phrases and the phrasebook</span></li>
+            <li><span>Audio at normal and slow speed</span></li>
+            <li><span>Your reviews, streak and progress</span></li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="only-korean" aria-labelledby="korean-title">
+        <h2 id="korean-title">Only Korean, for now</h2>
+        <p>
+          Lingo Lite currently teaches Korean: <span data-count="phrases"></span> phrases in <span data-count="topics"></span>
+          situations, recorded in two voices at normal and slow speed. It doesn't teach other languages yet.
+        </p>
+      </section>
+
+      <section class="final" aria-labelledby="final-title">
+        <p class="final-phrase" lang="ko-Latn" aria-hidden="true"></p>
+        <h2 id="final-title">Your trip, a few phrases at a time</h2>
+        <a class="button sun large" data-start href="/?start">Start learning Korean</a>
+        <p class="fine">Free. No account. Works offline once it's loaded.</p>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Lingo Lite by Turing Labs</p>
+    </footer>
+
+    <script type="module" src="/src/welcome/main.ts"></script>
+  </body>
+</html>

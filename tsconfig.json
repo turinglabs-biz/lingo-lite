@@ -15,7 +15,7 @@
     "erasableSyntaxOnly": true,
     "skipLibCheck": true,
     "noEmit": true,
-    "types": ["vite/client", "vite-plugin-pwa/react", "node"]
+    "types": ["vite/client", "vite-plugin-pwa/client", "vite-plugin-pwa/react", "node"]
   },
   "include": ["src", "catalog", "scripts", "vite.config.ts"]
 }

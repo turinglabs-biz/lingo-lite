@@ -15,6 +15,10 @@ npm run preview -- --host   # try the build on a phone over LAN (install needs H
 npm run echo:models  # only for Echo: fetch its model into public/models/ (see Echo)
 ```
 
+## Landing page
+
+`welcome/index.html` (script and styles in `src/welcome/`) is the page someone new sees first: when a browser opens the app with no Progress and without having pressed "Start learning", the app sends it to `/welcome/`. "Start learning" opens `/?start`, and from then on the app opens directly. The installed app never shows the landing page. It uses the real Catalog and Clips, and its fonts (Unbounded, Onest) are bundled, so it loads nothing from other sites. Try it with `npm run dev` at http://localhost:5173/welcome/.
+
 ## Catalog
 
 The Catalog lives in `catalog/catalog.ts`. The romanization conventions are in its header comment and ADR 0001.

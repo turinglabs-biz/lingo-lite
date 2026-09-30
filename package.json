@@ -18,6 +18,8 @@
     "voice-test": "node --env-file=.env scripts/voice-test.ts && node scripts/voice-test-page.ts"
   },
   "dependencies": {
+    "@fontsource-variable/onest": "^5.3.1",
+    "@fontsource-variable/unbounded": "^5.3.0",
     "dexie": "^4.4.6",
     "dexie-react-hooks": "^4.4.0",
     "onnxruntime-web": "^1.30.0",
