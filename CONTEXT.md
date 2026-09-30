@@ -71,7 +71,7 @@ The Direction where the learner sees only the Illustration and picks the matchin
 _Avoid_: Picture naming, picture card
 
 **Echo**:
-An optional step where the learner says an Expression right after hearing its Clip and gets an Echo score. It is not a Direction: it has no schedule and never changes a Grade or XP; it only counts toward Practice time.
+An optional step where the learner says an Expression, right after hearing its Clip or from memory on a Speak question, and gets an Echo score. It is not a Direction: it has no schedule, never blocks moving on, and never changes a Grade or XP; it only counts toward Practice time.
 _Avoid_: Shadowing, repeat, pronunciation check
 
 **Echo score**:

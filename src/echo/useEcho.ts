@@ -7,13 +7,21 @@ import { startRecording, type Recorded, type Recording } from './recorder.ts'
 import { scoreEcho, type EchoResult } from './scorer.ts'
 import { expectedSounds } from './sounds.ts'
 
+/**
+ * Where an Echo is. While a new one is being recorded or scored, `previous` keeps the last result, so it can stay on
+ * screen until the new one replaces it (nothing moves under the learner's finger).
+ */
 export type EchoState =
   | { phase: 'idle' }
-  | { phase: 'starting' }
-  | { phase: 'listening' }
-  | { phase: 'scoring' }
+  | { phase: 'starting' | 'listening' | 'scoring'; previous?: EchoAttempt }
   | { phase: 'done'; attempt: EchoAttempt }
   | { phase: 'error'; message: string }
+
+/** The last finished attempt, if any, whatever is happening now. */
+export function lastAttempt(state: EchoState): EchoAttempt | undefined {
+  if (state.phase === 'done') return state.attempt
+  return 'previous' in state ? state.previous : undefined
+}
 
 export interface EchoAttempt {
   result: EchoResult
@@ -40,15 +48,18 @@ export function useEcho(expressionId: string, model: LoadedModel | null, onDone?
   async function begin() {
     if (!model || recording.current) return
     stopClip()
-    setState({ phase: 'starting' })
+    setState((s) => ({ phase: 'starting', previous: lastAttempt(s) }))
     const r = startRecording(() => void end())
     recording.current = r
     try {
       await r.started
-      if (recording.current === r) setState({ phase: 'listening' })
+      if (recording.current === r) setState((s) => ({ phase: 'listening', previous: lastAttempt(s) }))
     } catch {
       recording.current = null
-      setState({ phase: 'idle' })
+      setState((s) => {
+        const previous = lastAttempt(s)
+        return previous ? { phase: 'done', attempt: previous } : { phase: 'idle' }
+      })
     }
   }
 
@@ -57,7 +68,7 @@ export function useEcho(expressionId: string, model: LoadedModel | null, onDone?
     if (!r || !model) return
     recording.current = null
     const releasedAt = performance.now()
-    setState({ phase: 'scoring' })
+    setState((s) => ({ phase: 'scoring', previous: lastAttempt(s) }))
     // Let the "Scoring…" state paint before the model blocks the main thread.
     await new Promise((resolve) => requestAnimationFrame(() => setTimeout(resolve)))
     let recorded: Recorded | null = null

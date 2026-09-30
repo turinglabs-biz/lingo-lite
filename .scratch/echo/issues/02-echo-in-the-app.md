@@ -48,3 +48,8 @@ Stage 2 of the spec, after the Echo lab passed (see `## Answer` in 01). The user
     - Turning Echo off in Settings deletes the files (it offers 270 MB again), and every mic disappears.
     - No request went to any other host.
   - **Not covered by the run:** the feedback after a Speak or See answer. It uses the same answer component as the Listen check that was tested.
+- 2026-09-30: Two follow-ups at the user's request.
+  - **Echo on the Speak prompt too:** the mic also appears before answering, so the learner can say the phrase from memory and check themselves. It never blocks "I said it, show options". This replaces "It is never on a question before answering" above for Speak; the Listen and See prompts still have no mic. `CONTEXT.md`'s Echo entry is updated.
+  - **Layout shift while holding:** the score line disappeared on press and reappeared after scoring. Session screens are vertically centred, so the button jumped 22 px under the finger, and a "Didn't catch that" result moved it another 10 px.
+    - Fix: the line under the button now has a fixed height. It shows a hint before the first Echo, and the previous score stays (dimmed) until the new one replaces it.
+    - Measured at 360 px through four holds (one silent): the button no longer moves.

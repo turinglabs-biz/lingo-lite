@@ -856,6 +856,7 @@ h2 {
   background: var(--accent-soft);
   color: var(--accent);
   font-weight: 600;
+  white-space: nowrap;
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
@@ -877,17 +878,31 @@ h2 {
   opacity: 0.45;
   cursor: default;
 }
+/* One fixed-height line for the hint, the score or "Didn't catch that", so the screen never shifts during an Echo. */
 .echo-score {
+  height: 2.5rem;
   margin: 0;
+  overflow: hidden;
+  line-height: 2.5rem;
   text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: opacity 0.2s;
 }
 .echo-score b {
   font-size: 2rem;
   font-variant-numeric: tabular-nums;
 }
+.echo-score.hint {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
 .echo-score.missed {
   color: var(--seal);
   font-weight: 600;
+}
+.echo-score.busy {
+  opacity: 0.4;
 }
 
 /* Echo setup (Settings and the Echo lab) */

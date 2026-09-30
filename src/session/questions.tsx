@@ -81,7 +81,7 @@ function Answer({ expressionId, onNext }: { expressionId: string; onNext: () => 
 const korean = (id: string) => <ExpressionView expression={expressionById.get(id)!} size="compact" showEnglish={false} />
 const english = (id: string) => expressionById.get(id)!.english
 
-/** English prompt → say it aloud → pick the Korean → the phrase plays. */
+/** English prompt → say it aloud (optionally Echo it) → pick the Korean → the phrase plays. */
 export function SpeakQuestion({ expressionId, introduced, options: fixed, onAnswer, onNext }: QuestionProps) {
   const e = expressionById.get(expressionId)!
   const options = useOptions(expressionId, introduced, fixed)
@@ -93,9 +93,13 @@ export function SpeakQuestion({ expressionId, introduced, options: fixed, onAnsw
         {e.usageNote && <p className="muted small">{e.usageNote}</p>}
       </Prompt>
       {stage === 'recall' ? (
-        <button type="button" className="primary-action" onClick={() => setStage('pick')}>
-          I said it, show options
-        </button>
+        <>
+          {/* Optional: say it from memory and see how close it was, before picking. It never blocks moving on. */}
+          <EchoBar expressionId={expressionId} hint="Say it from memory to check yourself" />
+          <button type="button" className="primary-action" onClick={() => setStage('pick')}>
+            I said it, show options
+          </button>
+        </>
       ) : (
         <Choices
           options={options}
