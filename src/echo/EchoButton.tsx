@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import type { EchoState } from './useEcho.ts'
+import { lastAttempt, type EchoState } from './useEcho.ts'
 
 const LABEL: Record<EchoState['phase'], string> = {
   idle: 'Hold to echo',
@@ -80,15 +80,25 @@ export function EchoButton({
 /** The latest result in words, or null before the first Echo. */
 function echoText(state: EchoState): string | null {
   if (state.phase === 'error') return `Scoring failed: ${state.message}`
-  if (state.phase !== 'done') return null
-  const { result } = state.attempt
-  return result.kind === 'heard' ? `${result.score}%` : "Didn't catch that, try again"
+  const attempt = lastAttempt(state)
+  if (!attempt) return null
+  return attempt.result.kind === 'heard' ? `${attempt.result.score}%` : "Didn't catch that, try again"
 }
 
-/** The latest Echo score, or why there is none. */
-export function EchoScore({ state }: { state: EchoState }) {
+/**
+ * The line under the Echo button: a hint before the first Echo, then the latest score. It keeps the same height
+ * throughout, and a new Echo leaves the previous score in place (dimmed) until its own is ready, so nothing on the
+ * screen shifts while the learner holds the button.
+ */
+export function EchoScore({ state, hint }: { state: EchoState; hint?: string }) {
   const text = echoText(state)
-  if (!text) return null
-  const heard = state.phase === 'done' && state.attempt.result.kind === 'heard'
-  return <p className={`echo-score ${heard ? '' : 'missed'}`}>{heard ? <b>{text}</b> : text}</p>
+  const attempt = lastAttempt(state)
+  const heard = state.phase !== 'error' && attempt?.result.kind === 'heard'
+  const busy = state.phase === 'starting' || state.phase === 'listening' || state.phase === 'scoring'
+  const kind = !text ? 'hint' : heard ? '' : 'missed'
+  return (
+    <p className={`echo-score ${kind} ${busy ? 'busy' : ''}`} aria-live="polite">
+      {text ? heard ? <b>{text}</b> : text : hint}
+    </p>
+  )
 }
