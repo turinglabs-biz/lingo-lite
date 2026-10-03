@@ -32,7 +32,7 @@ The Korean-script form of an Expression, always shown as a subtle secondary line
 An optional short hint on when or to whom an Expression is said (e.g. "to staff", "when leaving a shop").
 
 **Illustration**:
-A simple single-color line drawing attached to an Expression, drawn to follow the Catalog and never the other way round. Every Expression has one. It is shown at first exposure, after reveal, in the Phrasebook and as the See prompt, never on a Speak or Listen prompt.
+A simple single-color line drawing attached to an Expression, drawn to follow the Catalog and never the other way round. Every Expression has one. It is shown at first exposure, after reveal, in the Phrasebook and as the See prompt (with its English meaning), never on a Speak or Listen prompt.
 _Avoid_: Image, icon, graphic, picture, visual
 
 **Politeness**:
@@ -67,7 +67,7 @@ The Direction where the learner hears a Normal Clip and picks its meaning from f
 _Avoid_: Recognition, comprehension
 
 **See**:
-The Direction where the learner sees only the Illustration and picks the matching Korean from four options; the app checks the answer and then plays the phrase. It unlocks after the first successful Speak answer.
+The Direction where the learner sees the Illustration with its English meaning underneath and picks the matching Korean from four options; the app checks the answer and then plays the phrase. The meaning is always shown because a line drawing alone is too often ambiguous. It unlocks after the first successful Speak answer.
 _Avoid_: Picture naming, picture card
 
 **Echo**:
@@ -102,6 +102,10 @@ _Avoid_: Known, mastered
 A mark the learner puts on an Expression they want to practise harder. All of a Focus Expression's Directions are scheduled for higher recall, go first in a Review session when due, and can be practised on demand. The learner can set or clear it wherever an Expression is shown.
 _Avoid_: Star, favourite, bookmark, pin
 
+**Ignored**:
+A mark the learner puts on an Expression they don't want to learn. An Ignored Expression is never introduced, reviewed or practised, never offered as an option, and left out of counts and a Topic's Stars; it stays in the Phrasebook, dimmed. Its Progress is kept, so taking the mark off restores it. Ignoring an Expression takes it out of Focus, and putting it in Focus stops ignoring it. The learner can set or clear it wherever an Expression is shown.
+_Avoid_: Hidden, deleted, archived, skipped, forgotten
+
 ### Progress
 
 **Progress**:
@@ -124,5 +128,5 @@ _Avoid_: Time in app, screen time
 ### Reference
 
 **Phrasebook**:
-A browsable, searchable view of the whole Catalog for use on the trip, with playback and a large-text view to show to other people. Using it never changes Progress, except for putting Expressions in Focus or taking them out.
+A browsable, searchable view of the whole Catalog for use on the trip, with playback and a large-text view to show to other people. Using it never changes Progress, except for putting Expressions in Focus or marking them Ignored, and taking either off.
 _Avoid_: Dictionary, reference mode

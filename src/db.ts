@@ -1,6 +1,6 @@
 import Dexie, { type EntityTable } from 'dexie'
 import { cardKey, newDirectionCard } from './domain/scheduler.ts'
-import type { Answer, DirectionCard, FocusMark, Introduction, Session, TopicStars } from './domain/types.ts'
+import type { Answer, DirectionCard, FocusMark, IgnoredMark, Introduction, Session, TopicStars } from './domain/types.ts'
 
 /** Learner settings, part of Progress. */
 export interface Settings {
@@ -21,6 +21,7 @@ export const db = new Dexie('lingo-lite') as Dexie & {
   sessions: EntityTable<Session, 'id'>
   stars: EntityTable<TopicStars, 'topic'>
   focus: EntityTable<FocusMark, 'expressionId'>
+  ignored: EntityTable<IgnoredMark, 'expressionId'>
 }
 
 db.version(1).stores({
@@ -52,4 +53,9 @@ db.version(3)
 // v4: Focus. A new table; nothing else changes.
 db.version(4).stores({
   focus: 'expressionId, at',
+})
+
+// v5: Ignored. A new table; nothing else changes.
+db.version(5).stores({
+  ignored: 'expressionId, at',
 })

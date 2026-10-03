@@ -63,3 +63,9 @@ export interface FocusMark {
   expressionId: string
   at: number
 }
+
+/** An Expression the learner marked Ignored, and when. */
+export interface IgnoredMark {
+  expressionId: string
+  at: number
+}

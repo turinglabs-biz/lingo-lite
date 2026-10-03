@@ -2,16 +2,22 @@ import { useMemo, useState } from 'react'
 import { catalog, expressionById, topics, type TopicId } from '../catalog/index.ts'
 import { ExpressionView } from '../components/ExpressionView.tsx'
 import { FocusPin } from '../components/FocusPin.tsx'
+import { IgnoreToggle } from '../components/IgnoreToggle.tsx'
 import { Illustration } from '../components/Illustration.tsx'
 import { PlayButtons } from '../components/PlayButtons.tsx'
 import { EchoRound } from '../echo/EchoMic.tsx'
+import { useIgnored } from '../progress/ignored.tsx'
 
 const normalize = (s: string) => s.toLowerCase().replace(/[-?!.,'’]/g, '').replace(/\s+/g, ' ').trim()
 
-/** The whole Catalog for use on the street. Never changes Progress, except putting Expressions in Focus. */
+/**
+ * The whole Catalog for use on the street. Never changes Progress, except putting Expressions in Focus or marking them
+ * Ignored. Ignored Expressions stay listed, only dimmed: the learner may still need to show one.
+ */
 export function Phrasebook({ topic, onTopicChange }: { topic: TopicId | null; onTopicChange: (t: TopicId | null) => void }) {
   const [query, setQuery] = useState('')
   const [showing, setShowing] = useState<string | null>(null)
+  const ignored = useIgnored()
 
   const results = useMemo(() => {
     const q = normalize(query)
@@ -76,7 +82,7 @@ export function Phrasebook({ topic, onTopicChange }: { topic: TopicId | null; on
               {results
                 .filter((e) => e.topic === t.id)
                 .map((e) => (
-                  <li key={e.id} className="row">
+                  <li key={e.id} className={ignored.has(e.id) ? 'row ignored' : 'row'}>
                     <button type="button" className="row-main" onClick={() => setShowing(e.id)} aria-label={`Show ${e.english} full screen`}>
                       <Illustration expressionId={e.id} size="small" />
                       <ExpressionView expression={e} size="compact" />
@@ -84,6 +90,7 @@ export function Phrasebook({ topic, onTopicChange }: { topic: TopicId | null; on
                     <div className="row-controls">
                       <PlayButtons expressionId={e.id} />
                       <div className="row-controls-line">
+                        <IgnoreToggle expressionId={e.id} />
                         <FocusPin expressionId={e.id} />
                         <EchoRound expressionId={e.id} />
                       </div>

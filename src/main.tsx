@@ -5,6 +5,7 @@ import { App } from './App.tsx'
 import { db } from './db.ts'
 import { EchoProvider } from './echo/EchoProvider.tsx'
 import { FocusProvider } from './progress/focus.tsx'
+import { IgnoredProvider } from './progress/ignored.tsx'
 import './styles.css'
 
 const STARTED = 'lingo-lite.started'
@@ -37,9 +38,11 @@ showLandingPage().then((landing) => {
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
       <FocusProvider>
-        <EchoProvider>
-          <App />
-        </EchoProvider>
+        <IgnoredProvider>
+          <EchoProvider>
+            <App />
+          </EchoProvider>
+        </IgnoredProvider>
       </FocusProvider>
     </StrictMode>,
   )

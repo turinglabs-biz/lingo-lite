@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { DirectionCard } from '../domain/types.ts'
+import { useIgnored } from '../progress/ignored.tsx'
 import { grade, touchSession } from '../progress/store.ts'
 import { SessionFrame } from './parts.tsx'
 import { ListenQuestion, SeeQuestion, SpeakQuestion } from './questions.tsx'
@@ -34,6 +35,7 @@ export function ReviewSession({
   const tracker = useSessionTracker(type)
   const [queue, setQueue] = useState<QueueItem[]>(() => cards.map((c) => ({ id: c.expressionId, direction: c.direction, retry: false })))
   const [index, setIndex] = useState(0)
+  const ignored = useIgnored()
   const item = queue[index]
 
   async function onAnswer(correct: boolean) {
@@ -44,8 +46,11 @@ export function ReviewSession({
     if (!correct && !item.retry) setQueue((q) => [...q, { ...item, retry: true }])
   }
 
+  /** Moves on, skipping anything the learner has marked Ignored since the session started. */
   async function onNext() {
-    if (index + 1 < queue.length) setIndex(index + 1)
+    let next = index + 1
+    while (next < queue.length && ignored.has(queue[next].id)) next++
+    if (next < queue.length) setIndex(next)
     else onEnd(await tracker.finish())
   }
 

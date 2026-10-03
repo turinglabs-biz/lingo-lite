@@ -7,6 +7,7 @@ import { Illustration } from '../components/Illustration.tsx'
 import { PlayButtons } from '../components/PlayButtons.tsx'
 import { choiceOptions } from '../domain/choices.ts'
 import { EchoBar } from '../echo/EchoMic.tsx'
+import { useIgnored } from '../progress/ignored.tsx'
 import { Prompt } from './parts.tsx'
 
 // The three checked question types. Each is mounted fresh per question (give it a `key`), reports the answer
@@ -23,9 +24,13 @@ interface QuestionProps {
 }
 
 function useOptions(expressionId: string, introduced: Set<string>, fixed?: string[]) {
-  // Computed once per question so options don't reshuffle while Progress updates.
+  const ignored = useIgnored()
+  // Computed once per question so options don't reshuffle while Progress updates. Ignored Expressions are never
+  // offered, and neither are the answer's Illustration siblings (they would also be correct).
   const [options] = useState(
-    () => fixed ?? choiceOptions(expressionById.get(expressionId)!, catalog, new Set(illustrationSiblings(expressionId)), introduced),
+    () =>
+      fixed ??
+      choiceOptions(expressionById.get(expressionId)!, catalog, new Set([...illustrationSiblings(expressionId), ...ignored]), introduced),
   )
   return options
 }
@@ -143,14 +148,19 @@ export function ListenQuestion({ expressionId, introduced, options: fixed, onAns
   )
 }
 
-/** The Illustration → pick the Korean → the phrase plays. */
+/**
+ * The Illustration with its English meaning → pick the Korean → the phrase plays. The meaning is always shown: a line
+ * drawing alone is too often ambiguous to answer from.
+ */
 export function SeeQuestion({ expressionId, introduced, options: fixed, onAnswer, onNext }: QuestionProps) {
+  const e = expressionById.get(expressionId)!
   const options = useOptions(expressionId, introduced, fixed)
   const [done, setDone] = useState(false)
   return (
     <>
       <Prompt label="Which one matches the picture?" expressionId={expressionId}>
         <Illustration expressionId={expressionId} size="large" />
+        <p className="see-meaning">{e.english}</p>
       </Prompt>
       <Choices
         options={options}

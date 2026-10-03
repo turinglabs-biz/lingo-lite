@@ -47,6 +47,19 @@ export function nextBatch<T extends { id: string; topic: string }>(
   return fresh.filter((e) => chosen.has(e))
 }
 
+/**
+ * What practice is built from: the Catalog without Ignored Expressions. Ignored ones keep their Progress (so taking
+ * the mark off restores them), but are never introduced, reviewed, practised or offered as an option.
+ */
+export function withoutIgnored<T extends { id: string }>(items: T[], ignored: Set<string>): T[] {
+  return ignored.size ? items.filter((e) => !ignored.has(e.id)) : items
+}
+
+/** The Direction cards practice is built from: those of Expressions that aren't Ignored. */
+export function cardsWithoutIgnored(cards: DirectionCard[], ignored: Set<string>): DirectionCard[] {
+  return ignored.size ? cards.filter((c) => !ignored.has(c.expressionId)) : cards
+}
+
 /** Due Directions, those of Focus Expressions first, each group most overdue first. */
 export function dueCards(cards: DirectionCard[], now: number, limit = Infinity, focus: Set<string> = new Set()): DirectionCard[] {
   const due = cards.filter((c) => c.due <= now).sort((a, b) => a.due - b.due)

@@ -1,13 +1,15 @@
-import { catalog } from '../catalog/index.ts'
 import { BACKLOG_WARNING, BATCH_SIZE } from '../domain/progress.ts'
 import type { Progress } from '../progress/useProgress.ts'
 
 export function Home({ progress, onReview, onLearn, onFocus }: { progress: Progress; onReview: () => void; onLearn: () => void; onFocus: () => void }) {
-  const { dueCount, nextBatchSize, introduced, learned, focus } = progress
+  const { dueCount, nextBatchSize, introduced, learned, focus, ignored, practiceCatalog } = progress
+  // Ignored Expressions are left out of every count.
+  const introducedCount = [...introduced].filter((id) => !ignored.has(id)).length
+  const learnedCount = [...learned].filter((id) => !ignored.has(id)).length
   const allIntroduced = nextBatchSize === 0
   const continueAction = dueCount > 0 ? onReview : allIntroduced ? null : onLearn
-  const batchesDone = Math.ceil(introduced.size / BATCH_SIZE)
-  const totalBatches = Math.ceil(catalog.length / BATCH_SIZE)
+  const batchesDone = Math.ceil(introducedCount / BATCH_SIZE)
+  const totalBatches = Math.ceil(practiceCatalog.length / BATCH_SIZE)
 
   return (
     <section className="screen home">
@@ -22,7 +24,7 @@ export function Home({ progress, onReview, onLearn, onFocus }: { progress: Progr
           <span>reviews due</span>
         </div>
         <div>
-          <b>{learned.size}</b>
+          <b>{learnedCount}</b>
           <span>Learned</span>
         </div>
         <div>

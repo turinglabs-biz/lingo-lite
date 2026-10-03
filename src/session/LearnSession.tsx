@@ -6,6 +6,7 @@ import { Illustration } from '../components/Illustration.tsx'
 import { PlayButtons } from '../components/PlayButtons.tsx'
 import { EchoBar } from '../echo/EchoMic.tsx'
 import { afterSpeakGrade, planLearnSession, type LearnStep } from '../domain/learnPlan.ts'
+import { useIgnored } from '../progress/ignored.tsx'
 import { grade, introduce, recordCheck, touchSession } from '../progress/store.ts'
 import { Prompt, SessionFrame } from './parts.tsx'
 import { ListenQuestion, SpeakQuestion } from './questions.tsx'
@@ -30,6 +31,7 @@ export function LearnSession({
   const [index, setIndex] = useState(0)
   // Distractors prefer what the learner has met, including this Batch.
   const [known] = useState(() => new Set([...introduced, ...batch]))
+  const ignored = useIgnored()
   const step = steps[index]
 
   useEffect(() => {
@@ -39,8 +41,11 @@ export function LearnSession({
     }
   }, [step])
 
+  /** Moves on, skipping every step of an Expression the learner has marked Ignored during the session. */
   async function next() {
-    if (index + 1 < steps.length) setIndex(index + 1)
+    let following = index + 1
+    while (following < steps.length && ignored.has(steps[following].id)) following++
+    if (following < steps.length) setIndex(following)
     else onEnd(await tracker.finish())
   }
 

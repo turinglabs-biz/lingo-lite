@@ -482,6 +482,14 @@ h2 {
   justify-content: space-between;
   gap: 12px;
 }
+/* See: the picture's English meaning, a caption under the drawing — smaller than a Speak prompt. */
+.see-meaning {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.3;
+  text-wrap: balance;
+}
 .english-prompt {
   margin: 0;
   font-size: 1.7rem;
@@ -797,6 +805,35 @@ h2 {
 .focus-pin.on {
   background: var(--accent);
   color: var(--on-accent);
+}
+/* Ignore: gray and quiet beside the Focus pin. An Ignored row is only dimmed, never hidden. */
+.ignore-toggle {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  display: inline-grid;
+  place-items: center;
+  background: transparent;
+  color: var(--muted);
+}
+.ignore-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+.ignore-toggle.on {
+  background: var(--line);
+  color: var(--text);
+}
+.row.ignored .row-main {
+  opacity: 0.45;
+}
+.prompt-marks {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 .row-controls {
   display: flex;
