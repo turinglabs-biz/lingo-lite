@@ -19,7 +19,10 @@ export function Topics({ progress, onOpen }: { progress: Progress; onOpen: (topi
       <h1>Topics</h1>
       <ul className="list">
         {topics.map((t) => {
-          const ids = catalog.filter((e) => e.topic === t.id).map((e) => e.id)
+          // Ignored Expressions are left out of the Topic's counts, as they are of its Stars.
+          const all = catalog.filter((e) => e.topic === t.id).map((e) => e.id)
+          const ids = all.filter((id) => !progress.ignored.has(id))
+          const ignoredHere = all.length - ids.length
           const introduced = ids.filter((id) => progress.introduced.has(id)).length
           const learned = ids.filter((id) => progress.learned.has(id)).length
           return (
@@ -29,10 +32,11 @@ export function Topics({ progress, onOpen }: { progress: Progress; onOpen: (topi
                   <span>{t.name}</span>
                   <span className="muted small">
                     {introduced}/{ids.length} introduced · {learned} Learned
+                    {ignoredHere > 0 && ` · ${ignoredHere} Ignored`}
                   </span>
                   <span className="meter">
-                    <i className="introduced" style={{ width: `${(introduced / ids.length) * 100}%` }} />
-                    <i className="learned" style={{ width: `${(learned / ids.length) * 100}%` }} />
+                    <i className="introduced" style={{ width: `${(introduced / Math.max(ids.length, 1)) * 100}%` }} />
+                    <i className="learned" style={{ width: `${(learned / Math.max(ids.length, 1)) * 100}%` }} />
                   </span>
                 </span>
                 <Stars count={progress.stars.get(t.id) ?? 0} />

@@ -2,7 +2,7 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { useEffect, useState } from 'react'
 import { catalog } from '../catalog/index.ts'
 import { db } from '../db.ts'
-import { dueCards, nextBatch, streaks, totalXp } from '../domain/progress.ts'
+import { cardsWithoutIgnored, dueCards, nextBatch, streaks, totalXp, withoutIgnored } from '../domain/progress.ts'
 import { isLearned } from '../domain/scheduler.ts'
 import type { Answer, DirectionCard, Session } from '../domain/types.ts'
 
@@ -10,6 +10,12 @@ export interface Progress {
   introduced: Set<string>
   /** Focus Expressions, in the order they were put in Focus. */
   focus: Set<string>
+  /** Ignored Expressions: never introduced, reviewed or practised, and left out of counts and Stars. */
+  ignored: Set<string>
+  /** The Catalog without Ignored Expressions — what Batches and counts are built from. */
+  practiceCatalog: typeof catalog
+  /** Direction cards without those of Ignored Expressions — what sessions are built from. */
+  practiceCards: DirectionCard[]
   cards: DirectionCard[]
   speakCards: Map<string, DirectionCard>
   learned: Set<string>
@@ -41,15 +47,16 @@ function useNow(intervalMs = 60_000) {
 export function useProgress(): Progress | undefined {
   const now = useNow()
   const raw = useLiveQuery(async () => {
-    const [introductions, cards, answers, sessions, stars, focus] = await Promise.all([
+    const [introductions, cards, answers, sessions, stars, focus, ignored] = await Promise.all([
       db.introductions.toArray(),
       db.cards.toArray(),
       db.answers.toArray(),
       db.sessions.toArray(),
       db.stars.toArray(),
       db.focus.orderBy('at').toArray(),
+      db.ignored.toArray(),
     ])
-    return { introductions, cards, answers, sessions, stars, focus }
+    return { introductions, cards, answers, sessions, stars, focus, ignored }
   }, [])
   if (!raw) return undefined
 
@@ -58,18 +65,24 @@ export function useProgress(): Progress | undefined {
   const cards = raw.cards.filter((c) => known.has(c.expressionId))
   const introduced = new Set(raw.introductions.map((i) => i.expressionId).filter((id) => known.has(id)))
   const focus = new Set(raw.focus.map((f) => f.expressionId).filter((id) => known.has(id)))
+  const ignored = new Set(raw.ignored.map((m) => m.expressionId).filter((id) => known.has(id)))
+  const practiceCatalog = withoutIgnored(catalog, ignored)
+  const practiceCards = cardsWithoutIgnored(cards, ignored)
   const speakCards = new Map(cards.filter((c) => c.direction === 'speak').map((c) => [c.expressionId, c]))
   return {
     introduced,
     focus,
+    ignored,
+    practiceCatalog,
+    practiceCards,
     cards,
     speakCards,
     learned: new Set([...speakCards.values()].filter(isLearned).map((c) => c.expressionId)),
     answers: raw.answers,
     sessions: raw.sessions,
     stars: new Map(raw.stars.map((s) => [s.topic, s.stars])),
-    dueCount: dueCards(cards, now).length,
-    nextBatchSize: nextBatch(catalog, introduced, focus).length,
+    dueCount: dueCards(practiceCards, now).length,
+    nextBatchSize: nextBatch(practiceCatalog, introduced, focus).length,
     xp: totalXp(raw.answers, cards, raw.sessions),
     streak: streaks(raw.sessions, now),
   }

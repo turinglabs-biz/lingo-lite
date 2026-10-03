@@ -14,7 +14,7 @@ export function FocusPage({ progress, onStart, onClose }: { progress: Progress; 
   const ids = [...progress.focus]
   const met = ids.filter((id) => progress.introduced.has(id))
   const notMet = ids.filter((id) => !progress.introduced.has(id))
-  const questions = focusQueue(progress.cards, progress.focus, Date.now()).length
+  const questions = focusQueue(progress.practiceCards, progress.focus, Date.now()).length
 
   return (
     <div className="session focus-page">

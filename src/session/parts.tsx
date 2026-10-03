@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { FocusPin } from '../components/FocusPin.tsx'
+import { IgnoreToggle } from '../components/IgnoreToggle.tsx'
 
 export function SessionFrame({ title, position, total, onQuit, children }: { title: string; position: number; total: number; onQuit: () => void; children: ReactNode }) {
   return (
@@ -18,13 +19,21 @@ export function SessionFrame({ title, position, total, onQuit, children }: { tit
   )
 }
 
-/** A question's or exposure's prompt, with the Focus pin for its Expression (usable before and after answering). */
+/**
+ * A question's or exposure's prompt, with the Ignore toggle and Focus pin for its Expression (usable before and after
+ * answering). Ignoring it here lets the learner finish this question; the rest of the session then skips it.
+ */
 export function Prompt({ label, expressionId, children }: { label: string; expressionId?: string; children: ReactNode }) {
   return (
     <div className="prompt">
       <div className="prompt-head">
         <span className="eyebrow">{label}</span>
-        {expressionId && <FocusPin expressionId={expressionId} />}
+        {expressionId && (
+          <span className="prompt-marks">
+            <IgnoreToggle expressionId={expressionId} />
+            <FocusPin expressionId={expressionId} />
+          </span>
+        )}
       </div>
       {children}
     </div>

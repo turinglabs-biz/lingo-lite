@@ -1,4 +1,4 @@
-import { catalog, topics } from '../catalog/index.ts'
+import { topics } from '../catalog/index.ts'
 import { accuracyBy, dayKey } from '../domain/progress.ts'
 import type { Progress } from '../progress/useProgress.ts'
 import { Stars } from './Topics.tsx'
@@ -14,7 +14,10 @@ function formatDuration(ms: number) {
 const pct = (a: { answers: number; correct: number }) => (a.answers ? `${Math.round((a.correct / a.answers) * 100)}%` : '—')
 
 export function Stats({ progress }: { progress: Progress }) {
-  const { answers, sessions, streak, xp, introduced, learned } = progress
+  const { answers, sessions, streak, xp, introduced, learned, ignored, practiceCatalog } = progress
+  // Ignored Expressions are left out of the Expression counts (their past answers still count above).
+  const introducedCount = [...introduced].filter((id) => !ignored.has(id)).length
+  const learnedCount = [...learned].filter((id) => !ignored.has(id)).length
   const acc = accuracyBy(answers)
   const correct = answers.filter((a) => a.correct).length
   const practiceMs = sessions.reduce((sum, s) => sum + s.practiceMs, 0)
@@ -93,11 +96,12 @@ export function Stats({ progress }: { progress: Progress }) {
 
       <h2>Expressions</h2>
       <p>
-        <b>{introduced.size}</b> of {catalog.length} introduced · <b>{learned.size}</b> Learned
+        <b>{introducedCount}</b> of {practiceCatalog.length} introduced · <b>{learnedCount}</b> Learned
+        {ignored.size > 0 && <span className="muted"> · {ignored.size} Ignored</span>}
       </p>
       <ul className="list compact">
         {topics.map((t) => {
-          const ids = catalog.filter((e) => e.topic === t.id).map((e) => e.id)
+          const ids = practiceCatalog.filter((e) => e.topic === t.id).map((e) => e.id)
           return (
             <li key={t.id} className="row">
               <span>{t.name}</span>

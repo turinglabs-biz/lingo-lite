@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { stopClip } from './audio/player.ts'
-import { catalog, type TopicId } from './catalog/index.ts'
+import type { TopicId } from './catalog/index.ts'
 import { dueCards, focusQueue, nextBatch, REVIEW_SESSION_SIZE } from './domain/progress.ts'
 import type { DirectionCard } from './domain/types.ts'
 import { EchoLab } from './echo/lab/EchoLab.tsx'
@@ -40,9 +40,12 @@ export function App() {
 
   if (!progress) return <div className="app loading" />
 
-  const startLearn = () => setActive({ kind: 'learn', batch: nextBatch(catalog, progress.introduced, progress.focus).map((e) => e.id) })
-  const startReview = () => setActive({ kind: 'review', cards: dueCards(progress.cards, Date.now(), REVIEW_SESSION_SIZE, progress.focus) })
-  const startFocus = () => setActive({ kind: 'focus', cards: focusQueue(progress.cards, progress.focus, Date.now()) })
+  // Sessions are built only from Expressions that aren't Ignored.
+  const startLearn = () =>
+    setActive({ kind: 'learn', batch: nextBatch(progress.practiceCatalog, progress.introduced, progress.focus).map((e) => e.id) })
+  const startReview = () =>
+    setActive({ kind: 'review', cards: dueCards(progress.practiceCards, Date.now(), REVIEW_SESSION_SIZE, progress.focus) })
+  const startFocus = () => setActive({ kind: 'focus', cards: focusQueue(progress.practiceCards, progress.focus, Date.now()) })
   const endSession = (summary: Omit<SummaryData, 'streak'> | null) => {
     stopClip()
     // Streak includes today's session once it is finished.
