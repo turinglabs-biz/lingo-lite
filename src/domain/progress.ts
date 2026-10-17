@@ -24,12 +24,37 @@ export function nextBatch<T extends { id: string; topic: string }>(
   random = Math.random,
   size = BATCH_SIZE,
 ): T[] {
-  const fresh = ordered.filter((e) => !introduced.has(e.id))
+  return pickBatch(ordered.filter((e) => !introduced.has(e.id)), focus, random, size, MAX_NUMBERS_PER_BATCH)
+}
+
+/**
+ * The next Topic Batch: the next Batch drawn from one Topic the learner picked. Focus picks work as in a Batch, but
+ * there's no Numbers cap: the learner chose the Topic, and Numbers would otherwise only ever come 3 at a time.
+ */
+export function topicBatch<T extends { id: string; topic: string }>(
+  ordered: T[],
+  topic: string,
+  introduced: Set<string>,
+  focus: Set<string> = new Set(),
+  random = Math.random,
+  size = BATCH_SIZE,
+): T[] {
+  return pickBatch(ordered.filter((e) => e.topic === topic && !introduced.has(e.id)), focus, random, size, Infinity)
+}
+
+/** Up to FOCUS_PER_BATCH Focus Expressions at random, then the rest in order, under the Numbers cap; kept in order. */
+function pickBatch<T extends { id: string; topic: string }>(
+  fresh: T[],
+  focus: Set<string>,
+  random: () => number,
+  size: number,
+  maxNumbers: number,
+): T[] {
   const chosen = new Set<T>()
   let numbers = 0
   const take = (e: T) => {
     if (e.topic === 'numbers') {
-      if (numbers >= MAX_NUMBERS_PER_BATCH) return false
+      if (numbers >= maxNumbers) return false
       numbers++
     }
     chosen.add(e)
