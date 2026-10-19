@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { stopClip } from './audio/player.ts'
 import type { TopicId } from './catalog/index.ts'
-import { dueCards, focusQueue, nextBatch, REVIEW_SESSION_SIZE } from './domain/progress.ts'
+import { dueCards, focusQueue, nextBatch, REVIEW_SESSION_SIZE, topicBatch } from './domain/progress.ts'
 import type { DirectionCard } from './domain/types.ts'
 import { EchoLab } from './echo/lab/EchoLab.tsx'
 import { FocusPage } from './screens/FocusPage.tsx'
@@ -43,6 +43,11 @@ export function App() {
   // Sessions are built only from Expressions that aren't Ignored.
   const startLearn = () =>
     setActive({ kind: 'learn', batch: nextBatch(progress.practiceCatalog, progress.introduced, progress.focus).map((e) => e.id) })
+  const startTopicLearn = (topic: TopicId) =>
+    setActive({
+      kind: 'learn',
+      batch: topicBatch(progress.practiceCatalog, topic, progress.introduced, progress.focus).map((e) => e.id),
+    })
   const startReview = () =>
     setActive({ kind: 'review', cards: dueCards(progress.practiceCards, Date.now(), REVIEW_SESSION_SIZE, progress.focus) })
   const startFocus = () => setActive({ kind: 'focus', cards: focusQueue(progress.practiceCards, progress.focus, Date.now()) })
@@ -91,6 +96,7 @@ export function App() {
               setPhrasebookTopic(t)
               setTab('phrasebook')
             }}
+            onLearn={startTopicLearn}
           />
         )}
         {tab === 'phrasebook' && <Phrasebook topic={phrasebookTopic} onTopicChange={setPhrasebookTopic} />}

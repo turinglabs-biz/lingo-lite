@@ -84,8 +84,12 @@ The outcome of one answer, checked by the app: Missed or Got it. Options never i
 **Batch**:
 The next 15 new Expressions: up to 5 not-yet-introduced Focus Expressions picked at random, then the rest in Catalog order. The learner may take as many Batches per day as they like.
 
+**Topic Batch**:
+The next 15 new Expressions of one Topic the learner picks, chosen like a Batch but from that Topic only, with no Numbers cap. Its Expressions are introduced and reviewed exactly like a Batch's.
+_Avoid_: Topic lesson, topic session
+
 **Learn session**:
-A session introducing one Batch: first exposure with audio, one listen-and-pick check, then repeated Speak attempts.
+A session introducing one Batch or Topic Batch: first exposure with audio, one listen-and-pick check, then repeated Speak attempts.
 _Avoid_: Lesson
 
 **Review session**:

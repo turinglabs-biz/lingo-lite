@@ -11,6 +11,7 @@ import {
   FOCUS_PER_BATCH,
   nextBatch,
   streaks,
+  topicBatch,
   totalXp,
   withInput,
   withoutIgnored,
@@ -63,6 +64,33 @@ describe('nextBatch', () => {
     const batch = nextBatch(mixed, new Set(), focus, seeded(5))
     expect(batch).toHaveLength(15)
     expect(batch.filter((e) => e.topic === 'numbers')).toHaveLength(3)
+  })
+})
+
+describe('topicBatch', () => {
+  // Interleaved across Topics, as the Catalog is: every third Expression is Hotel.
+  const ordered = Array.from({ length: 60 }, (_, i) => ({ id: `e${i}`, topic: i % 3 === 0 ? 'hotel' : 'food' }))
+  const hotel = ordered.filter((e) => e.topic === 'hotel')
+  const ids = (batch: { id: string }[]) => batch.map((e) => e.id)
+  const seeded = (seed: number) => () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646
+  it('takes the next 15 never-introduced Expressions of that Topic only, in Catalog order', () => {
+    expect(ids(topicBatch(ordered, 'hotel', new Set(['e0', 'e1'])))).toEqual(ids(hotel.slice(1, 16)))
+  })
+  it('returns a shorter final Topic Batch and then nothing', () => {
+    expect(topicBatch(ordered, 'hotel', new Set(ids(hotel.slice(0, 15))))).toHaveLength(5)
+    expect(topicBatch(ordered, 'hotel', new Set(ids(hotel)))).toHaveLength(0)
+  })
+  it("takes up to 5 Focus Expressions of that Topic at random, never another Topic's", () => {
+    const focus = new Set(['e1', ...ids(hotel.slice(10))])
+    const batch = ids(topicBatch(ordered, 'hotel', new Set(), focus, seeded(7)))
+    expect(batch).toHaveLength(15)
+    expect(batch).not.toContain('e1')
+    expect(batch.filter((id) => focus.has(id))).toHaveLength(FOCUS_PER_BATCH)
+    expect(batch.slice(0, 10)).toEqual(ids(hotel.slice(0, 10)))
+  })
+  it('has no Numbers cap: the learner chose the Topic', () => {
+    const numbers = ordered.map((e) => ({ ...e, topic: 'numbers' }))
+    expect(topicBatch(numbers, 'numbers', new Set())).toHaveLength(15)
   })
 })
 
@@ -179,6 +207,10 @@ describe('Ignored Expressions', () => {
     expect(batch.map((e) => e.id)).not.toContain('e3')
     expect(batch).toHaveLength(15)
     expect(batch[0].id).toBe('e1')
+  })
+
+  it('are never part of a Topic Batch', () => {
+    expect(topicBatch(withoutIgnored(ordered, ignored), 'food', new Set()).map((e) => e.id)).not.toContain('e0')
   })
 
   it('are never reviewed, even when due and in Focus', () => {

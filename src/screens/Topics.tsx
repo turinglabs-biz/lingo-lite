@@ -1,4 +1,5 @@
 import { catalog, topics, type TopicId } from '../catalog/index.ts'
+import { topicBatch } from '../domain/progress.ts'
 import type { Progress } from '../progress/useProgress.ts'
 
 export function Stars({ count }: { count: number }) {
@@ -13,7 +14,15 @@ export function Stars({ count }: { count: number }) {
   )
 }
 
-export function Topics({ progress, onOpen }: { progress: Progress; onOpen: (topic: TopicId) => void }) {
+export function Topics({
+  progress,
+  onOpen,
+  onLearn,
+}: {
+  progress: Progress
+  onOpen: (topic: TopicId) => void
+  onLearn: (topic: TopicId) => void
+}) {
   return (
     <section className="screen">
       <h1>Topics</h1>
@@ -25,22 +34,28 @@ export function Topics({ progress, onOpen }: { progress: Progress; onOpen: (topi
           const ignoredHere = all.length - ids.length
           const introduced = ids.filter((id) => progress.introduced.has(id)).length
           const learned = ids.filter((id) => progress.learned.has(id)).length
+          const batchSize = topicBatch(progress.practiceCatalog, t.id, progress.introduced, progress.focus).length
           return (
-            <li key={t.id}>
-              <button type="button" className="row topic" onClick={() => onOpen(t.id)}>
-                <span className="topic-main">
-                  <span>{t.name}</span>
-                  <span className="muted small">
-                    {introduced}/{ids.length} introduced · {learned} Learned
-                    {ignoredHere > 0 && ` · ${ignoredHere} Ignored`}
-                  </span>
-                  <span className="meter">
-                    <i className="introduced" style={{ width: `${(introduced / Math.max(ids.length, 1)) * 100}%` }} />
-                    <i className="learned" style={{ width: `${(learned / Math.max(ids.length, 1)) * 100}%` }} />
-                  </span>
+            <li key={t.id} className="row topic">
+              <button type="button" className="topic-main" onClick={() => onOpen(t.id)}>
+                <span>{t.name}</span>
+                <span className="muted small">
+                  {introduced}/{ids.length} introduced · {learned} Learned
+                  {ignoredHere > 0 && ` · ${ignoredHere} Ignored`}
                 </span>
-                <Stars count={progress.stars.get(t.id) ?? 0} />
+                <span className="meter">
+                  <i className="introduced" style={{ width: `${(introduced / Math.max(ids.length, 1)) * 100}%` }} />
+                  <i className="learned" style={{ width: `${(learned / Math.max(ids.length, 1)) * 100}%` }} />
+                </span>
               </button>
+              <span className="topic-end">
+                <Stars count={progress.stars.get(t.id) ?? 0} />
+                {batchSize > 0 && (
+                  <button type="button" className="topic-learn" onClick={() => onLearn(t.id)}>
+                    Learn {batchSize} new
+                  </button>
+                )}
+              </span>
             </li>
           )
         })}
