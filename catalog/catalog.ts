@@ -168,6 +168,14 @@ const rows: Record<TopicId, Row[]> = {
     ['try-on', 3, 'i-beo bwa-do dwae-yo?', '입어 봐도 돼요?', 'Can I try it on?'],
     ['tax-refund', 3, 'taek-seu ri-peon-deu dwae-yo?', '택스 리펀드 돼요?', 'Can I get a tax refund?'],
     ['cheap', 3, 'ssa-yo', '싸요', "It's cheap"],
+    ['throw-it-away', 3, 'beo-ryeo ju-se-yo', '버려 주세요', 'Please throw it away', 'For the receipt you don’t want.'],
+    // Heard at the convenience store counter.
+    ['need-bag-heard', 1, 'bong-tu pi-ryo-ha-se-yo?', '봉투 필요하세요?', 'Do you need a bag?'],
+    ['receipt-heard', 1, 'yeong-su-jeung deu-ril-kka-yo?', '영수증 드릴까요?', 'Would you like the receipt?'],
+    ['insert-card-heard', 1, 'ka-deu kko-ja ju-se-yo', '카드 꽂아 주세요', 'Please insert your card.'],
+    ['points-card-heard', 2, 'po-in-teu ka-deu i-sseu-se-yo?', '포인트 카드 있으세요?', 'Do you have a points card?'],
+    ['change-heard', 2, 'geo-seu-reum-tton yeo-gi it-sseum-ni-da', '거스름돈 여기 있습니다', "Here's your change."],
+    ['bag-price-heard', 3, 'bong-tu-neun baek wo-ni-e-yo', '봉투는 백 원이에요', 'Bags are 100 won.'],
     ['two-of-them', 2, 'du gae ju-se-yo', '두 개 주세요', 'Two of them, please'],
   ],
   food: [
@@ -201,6 +209,8 @@ const rows: Record<TopicId, Row[]> = {
     ['pork-belly', 3, 'sam-gyeop-sal', '삼겹살', 'pork belly (Korean BBQ)'],
     ['good-restaurant-nearby', 3, 'i geun-cheo-e mat-jjip i-sseo-yo?', '이 근처에 맛집 있어요?', 'Is there a good restaurant nearby?'],
     ['hungry', 3, 'bae-go-pa-yo', '배고파요', "I'm hungry"],
+    ['heat-it-up', 2, 'de-wo ju-se-yo', '데워 주세요', 'Please heat it up', 'At the convenience store, for a lunch box or kimbap.'],
+    ['heat-up-heard', 2, 'de-wo deu-ril-kka-yo?', '데워 드릴까요?', 'Shall I heat it up?', 'Heard at the convenience store counter.'],
   ],
   cafe: [
     ['iced-americano', 1, 'a-i-seu a-me-ri-ka-no han jan ju-se-yo', '아이스 아메리카노 한 잔 주세요', 'One iced americano, please'],
@@ -336,7 +346,21 @@ const rows: Record<TopicId, Row[]> = {
 
 // Heard Expressions: what staff, drivers and announcements say, never the learner. They model real staff speech, so
 // honorific (-시-) and formal (-ㅂ니다) forms are expected here.
-const HEARD = new Set(['welcome-heard', 'hello-formal-heard', 'how-many-heard', 'for-here-heard', 'this-station-heard'])
+const HEARD = new Set([
+  'welcome-heard',
+  'hello-formal-heard',
+  'how-many-heard',
+  'for-here-heard',
+  'this-station-heard',
+  // Convenience store
+  'need-bag-heard',
+  'receipt-heard',
+  'insert-card-heard',
+  'points-card-heard',
+  'change-heard',
+  'bag-price-heard',
+  'heat-up-heard',
+])
 
 export const expressions: Expression[] = topics.flatMap((t) =>
   rows[t.id].map(([id, tier, romanization, hangul, english, usageNote]) => ({

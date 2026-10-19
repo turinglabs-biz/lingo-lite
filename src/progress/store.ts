@@ -48,6 +48,15 @@ export async function recordCheck(sessionId: string, expressionId: string, corre
   await touchSession(sessionId)
 }
 
+/**
+ * A Reply in a Conversation: recorded for XP, Practice time and Stats only. Playing a Conversation never changes an
+ * Expression's schedule.
+ */
+export async function recordReply(sessionId: string, conversationId: string, turnId: string, expressionId: string, correct: boolean) {
+  await db.answers.add({ at: Date.now(), sessionId, expressionId, kind: 'reply', correct, conversationId, turnId })
+  await touchSession(sessionId)
+}
+
 export interface GradeResult {
   /** The Expression became Learned for the first time with this answer. */
   becameLearned: boolean

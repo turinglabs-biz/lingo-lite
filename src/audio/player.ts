@@ -6,11 +6,12 @@ const audio = typeof Audio !== 'undefined' ? new Audio() : undefined
 const lastHeard = new Map<string, Voice>()
 
 /**
- * Plays a Clip: Normal picks a random Voice, Slow repeats the Voice just heard for that Expression.
+ * Plays a Clip: Normal picks a random Voice, Slow repeats the Voice just heard for that Expression. A Conversation
+ * passes its speaker's Voice instead, so each speaker keeps one Voice for the whole run.
  * Never rejects; autoplay that the browser blocks is silently skipped (the play buttons still work).
  */
-export async function playClip(expressionId: string, speed: Speed): Promise<void> {
-  const voice = pickVoice(speed, lastHeard.get(expressionId))
+export async function playClip(expressionId: string, speed: Speed, fixedVoice?: Voice): Promise<void> {
+  const voice = fixedVoice ?? pickVoice(speed, lastHeard.get(expressionId))
   lastHeard.set(expressionId, voice)
   if (!audio) return
   audio.src = clipUrl(expressionId, voice, speed)

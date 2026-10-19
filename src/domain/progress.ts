@@ -185,6 +185,7 @@ export function accuracyBy(answers: Answer[]): Record<Answer['kind'], AccuracySt
     listen: { answers: 0, correct: 0 },
     see: { answers: 0, correct: 0 },
     check: { answers: 0, correct: 0 },
+    reply: { answers: 0, correct: 0 },
   }
   for (const a of answers) {
     out[a.kind].answers++

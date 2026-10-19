@@ -2,14 +2,17 @@
 import { topics } from '../catalog/catalog.ts'
 import { catalog } from '../src/catalog/index.ts'
 import { BATCH_SIZE } from '../src/catalog/order.ts'
+import { conversations } from '../catalog/conversations.ts'
+import { expressionById } from '../src/catalog/index.ts'
 import { validateCatalog } from '../src/catalog/validate.ts'
+import { validateConversation } from '../src/domain/conversation.ts'
 
-const problems = validateCatalog(topics, catalog)
+const problems = [...validateCatalog(topics, catalog), ...conversations.flatMap((c) => validateConversation(c, expressionById))]
 for (let i = 0; i < catalog.length; i += BATCH_SIZE) {
   const batch = catalog.slice(i, i + BATCH_SIZE)
   console.log(`Batch ${i / BATCH_SIZE + 1}: ${batch.map((e) => e.id).join(', ')}`)
 }
-console.log(`\n${catalog.length} Expressions in ${topics.length} Topics, ${Math.ceil(catalog.length / BATCH_SIZE)} Batches.`)
+console.log(`\n${catalog.length} Expressions in ${topics.length} Topics, ${Math.ceil(catalog.length / BATCH_SIZE)} Batches, ${conversations.length} Conversations.`)
 if (problems.length) {
   console.error(`\n${problems.length} problem(s):\n${problems.join('\n')}`)
   process.exit(1)

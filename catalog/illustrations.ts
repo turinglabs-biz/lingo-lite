@@ -83,6 +83,8 @@ const leaf = P('M10 38C8 18 22 8 40 8c0 18-10 32-30 30z M10 38l18-18')
 const pepper = P('M31 9c-2 0-3 2-3 4 M28 13c4 0 7 3 6 8-2 9-10 16-22 18 5-5 8-12 9-18 1-5 3-8 7-8z')
 const menu = P('M11 6h26v35H11z M16 14h16 M16 20h16 M16 26h12 M16 32h8')
 const receipt = P('M13 5h22v37l-3-2-3 2-3-2-3 2-3-2-3 2-4-2z M18 13h12 M18 19h12 M18 25h8') + T(25, 36, '₩', 8)
+const microwave = P('M5 16h38v24H5z M9 20h24v16H9z M38 22v2 M38 28v2') + P('M16 4c-2 2 2 4 0 7 M24 3c-2 2 2 4 0 7 M32 4c-2 2 2 4 0 7')
+const bin = P('M26 22h18l-2 20H28z M24 22h22 M32 18h6v4')
 const takeoutBox = P('M9 18l4 22h22l4-22z M9 18l6-8h18l6 8 M20 10l-2 8 M28 10l2 8')
 const card = P('M6 12h36v24H6z M6 18h36 M11 29h9')
 const tCard = card + T(34, 32, 'T', 10)
@@ -336,6 +338,8 @@ const drawings = {
   sideDishes: mark(sideDishes, '+'),
   takeout: takeoutBox,
   beforeMeal: bubble(steamingBowl),
+  heatItUp: microwave,
+  throwItAway: G(0, 2, 0.6, receipt) + bin + P('M20 14c6-2 10 0 12 6'),
   afterMeal: pair(emptyBowl, heart),
   beer: mug,
   noMeat: mark(meat, 'x'),
@@ -561,6 +565,8 @@ export const illustrationOf: Record<string, DrawingKey> = {
   'card-ok': 'cardOk',
   'too-expensive': 'expensive',
   receipt: 'receipt',
+  'throw-it-away': 'throwItAway',
+  'heat-it-up': 'heatItUp',
   'bag-please': 'bag',
   'no-bag': 'noBag',
   'just-looking': 'looking',

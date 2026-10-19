@@ -23,8 +23,11 @@ export interface DirectionCard {
   learnedAt?: number
 }
 
-/** 'check' is the listen-and-pick check in a Learn session; it is objectively graded. */
-export type AnswerKind = Direction | 'check'
+/**
+ * 'check' is the listen-and-pick check in a Learn session; 'reply' is a Reply in a Conversation. Both are objectively
+ * graded, and neither touches the schedule.
+ */
+export type AnswerKind = Direction | 'check' | 'reply'
 
 export interface Answer {
   id?: number
@@ -34,9 +37,12 @@ export interface Answer {
   kind: AnswerKind
   correct: boolean
   grade?: Grade
+  /** For a Conversation answer: which Conversation and Turn. */
+  conversationId?: string
+  turnId?: string
 }
 
-export type SessionType = 'learn' | 'review' | 'focus'
+export type SessionType = 'learn' | 'review' | 'focus' | 'conversation'
 
 export interface Session {
   id: string

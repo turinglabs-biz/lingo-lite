@@ -55,7 +55,7 @@ The Expression spoken at natural speed by one Voice.
 The Normal Clip time-stretched to 0.75× speed without changing pitch. It is derived from the Normal Clip, never recorded separately.
 
 **Voice**:
-One of exactly two synthetic speakers (one female, one male) used for all Clips. Each playback uses a randomly chosen Voice.
+One of exactly two synthetic speakers (one female, one male) used for all Clips. Each playback uses a randomly chosen Voice, except in a Conversation, where each speaker keeps one Voice for the whole run.
 
 ### Learning
 
@@ -101,6 +101,22 @@ A session of up to 20 due Directions, scheduled by spaced repetition, with Focus
 
 **Focus session**:
 A session of up to 20 Directions of Focus Expressions, due or not, started on demand, least likely to be remembered first. It is graded and counted like a Review session.
+
+**Conversation**:
+A scripted exchange in one everyday travel situation (a convenience store, a café, a taxi), in which the learner plays themself and the other person speaks with the app's Voices. It is a session: its answers count for XP, Streak, Practice time and Stats, but never change an Expression's schedule.
+_Avoid_: Scenario, dialogue, role-play, scene, simulation
+
+**Turn**:
+One step of a Conversation: a Line or a Reply.
+
+**Line**:
+A Turn where the other person says an Expression, usually a Heard Expression. It plays as audio with the text hidden until the learner asks for it.
+
+**Reply**:
+A Turn where the learner says something, always an Expression they say (never a Heard one). It is checked like Speak: say it aloud, then pick it from four options. Several Replies may be accepted, each leading on in its own way; after a miss, the intended one is shown and the Conversation carries on.
+
+**Guided play**:
+Playing a Conversation with an English intent at each Reply saying what to say.
 
 **Learned**:
 An Expression whose Speak Direction (Listen, for a Heard Expression) is expected to be remembered for at least 7 days.
