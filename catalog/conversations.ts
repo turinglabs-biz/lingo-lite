@@ -141,4 +141,135 @@ const convenienceStore: Conversation = {
   },
 }
 
-export const conversations: Conversation[] = [convenienceStore]
+
+const cafe: Conversation = {
+  id: 'cafe',
+  topic: 'cafe',
+  title: 'Café',
+  setting: 'A small café where you order at the counter.',
+  role: 'the barista',
+  start: 'welcome',
+  turns: {
+    welcome: { kind: 'line', expressionId: 'welcome-heard', next: 'order' },
+    order: { kind: 'line', expressionId: 'order-heard', next: 'order-reply' },
+    'order-reply': {
+      kind: 'reply',
+      intent: 'Order an americano.',
+      accepted: [
+        { expressionId: 'americano', next: 'hot-or-iced' },
+        // Saying iced up front skips the question.
+        { expressionId: 'iced-americano', next: 'maybe-size' },
+      ],
+      distractors: ['bottle-of-water'],
+    },
+    'hot-or-iced': { kind: 'line', expressionId: 'hot-or-iced-heard', next: 'hot-or-iced-reply' },
+    'hot-or-iced-reply': {
+      kind: 'reply',
+      intent: "Say you'd like it hot.",
+      accepted: [
+        { expressionId: 'hot-one', next: 'maybe-size' },
+        { expressionId: 'iced', next: 'maybe-size' },
+      ],
+      distractors: ['milk'],
+    },
+
+    // Half the time the barista asks about the size.
+    'maybe-size': {
+      kind: 'variant',
+      options: [
+        { weight: 1, next: 'size' },
+        { weight: 1, next: 'for-here' },
+      ],
+    },
+    size: { kind: 'line', expressionId: 'size-heard', next: 'size-reply' },
+    'size-reply': {
+      kind: 'reply',
+      intent: 'Ask for a large.',
+      accepted: [
+        { expressionId: 'large-size', next: 'for-here' },
+        { expressionId: 'regular-size', next: 'for-here' },
+      ],
+    },
+
+    'for-here': { kind: 'line', expressionId: 'for-here-heard', next: 'for-here-reply' },
+    'for-here-reply': {
+      kind: 'reply',
+      intent: "Say you'll take it with you.",
+      accepted: [
+        { expressionId: 'take-away', next: 'total' },
+        { expressionId: 'to-go', next: 'total' },
+        { expressionId: 'for-here', next: 'total' },
+        { expressionId: 'eat-here', next: 'total' },
+      ],
+      distractors: ['hungry'],
+    },
+
+    total: {
+      kind: 'variant',
+      options: [
+        { weight: 1, next: 'price-4000' },
+        { weight: 1, next: 'price-4500' },
+        { weight: 1, next: 'price-5500' },
+      ],
+    },
+    'price-4000': { kind: 'line', expressionId: 'price-4000-heard', next: 'catch-4000' },
+    'catch-4000': { kind: 'catch', expressionId: 'price-4000-heard', question: 'How much is it?', answer: '4,000 won', wrong: ['400 won', '14,000 won', '4,500 won'], next: 'insert-card' },
+    'price-4500': { kind: 'line', expressionId: 'price-4500-heard', next: 'catch-4500' },
+    'catch-4500': { kind: 'catch', expressionId: 'price-4500-heard', question: 'How much is it?', answer: '4,500 won', wrong: ['4,050 won', '5,400 won', '450 won'], next: 'insert-card' },
+    'price-5500': { kind: 'line', expressionId: 'price-5500-heard', next: 'catch-5500' },
+    'catch-5500': { kind: 'catch', expressionId: 'price-5500-heard', question: 'How much is it?', answer: '5,500 won', wrong: ['5,050 won', '15,500 won', '550 won'], next: 'insert-card' },
+    'insert-card': { kind: 'line', expressionId: 'insert-card-heard', next: 'maybe-receipt' },
+
+    // Half the time the barista offers the receipt.
+    'maybe-receipt': {
+      kind: 'variant',
+      options: [
+        { weight: 1, next: 'receipt' },
+        { weight: 1, next: 'buzzer' },
+      ],
+    },
+    receipt: { kind: 'line', expressionId: 'receipt-heard', next: 'receipt-reply' },
+    'receipt-reply': {
+      kind: 'reply',
+      intent: 'Ask them to throw it away.',
+      accepted: [
+        { expressionId: 'throw-it-away', next: 'buzzer' },
+        { expressionId: 'its-okay', next: 'buzzer' },
+        { expressionId: 'receipt', next: 'buzzer' },
+        { expressionId: 'yes', next: 'buzzer' },
+      ],
+    },
+
+    buzzer: { kind: 'line', expressionId: 'buzzer-heard', next: 'buzzer-catch' },
+    'buzzer-catch': {
+      kind: 'catch',
+      expressionId: 'buzzer-heard',
+      question: 'What do you do?',
+      answer: 'Collect it at the counter when the buzzer goes off',
+      wrong: ["Wait at your table; they'll bring it", 'Pay when the buzzer goes off', 'Come back in ten minutes'],
+      next: 'buzzer-reply',
+    },
+    'buzzer-reply': {
+      kind: 'reply',
+      intent: 'Say you understand.',
+      accepted: [
+        { expressionId: 'got-it', next: 'wifi' },
+        { expressionId: 'yes', next: 'wifi' },
+      ],
+    },
+    wifi: {
+      kind: 'reply',
+      intent: 'Ask for the Wi-Fi password.',
+      accepted: [
+        { expressionId: 'wifi-password', next: 'wifi-answer' },
+        { expressionId: 'thank-you', next: 'enjoy' },
+      ],
+      distractors: ['power-outlet'],
+    },
+    'wifi-answer': { kind: 'line', expressionId: 'wifi-on-receipt-heard', next: 'enjoy' },
+    enjoy: { kind: 'line', expressionId: 'enjoy-heard', next: 'end' },
+    end: { kind: 'end' },
+  },
+}
+
+export const conversations: Conversation[] = [convenienceStore, cafe]

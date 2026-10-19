@@ -248,3 +248,19 @@ describe('Free play options', () => {
     }
   })
 })
+
+describe('Every authored Conversation', () => {
+  it('reaches every way on of every Variant over seeded runs', () => {
+    for (const c of conversations) {
+      const seen = new Set<string>()
+      for (let seed = 1; seed <= 60; seed++) walkIntended(c, seeded(seed)).forEach((id) => seen.add(id))
+      for (const t of Object.values(c.turns)) {
+        if (t.kind !== 'variant') continue
+        for (const o of t.options) {
+          const reached = c.turns[o.next].kind === 'variant' ? true : seen.has(o.next) || c.turns[o.next].kind === 'end'
+          expect(reached, `${c.id}: ${o.next}`).toBe(true)
+        }
+      }
+    }
+  })
+})

@@ -241,6 +241,15 @@ const rows: Record<TopicId, Row[]> = {
     ['milk', 3, 'u-yu', '우유', 'milk'],
     ['power-outlet', 3, 'kon-sen-teu i-sseo-yo?', '콘센트 있어요?', 'Is there a power outlet?'],
     ['bottle-of-water', 3, 'mul han byeong', '물 한 병', 'a bottle of water'],
+    ['americano', 2, 'a-me-ri-ka-no han jan ju-se-yo', '아메리카노 한 잔 주세요', 'One americano, please', 'Expect to be asked: hot or iced?'],
+    ['regular-size', 3, 're-gyul-leo-ro ju-se-yo', '레귤러로 주세요', 'Regular size, please'],
+    // Heard at the café counter.
+    ['order-heard', 1, 'ju-mun-ha-si-ge-sseo-yo?', '주문하시겠어요?', 'Would you like to order?', 'Heard at cafés and restaurants.'],
+    ['hot-or-iced-heard', 2, 'tta-tteu-tan geo-yo, a-i-seu-yo?', '따뜻한 거요, 아이스요?', 'Hot or iced?'],
+    ['size-heard', 2, 'sa-i-jeu-neun eo-tteo-ke hae deu-ril-kka-yo?', '사이즈는 어떻게 해 드릴까요?', 'What size would you like?'],
+    ['buzzer-heard', 2, 'jin-dong-bel ul-li-myeon ga-ji-reo wa ju-se-yo', '진동벨 울리면 가지러 와 주세요', 'Please come and collect it when the buzzer goes off.'],
+    ['wifi-on-receipt-heard', 3, 'yeong-su-jeung a-rae-e i-sseo-yo', '영수증 아래에 있어요', "It's at the bottom of the receipt."],
+    ['enjoy-heard', 2, 'ma-sit-kke deu-se-yo', '맛있게 드세요', 'Enjoy!', 'Heard when your food or drink is served.'],
   ],
   directions: [
     ['bathroom-where', 1, 'hwa-jang-sil eo-di-e-yo?', '화장실 어디예요?', 'Where is the bathroom?'],
@@ -373,6 +382,13 @@ const HEARD = new Set([
   'change-heard',
   'bag-price-heard',
   'heat-up-heard',
+  // Café
+  'order-heard',
+  'hot-or-iced-heard',
+  'size-heard',
+  'buzzer-heard',
+  'wifi-on-receipt-heard',
+  'enjoy-heard',
   ...['2000', '3200', '3500', '4000', '4500', '5000', '5500', '6800', '11500', '12000', '23000', '35000'].map((n) => `price-${n}-heard`),
 ])
 
