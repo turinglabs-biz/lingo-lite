@@ -13,7 +13,7 @@ The second pilot Conversation, from `scripts.md` §2, complete with its Catch Tu
 ## Done when
 - [ ] The Café passes validation, and `catalog:check` and `audio:check` pass. *(Validation and `catalog:check` pass; `audio:check` waits for `npm run audio`.)*
 - [x] An end-to-end run plays the Café to the end in Guided play, and reaches both the "hot or iced?" branch and the iced-americano shortcut.
-- [ ] The native check is done, or the remaining doubts are listed under Comments.
+- [x] The native check is done, or the remaining doubts are listed under Comments. *(Doubts listed; not checked.)*
 
 ## Comments
 
