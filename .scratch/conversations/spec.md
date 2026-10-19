@@ -1,6 +1,6 @@
 # Conversations: spec
 
-Status: open
+Status: built (tickets 01–07, 09–12); ticket 08, the pilot, waits for the learner
 
 Vocabulary follows `CONTEXT.md`. New and changed terms are in **Domain language** below. The full draft of every Conversation is in `scripts.md` next to this file. The tickets are in `issues/`.
 
