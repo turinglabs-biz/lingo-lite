@@ -49,8 +49,9 @@ export interface Candidate {
 }
 
 /**
- * The four options for a Reply. Guided play offers the intended Reply; Free play (no intent) up to two accepted
- * Replies, those the learner has met first, each leading its own way. The rest are the authored distractors, then
+ * The four options for a Reply. Guided play offers the intended Reply. Free play (no intent) offers two accepted
+ * Replies when there are two: the first the learner has met, and one other at random (met ones preferred), so every
+ * branch can come up, each leading its own way. The rest are the authored distractors, then
  * other ordinary Expressions of the Conversation's Topic. Never an accepted Reply presented as wrong, never a Heard
  * Expression (the learner never says one), never an Ignored one.
  */
@@ -69,10 +70,11 @@ export function replyOptions(
   const usable = (id: string) => !accepted.has(id) && !ignored.has(id) && !byId.get(id)?.heard
   const open = turn.accepted.map((a) => a.expressionId).filter((id) => !ignored.has(id))
   const intended = open[0] ?? turn.accepted[0].expressionId
+  const met = open.filter((id) => introduced.has(id))
+  const ordered = [...met, ...open.filter((id) => !introduced.has(id))]
+  const others = ordered.slice(1).filter((id) => met.length < 2 || met.includes(id))
   const right =
-    mode === 'guided'
-      ? [intended]
-      : [...open.filter((id) => introduced.has(id)), ...open.filter((id) => !introduced.has(id))].slice(0, Math.min(2, Math.max(open.length, 1)))
+    mode === 'guided' || ordered.length < 2 ? [ordered[0] ?? intended] : [ordered[0], others[Math.floor(random() * others.length)] ?? ordered[1]]
   const wrong: string[] = []
   for (const id of shuffle((turn.distractors ?? []).filter(usable), random)) if (wrong.length < count - right.length) wrong.push(id)
   const fill = shuffle(

@@ -446,6 +446,7 @@ const drawings = {
   weekend: calWeekend,
   when: mark(calendar(), '?'),
   stayMonth: calendar(T(24, 35, '30', 11)),
+  sinceYesterday: calendar(DOT(15, 30, 2.2) + P('M18 30h16 M29 25l5 5-5 5')),
   openSign: signBoard(P('M17 23l4 4 9-8')),
   closedSign: signBoard(P('M19 18l10 10 M29 18l-10 10')),
   // Health
@@ -651,6 +652,7 @@ export const illustrationOf: Record<string, DrawingKey> = {
   'subway-station': 'station',
   'station-where': 'stationWhere',
   'staying-a-month': 'stayMonth',
+  'since-yesterday': 'sinceYesterday',
   'is-it-close': 'close',
   'how-do-i-get-here': 'howToGet',
   'which-exit': 'whichExit',

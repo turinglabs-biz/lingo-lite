@@ -265,3 +265,16 @@ describe('Every authored Conversation', () => {
     }
   })
 })
+
+describe('Free play variety', () => {
+  it('lets every accepted Reply the learner has met come up, not only the first two', () => {
+    const pharmacy = conversations.find((c) => c.id === 'pharmacy')!
+    const turn = pharmacy.turns['problem-reply'] as Reply
+    const met = new Set(turn.accepted.map((a) => a.expressionId))
+    const offered = new Set<string>()
+    for (let seed = 1; seed <= 40; seed++) {
+      replyOptions(turn, 'health', catalog, new Set(), seeded(seed * 7919 + 13), 4, 'free', met).forEach((id) => offered.add(id))
+    }
+    for (const a of turn.accepted) expect(offered.has(a.expressionId), a.expressionId).toBe(true)
+  })
+})

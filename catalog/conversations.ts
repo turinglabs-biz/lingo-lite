@@ -1007,6 +1007,114 @@ const smallTalk: Conversation = {
   },
 }
 
+const pharmacy: Conversation = {
+  id: 'pharmacy',
+  topic: 'health',
+  title: 'Pharmacy',
+  setting: "You've had a headache since yesterday.",
+  role: 'the pharmacist',
+  start: 'welcome',
+  turns: {
+    welcome: { kind: 'line', expressionId: 'welcome-heard', next: 'problem' },
+    problem: { kind: 'line', expressionId: 'problem-heard', next: 'problem-reply' },
+    'problem-reply': {
+      kind: 'reply',
+      intent: 'Say you have a headache.',
+      accepted: [
+        { expressionId: 'headache', next: 'since-when' },
+        { expressionId: 'stomach-ache', next: 'since-when' },
+        { expressionId: 'fever', next: 'since-when' },
+        // Accepted, but vague: the pharmacist asks where.
+        { expressionId: 'it-hurts', next: 'where-hurts' },
+      ],
+    },
+    'where-hurts': { kind: 'line', expressionId: 'where-hurts-heard', next: 'where-hurts-reply' },
+    'where-hurts-reply': {
+      kind: 'reply',
+      intent: 'Say your head hurts.',
+      accepted: [
+        { expressionId: 'headache', next: 'since-when' },
+        { expressionId: 'stomach-ache', next: 'since-when' },
+        { expressionId: 'fever', next: 'since-when' },
+        { expressionId: 'it-hurts', next: 'where-hurts' },
+      ],
+    },
+    'since-when': { kind: 'line', expressionId: 'since-when-heard', next: 'since-when-reply' },
+    'since-when-reply': { kind: 'reply', intent: 'Say since yesterday.', accepted: [{ expressionId: 'since-yesterday', next: 'allergy' }], distractors: ['tomorrow'] },
+    allergy: { kind: 'line', expressionId: 'allergy-heard', next: 'allergy-reply' },
+    'allergy-reply': {
+      kind: 'reply',
+      intent: "Say you don't have any.",
+      accepted: [
+        { expressionId: 'there-isnt', next: 'dosage' },
+        { expressionId: 'no', next: 'dosage' },
+        { expressionId: 'peanut-allergy', next: 'medicine-ok' },
+      ],
+    },
+    'medicine-ok': { kind: 'line', expressionId: 'medicine-ok-heard', next: 'dosage' },
+    dosage: { kind: 'line', expressionId: 'dosage-heard', next: 'dosage-catch' },
+    'dosage-catch': {
+      kind: 'catch',
+      expressionId: 'dosage-heard',
+      question: 'How do you take it?',
+      answer: '3 times a day, after meals',
+      wrong: ['3 times a day, before meals', 'Once every 3 days', '3 tablets at once'],
+      next: 'maybe-drowsy',
+    },
+    'maybe-drowsy': {
+      kind: 'variant',
+      options: [
+        { weight: 1, next: 'drowsy' },
+        { weight: 1, next: 'price' },
+      ],
+    },
+    drowsy: { kind: 'line', expressionId: 'drowsy-heard', next: 'drowsy-catch' },
+    'drowsy-catch': {
+      kind: 'catch',
+      expressionId: 'drowsy-heard',
+      question: 'What should you know?',
+      answer: 'It may make you drowsy',
+      wrong: ['Take it with water', "Don't drink alcohol", 'Keep it cold'],
+      next: 'price',
+    },
+    price: { kind: 'line', expressionId: 'price-5000-heard', next: 'thanks' },
+    thanks: { kind: 'reply', intent: 'Thank them.', accepted: [{ expressionId: 'thank-you', next: 'bye' }] },
+    bye: { kind: 'line', expressionId: 'goodbye-leaving', next: 'bye-reply' },
+    'bye-reply': { kind: 'reply', intent: "Say goodbye: you're the one leaving.", accepted: [{ expressionId: 'goodbye-staying', next: 'end' }], distractors: ['goodbye-leaving'] },
+    end: { kind: 'end' },
+  },
+}
+
+const hotelCheckOut: Conversation = {
+  id: 'hotel-check-out',
+  topic: 'hotel',
+  title: 'Hotel check-out',
+  setting: 'The morning you leave; your train is in the afternoon.',
+  role: 'the receptionist',
+  start: 'check-out',
+  turns: {
+    'check-out': { kind: 'reply', intent: "Say you'd like to check out.", accepted: [{ expressionId: 'check-out', next: 'key-card' }], distractors: ['check-in'] },
+    'key-card': { kind: 'line', expressionId: 'key-card-heard', next: 'key-card-reply' },
+    'key-card-reply': { kind: 'reply', intent: 'Hand it over.', accepted: [{ expressionId: 'here-you-are', next: 'minibar' }] },
+    minibar: { kind: 'line', expressionId: 'minibar-heard', next: 'minibar-reply' },
+    'minibar-reply': {
+      kind: 'reply',
+      intent: 'Say you didn\'t.',
+      accepted: [
+        { expressionId: 'no', next: 'luggage' },
+        { expressionId: 'yes', next: 'luggage' },
+      ],
+    },
+    luggage: { kind: 'reply', intent: 'Ask them to keep your luggage.', accepted: [{ expressionId: 'keep-luggage', next: 'back-when' }] },
+    'back-when': { kind: 'line', expressionId: 'back-when-heard', next: 'back-when-reply' },
+    'back-when-reply': { kind: 'reply', intent: "Say you'll be back at three.", accepted: [{ expressionId: 'three-oclock', next: 'tag' }], distractors: ['thirty-minutes'] },
+    tag: { kind: 'line', expressionId: 'luggage-tag-heard', next: 'bye' },
+    bye: { kind: 'line', expressionId: 'goodbye-leaving', next: 'bye-reply' },
+    'bye-reply': { kind: 'reply', intent: "Say goodbye: you're the one leaving.", accepted: [{ expressionId: 'goodbye-staying', next: 'end' }], distractors: ['goodbye-leaving'] },
+    end: { kind: 'end' },
+  },
+}
+
 export const conversations: Conversation[] = [
   convenienceStore,
   cafe,
@@ -1020,4 +1128,6 @@ export const conversations: Conversation[] = [
   clothesShop,
   marketStall,
   smallTalk,
+  pharmacy,
+  hotelCheckOut,
 ]

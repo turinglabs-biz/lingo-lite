@@ -368,6 +368,10 @@ const rows: Record<TopicId, Row[]> = {
     ['breakfast-heard', 3, 'jo-si-geun il cheung-e-seo il-gop-ssi-bu-teo yeol-ssi-kka-ji-e-yo', '조식은 일 층에서 일곱 시부터 열 시까지예요', 'Breakfast is on the first floor, from seven to ten.'],
     ['checkout-heard', 2, 'che-keu-a-u-seun yeol-han si-im-ni-da', '체크아웃은 열한 시입니다', 'Check-out is at eleven.'],
     ['elevator-heard', 3, 'el-li-be-i-teo-neun o-reun-jjo-ge it-sseum-ni-da', '엘리베이터는 오른쪽에 있습니다', 'The elevator is on the right.'],
+    // Heard at check-out.
+    ['key-card-heard', 2, 'ka-deu-ki ju-si-ge-sseo-yo?', '카드키 주시겠어요?', 'Could I have your key card?'],
+    ['minibar-heard', 3, 'mi-ni-ba i-yong-ha-syeo-sseo-yo?', '미니바 이용하셨어요?', 'Did you use the minibar?'],
+    ['back-when-heard', 3, 'myeot-ssi-e cha-jeu-reo o-se-yo?', '몇 시에 찾으러 오세요?', 'What time will you come back for it?'],
   ],
   time: [
     ['what-time-open', 2, 'myeot ssi-e yeo-reo-yo?', '몇 시에 열어요?', 'What time do you open?'],
@@ -407,6 +411,15 @@ const rows: Record<TopicId, Row[]> = {
     ['lost-wallet', 3, 'ji-ga-beul i-reo-beo-ryeo-sseo-yo', '지갑을 잃어버렸어요', 'I lost my wallet'],
     ['urgent', 3, 'geu-pae-yo', '급해요', "It's urgent"],
     ['police-112', 3, 'il-il-i', '일일이', '112 (police)', 'Emergency number for the police.'],
+    ['since-yesterday', 3, 'eo-je-bu-teo-yo', '어제부터요', 'Since yesterday'],
+    // Heard at the pharmacy.
+    ['problem-heard', 2, 'eo-di-ga bul-pyeon-ha-se-yo?', '어디가 불편하세요?', 'What seems to be the problem?'],
+    ['where-hurts-heard', 2, 'eo-di-ga a-peu-se-yo?', '어디가 아프세요?', 'Where does it hurt?'],
+    ['since-when-heard', 2, 'eon-je-bu-teo a-peu-syeo-sseo-yo?', '언제부터 아프셨어요?', 'Since when have you been unwell?'],
+    ['allergy-heard', 2, 'al-le-reu-gi i-sseu-se-yo?', '알레르기 있으세요?', 'Do you have any allergies?'],
+    ['medicine-ok-heard', 3, 'i ya-geun gwaen-cha-na-yo', '이 약은 괜찮아요', 'This medicine is fine.'],
+    ['dosage-heard', 2, 'i yak ha-ru-e se beon, si-ku-e deu-se-yo', '이 약 하루에 세 번, 식후에 드세요', 'Take this three times a day, after meals.'],
+    ['drowsy-heard', 3, 'jol-lil-ssu i-sseo-yo', '졸릴 수 있어요', 'It may make you drowsy.'],
   ],
   smalltalk: [
     ['nice-to-meet-you', 1, 'man-na-seo ban-ga-wo-yo', '만나서 반가워요', 'Nice to meet you'],
@@ -522,6 +535,18 @@ const HEARD = new Set([
   'how-long-stay-heard',
   'one-more-photo-heard',
   'enjoy-trip-heard',
+  // Pharmacy
+  'problem-heard',
+  'where-hurts-heard',
+  'since-when-heard',
+  'allergy-heard',
+  'medicine-ok-heard',
+  'dosage-heard',
+  'drowsy-heard',
+  // Hotel check-out
+  'key-card-heard',
+  'minibar-heard',
+  'back-when-heard',
   ...['2000', '3200', '3500', '4000', '4500', '5000', '5500', '6800', '11500', '12000', '23000', '35000'].map((n) => `price-${n}-heard`),
 ])
 
