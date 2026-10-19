@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { conversations } from '../../catalog/conversations.ts'
 import { catalog, expressionById } from '../catalog/index.ts'
-import { checkReply, longestIntendedPath, pickVariant, replyOptions, resolveVariants, validateConversation, walkIntended, type Conversation, type Turn } from './conversation.ts'
+import { canPlay, checkReply, longestIntendedPath, pickVariant, prepareBatch, replyOptions, resolveVariants, validateConversation, walkIntended, type Conversation, type Turn } from './conversation.ts'
 
 const seeded = (seed: number) => () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646
 type Reply = Extract<Turn, { kind: 'reply' }>
@@ -155,5 +155,37 @@ describe('Catch and Variant validation', () => {
     const problems = validateConversation(c, expressionById).join('\n')
     expect(problems).toMatch(/at least two ways on/)
     expect(problems).toMatch(/weights must be positive/)
+  })
+})
+
+describe('Prepare', () => {
+  const c = fixture()
+  const order = catalog
+  it('lets the learner play once every Reply Turn has an introduced accepted Reply', () => {
+    expect(canPlay(c, new Set(), new Set())).toBe(false)
+    expect(canPlay(c, new Set(['bag-please']), new Set())).toBe(true)
+    expect(canPlay(c, new Set(['no-bag']), new Set())).toBe(true)
+  })
+  it('skips a Reply Turn whose accepted Replies are all Ignored', () => {
+    expect(canPlay(c, new Set(), new Set(['no-bag', 'bag-please']))).toBe(true)
+  })
+  it('puts the Replies Play needs first, then the rest, in Catalog order', () => {
+    const batch = prepareBatch(c, order, new Set(), new Set())
+    expect(batch[0]).toBe('no-bag')
+    expect(batch.sort()).toEqual(['bag-please', 'bag-price-heard', 'need-bag-heard', 'no-bag'].sort())
+  })
+  it('takes at most 15 and leaves out introduced and Ignored Expressions', () => {
+    const store = conversations.find((x) => x.id === 'convenience-store')!
+    const batch = prepareBatch(store, order, new Set(['hello']), new Set(['its-okay']))
+    expect(batch.length).toBeLessThanOrEqual(15)
+    expect(batch).not.toContain('hello')
+    expect(batch).not.toContain('its-okay')
+    const rest = prepareBatch(store, order, new Set([...batch, 'hello']), new Set(['its-okay']))
+    expect(rest.some((id) => batch.includes(id))).toBe(false)
+  })
+  it('the needed Replies, once learned, make the Conversation playable', () => {
+    const store = conversations.find((x) => x.id === 'convenience-store')!
+    const batch = prepareBatch(store, order, new Set(), new Set())
+    expect(canPlay(store, new Set(batch), new Set())).toBe(true)
   })
 })

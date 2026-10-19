@@ -199,3 +199,38 @@ export function validateConversation(c: Conversation, expressions: Map<string, {
   for (const id of Object.keys(c.turns)) if (!canEnd.has(id)) problems.push(`${at(id)}: never reaches the End`)
   return problems
 }
+
+const replyTurns = (c: Conversation) => Object.values(c.turns).filter((t): t is Extract<Turn, { kind: 'reply' }> => t.kind === 'reply')
+
+/**
+ * Whether the learner can play: every Reply Turn has at least one introduced, non-Ignored accepted Reply, so they're
+ * never asked to say something they've never seen. A Turn whose accepted Replies are all Ignored doesn't count (it is
+ * played as in Watch: shown, not asked).
+ */
+export function canPlay(c: Conversation, introduced: Set<string>, ignored: Set<string>): boolean {
+  return replyTurns(c).every((t) => {
+    const usable = t.accepted.filter((a) => !ignored.has(a.expressionId))
+    return usable.length === 0 || usable.some((a) => introduced.has(a.expressionId))
+  })
+}
+
+/** The Conversation's Expressions the learner hasn't met yet (Ignored ones left out), in Catalog order. */
+export function newExpressionsOf(c: Conversation, ordered: { id: string }[], introduced: Set<string>, ignored: Set<string>): string[] {
+  const used = new Set(expressionsOf(c))
+  return ordered.map((e) => e.id).filter((id) => used.has(id) && !introduced.has(id) && !ignored.has(id))
+}
+
+/**
+ * Prepare: up to `size` of the Conversation's not-yet-introduced, non-Ignored Expressions for a Learn session. First
+ * the Replies Play needs (each Reply Turn's first usable accepted Reply, when none is introduced yet), then the rest
+ * (Heard Expressions, other accepted Replies), each group in Catalog order.
+ */
+export function prepareBatch(c: Conversation, ordered: { id: string }[], introduced: Set<string>, ignored: Set<string>, size = 15): string[] {
+  const needed = new Set<string>()
+  for (const t of replyTurns(c)) {
+    const usable = t.accepted.filter((a) => !ignored.has(a.expressionId))
+    if (usable.length && !usable.some((a) => introduced.has(a.expressionId))) needed.add(usable[0].expressionId)
+  }
+  const fresh = newExpressionsOf(c, ordered, introduced, ignored)
+  return [...fresh.filter((id) => needed.has(id)), ...fresh.filter((id) => !needed.has(id))].slice(0, size)
+}

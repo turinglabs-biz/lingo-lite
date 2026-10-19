@@ -42,6 +42,7 @@ export function App() {
   const [echoLab, setEchoLab] = useState(false)
   const [focusPage, setFocusPage] = useState(false)
   const [conversationsPage, setConversationsPage] = useState(false)
+  const [openConversation, setOpenConversation] = useState<string | null>(null)
 
   if (!progress) return <div className="app loading" />
 
@@ -80,7 +81,12 @@ export function App() {
   if (conversationsPage)
     return (
       <ConversationsPage
+        progress={progress}
+        openId={openConversation}
+        onOpen={setOpenConversation}
         onPlay={(conversation) => setActive({ kind: 'conversation', conversation })}
+        // Prepare is an ordinary Learn session on the Conversation's missing Expressions.
+        onPrepare={(batch) => setActive({ kind: 'learn', batch })}
         onClose={() => setConversationsPage(false)}
       />
     )

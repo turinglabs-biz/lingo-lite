@@ -66,13 +66,20 @@ export function ConversationSession({ conversation, onEnd }: { conversation: Con
   useEffect(() => {
     if (entered.current === turnId) return
     entered.current = turnId
+    // A Reply whose accepted Replies the learner has all Ignored is shown, not asked (as in Watch).
+    if (turn.kind === 'reply' && turn.accepted.every((a) => ignored.has(a.expressionId))) {
+      setMessages((m) => [...m, { from: 'you', expressionId: turn.accepted[0].expressionId }])
+      playClip(turn.accepted[0].expressionId, 'normal', voices.you)
+      setLineNext(resolveVariants(conversation, turn.accepted[0].next))
+      return
+    }
     if (turn.kind !== 'line') return
     setMessages((m) => [...m, { from: 'them', expressionId: turn.expressionId, shown: 0 }])
     playClip(turn.expressionId, 'normal', voices.them)
     const following = resolveVariants(conversation, turn.next)
     if (conversation.turns[following].kind === 'line') setLineNext(following)
     else setTurnId(following)
-  }, [turnId, turn, conversation, voices])
+  }, [turnId, turn, conversation, voices, ignored])
 
   useEffect(() => {
     chatEnd.current?.scrollIntoView?.({ block: 'end' })
@@ -199,7 +206,13 @@ export function ConversationSession({ conversation, onEnd }: { conversation: Con
           </div>
         )}
 
-        {turn.kind === 'reply' && (
+        {turn.kind === 'reply' && lineNext && (
+          <button type="button" className="primary-action" onClick={() => next(lineNext)}>
+            Next
+          </button>
+        )}
+
+        {turn.kind === 'reply' && !lineNext && (
           <div className="reply-panel">
             <Prompt label="Your turn">
               <p className="english-prompt">{turn.intent}</p>

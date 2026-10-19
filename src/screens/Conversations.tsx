@@ -4,14 +4,39 @@ import { playClip, playClipToEnd, stopClip } from '../audio/player.ts'
 import { VOICES } from '../audio/voices.ts'
 import { expressionById } from '../catalog/index.ts'
 import { ExpressionView } from '../components/ExpressionView.tsx'
-import { walkIntended, type Conversation } from '../domain/conversation.ts'
+import { canPlay, expressionsOf, newExpressionsOf, prepareBatch, walkIntended, type Conversation } from '../domain/conversation.ts'
+import type { Progress } from '../progress/useProgress.ts'
 
 /**
- * Every Conversation, in curated order (most frequent situations first), and the way into one. Opened from Home.
+ * Every Conversation, in curated order (most frequent situations first), with whether it's ready to play, and the way
+ * into one. Opened from Home.
  */
-export function ConversationsPage({ onPlay, onClose }: { onPlay: (c: Conversation) => void; onClose: () => void }) {
-  const [open, setOpen] = useState<Conversation | null>(null)
-  if (open) return <ConversationPage conversation={open} onPlay={() => onPlay(open)} onClose={() => setOpen(null)} />
+export function ConversationsPage({
+  progress,
+  openId,
+  onOpen,
+  onPlay,
+  onPrepare,
+  onClose,
+}: {
+  progress: Progress
+  openId: string | null
+  onOpen: (id: string | null) => void
+  onPlay: (c: Conversation) => void
+  onPrepare: (batch: string[]) => void
+  onClose: () => void
+}) {
+  const open = conversations.find((c) => c.id === openId)
+  if (open)
+    return (
+      <ConversationPage
+        conversation={open}
+        progress={progress}
+        onPlay={() => onPlay(open)}
+        onPrepare={() => onPrepare(prepareBatch(open, progress.practiceCatalog, progress.introduced, progress.ignored))}
+        onClose={() => onOpen(null)}
+      />
+    )
   return (
     <div className="session conversations-page">
       <div className="session-head">
@@ -24,11 +49,12 @@ export function ConversationsPage({ onPlay, onClose }: { onPlay: (c: Conversatio
       <ul className="list">
         {conversations.map((c) => (
           <li key={c.id}>
-            <button type="button" className="row conversation-row" onClick={() => setOpen(c)}>
+            <button type="button" className="row conversation-row" onClick={() => onOpen(c.id)}>
               <span className="topic-main">
                 <span>{c.title}</span>
                 <span className="muted small">{c.setting}</span>
               </span>
+              <StatusLabel conversation={c} progress={progress} />
             </button>
           </li>
         ))}
@@ -37,10 +63,33 @@ export function ConversationsPage({ onPlay, onClose }: { onPlay: (c: Conversatio
   )
 }
 
-/** One Conversation: its setting, who you'll talk to, Watch and Play. */
-function ConversationPage({ conversation, onPlay, onClose }: { conversation: Conversation; onPlay: () => void; onClose: () => void }) {
+/** Whether a Conversation can be played yet: "Needs N new" until every Reply Turn has a Reply the learner has met. */
+function StatusLabel({ conversation, progress }: { conversation: Conversation; progress: Progress }) {
+  const fresh = newExpressionsOf(conversation, progress.practiceCatalog, progress.introduced, progress.ignored).length
+  if (!canPlay(conversation, progress.introduced, progress.ignored)) return <span className="status-label">Needs {fresh} new</span>
+  return <span className="status-label ready">Ready</span>
+}
+
+/** One Conversation: its setting, who you'll talk to, the Expressions it uses, Prepare, Watch and Play. */
+function ConversationPage({
+  conversation,
+  progress,
+  onPlay,
+  onPrepare,
+  onClose,
+}: {
+  conversation: Conversation
+  progress: Progress
+  onPlay: () => void
+  onPrepare: () => void
+  onClose: () => void
+}) {
   const [watching, setWatching] = useState(false)
   if (watching) return <ConversationWatch conversation={conversation} onClose={() => setWatching(false)} />
+  const used = expressionsOf(conversation).filter((id) => !progress.ignored.has(id))
+  const fresh = newExpressionsOf(conversation, progress.practiceCatalog, progress.introduced, progress.ignored)
+  const playable = canPlay(conversation, progress.introduced, progress.ignored)
+  const batch = prepareBatch(conversation, progress.practiceCatalog, progress.introduced, progress.ignored)
   return (
     <div className="session conversation-page">
       <div className="session-head">
@@ -51,12 +100,27 @@ function ConversationPage({ conversation, onPlay, onClose }: { conversation: Con
       </div>
       <p>{conversation.setting}</p>
       <p className="muted small">You'll talk to {conversation.role}. Their lines play as audio; show the text only if you need it.</p>
-      <button type="button" className="primary-action" onClick={onPlay}>
+      {fresh.length > 0 && (
+        <button type="button" className={playable ? 'secondary-action' : 'primary-action'} onClick={onPrepare}>
+          Prepare · {batch.length} new
+        </button>
+      )}
+      <button type="button" className={playable ? 'primary-action' : 'secondary-action'} onClick={onPlay} disabled={!playable}>
         Play
       </button>
+      {!playable && <p className="muted small">Prepare first: you'll learn the replies this conversation asks for.</p>}
       <button type="button" className="secondary-action" onClick={() => setWatching(true)}>
         Watch
       </button>
+      <h2>In this conversation</h2>
+      <ul className="list compact">
+        {used.map((id) => (
+          <li key={id} className="row">
+            <ExpressionView expression={expressionById.get(id)!} size="compact" />
+            {!progress.introduced.has(id) && <span className="focus-not-met">New</span>}
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }
