@@ -289,6 +289,11 @@ const rows: Record<TopicId, Row[]> = {
     ['which-floor', 3, 'myeot cheung-i-e-yo?', '몇 층이에요?', 'Which floor is it?'],
     ['atm-where', 3, 'e-i-ti-em eo-di i-sseo-yo?', 'ATM 어디 있어요?', 'Where is an ATM?'],
     ['map', 3, 'ji-do', '지도', 'map'],
+    ['station-where', 1, 'ji-ha-cheol-lyeok eo-di-e-yo?', '지하철역 어디예요?', 'Where is the subway station?'],
+    // Heard when asking the way.
+    ['go-straight-right-heard', 2, 'jjuk ga-da-ga sa-geo-ri-e-seo o-reun-jjo-geu-ro ga-se-yo', '쭉 가다가 사거리에서 오른쪽으로 가세요', 'Go straight, then turn right at the intersection.'],
+    ['five-minutes-walk-heard', 3, 'a-ni-yo, geo-reo-seo o bun-jjeum geol-lyeo-yo', '아니요, 걸어서 오 분쯤 걸려요', 'No, about five minutes on foot.'],
+    ['dont-know-area-heard', 3, 'jwe-song-hae-yo, jeo-do yeo-gi jal mol-la-yo', '죄송해요, 저도 여기 잘 몰라요', "Sorry, I don't really know this area either."],
   ],
   transport: [
     ['to-this-address', 1, 'i ju-so-ro ga ju-se-yo', '이 주소로 가 주세요', 'Please take me to this address', 'Show the address on your phone to the taxi driver.'],
@@ -305,6 +310,17 @@ const rows: Record<TopicId, Row[]> = {
     ['where-transfer', 2, 'eo-di-seo ga-ra-ta-yo?', '어디서 갈아타요?', 'Where do I transfer?'],
     ['airport', 2, 'gong-hang', '공항', 'airport'],
     ['this-station-heard', 3, 'i-beon nyeo-geun', '이번 역은', 'This station is …', 'Heard in subway announcements.'],
+    // Heard in the subway.
+    ['go-ahead-heard', 3, 'ne, mal-sseum-ha-se-yo', '네, 말씀하세요', 'Yes, go ahead.'],
+    ['line-four-heard', 2, 'sa-ho-seon ta-se-yo', '사호선 타세요', 'Take line 4.'],
+    ['line-four-there-heard', 3, 'sa-ho-seo-neun jeo-jjo-gi-e-yo', '사호선은 저쪽이에요', 'Line 4 is over there.'],
+    ['exit-six-heard', 2, 'yuk-ppeon chul-gu-ro na-ga-se-yo', '육 번 출구로 나가세요', 'Take exit 6.'],
+    ['announcement-heard', 2, 'i-beon nyeo-geun myeong-dong, myeong-dong-nyeo-gim-ni-da. nae-ri-sil mu-neun o-reun-jjo-gim-ni-da', '이번 역은 명동, 명동역입니다. 내리실 문은 오른쪽입니다', 'This station is Myeongdong. The doors will open on the right.'],
+    // Heard when topping up a T-money card.
+    ['how-much-top-up-heard', 2, 'eol-ma chung-jeon-hae deu-ril-kka-yo?', '얼마 충전해 드릴까요?', 'How much shall I put on it?'],
+    ['top-up-cash-only-heard', 2, 'chung-jeo-neun hyeon-geum-man dwae-yo', '충전은 현금만 돼요', 'Top-ups are cash only.', 'True at most convenience stores.'],
+    ['atm-there-heard', 3, 'e-i-ti-e-meun jeo-jjo-ge i-sseo-yo', 'ATM은 저쪽에 있어요', 'The ATM is over there.'],
+    ['topped-up-heard', 3, 'chung-jeon-dwaet-sseum-ni-da. ja-nae-geun man i-cheon wo-ni-e-yo', '충전됐습니다. 잔액은 만 이천 원이에요', 'Done. Your balance is 12,000 won.'],
     ['ticket', 3, 'pyo', '표', 'ticket'],
     ['ticket-to-busan', 3, 'bu-san ga-neun pyo han jang ju-se-yo', '부산 가는 표 한 장 주세요', 'One ticket to Busan, please'],
     ['train-station', 3, 'gi-cha-yeok', '기차역', 'train station'],
@@ -312,7 +328,7 @@ const rows: Record<TopicId, Row[]> = {
     // Heard in a taxi.
     ['where-to-heard', 1, 'eo-di-ro ga-se-yo?', '어디로 가세요?', 'Where to?'],
     ['certainly-heard', 2, 'ne, al-get-sseum-ni-da', '네, 알겠습니다', 'Certainly.'],
-    ['twenty-minutes-heard', 3, 'i-sip ppun-jjeum geol-lyeo-yo', '이십 분쯤 걸려요', 'It takes about twenty minutes.'],
+    ['twenty-minutes-heard', 3, 'i-sip-ppun-jjeum geol-lyeo-yo', '이십 분쯤 걸려요', 'It takes about twenty minutes.'],
     ['traffic-heard', 3, 'ji-geum gi-ri jom ma-kyeo-yo', '지금 길이 좀 막혀요', "The traffic's a bit heavy right now."],
     ['drop-off-heard', 1, 'eo-di-seo nae-ryeo deu-ril-kka-yo?', '어디서 내려 드릴까요?', 'Where shall I drop you off?'],
     ['tap-card-heard', 1, 'ka-deu yeo-gi dae ju-se-yo', '카드 여기 대 주세요', 'Tap your card here.'],
@@ -335,7 +351,7 @@ const rows: Record<TopicId, Row[]> = {
     ['checkin-from-three-heard', 2, 'che-keu-i-neun se si-bu-teo-e-yo', '체크인은 세 시부터예요', 'Check-in is from three o’clock.'],
     ['luggage-tag-heard', 3, 'jim-pyo yeo-gi it-sseum-ni-da', '짐표 여기 있습니다', "Here's your luggage tag."],
     ['room-heard', 3, 'bang-eun chil cheung, chil-baek-sam ho-im-ni-da', '방은 칠 층, 칠백삼 호입니다', 'Your room is 703, on the 7th floor.'],
-    ['breakfast-heard', 3, 'jo-si-geun il cheung-e-seo il-gop ssi-bu-teo yeol ssi-kka-ji-e-yo', '조식은 일 층에서 일곱 시부터 열 시까지예요', 'Breakfast is on the first floor, from seven to ten.'],
+    ['breakfast-heard', 3, 'jo-si-geun il cheung-e-seo il-gop-ssi-bu-teo yeol-ssi-kka-ji-e-yo', '조식은 일 층에서 일곱 시부터 열 시까지예요', 'Breakfast is on the first floor, from seven to ten.'],
     ['checkout-heard', 2, 'che-keu-a-u-seun yeol-han si-im-ni-da', '체크아웃은 열한 시입니다', 'Check-out is at eleven.'],
     ['elevator-heard', 3, 'el-li-be-i-teo-neun o-reun-jjo-ge it-sseum-ni-da', '엘리베이터는 오른쪽에 있습니다', 'The elevator is on the right.'],
   ],
@@ -449,6 +465,20 @@ const HEARD = new Set([
   'breakfast-heard',
   'checkout-heard',
   'elevator-heard',
+  // Subway and T-money
+  'go-ahead-heard',
+  'line-four-heard',
+  'line-four-there-heard',
+  'exit-six-heard',
+  'announcement-heard',
+  'how-much-top-up-heard',
+  'top-up-cash-only-heard',
+  'atm-there-heard',
+  'topped-up-heard',
+  // Asking the way
+  'go-straight-right-heard',
+  'five-minutes-walk-heard',
+  'dont-know-area-heard',
   ...['2000', '3200', '3500', '4000', '4500', '5000', '5500', '6800', '11500', '12000', '23000', '35000'].map((n) => `price-${n}-heard`),
 ])
 

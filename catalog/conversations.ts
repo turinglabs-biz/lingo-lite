@@ -618,4 +618,201 @@ const hotelCheckIn: Conversation = {
   },
 }
 
-export const conversations: Conversation[] = [convenienceStore, cafe, restaurantOrdering, restaurantPaying, taxi, hotelCheckIn]
+const subway: Conversation = {
+  id: 'subway',
+  topic: 'transport',
+  title: 'Finding your way in the subway',
+  setting: 'At Seoul Station, heading for Myeongdong. You ask a station worker.',
+  role: 'the station worker',
+  start: 'call',
+  turns: {
+    call: { kind: 'reply', intent: "Get the worker's attention.", accepted: [{ expressionId: 'excuse-me-attention', next: 'go-ahead' }], distractors: ['excuse-me-passing'] },
+    'go-ahead': { kind: 'line', expressionId: 'go-ahead-heard', next: 'how' },
+    how: {
+      kind: 'reply',
+      intent: 'Point at Myeongdong on your map and ask how to get there.',
+      accepted: [{ expressionId: 'how-do-i-get-here', next: 'line' }],
+      // 여기서 세워 주세요 is for a taxi.
+      distractors: ['stop-here'],
+    },
+    line: { kind: 'line', expressionId: 'line-four-heard', next: 'line-catch' },
+    'line-catch': { kind: 'catch', expressionId: 'line-four-heard', question: 'Which line?', answer: 'Line 4', wrong: ['Line 3', 'Line 10', 'Line 1'], next: 'maybe-there' },
+    'maybe-there': {
+      kind: 'variant',
+      options: [
+        { weight: 1, next: 'there' },
+        { weight: 1, next: 'exit' },
+      ],
+    },
+    there: { kind: 'line', expressionId: 'line-four-there-heard', next: 'exit' },
+    exit: { kind: 'reply', intent: 'Ask which exit to take.', accepted: [{ expressionId: 'which-exit', next: 'exit-answer' }], distractors: ['which-line'] },
+    'exit-answer': { kind: 'line', expressionId: 'exit-six-heard', next: 'exit-catch' },
+    'exit-catch': { kind: 'catch', expressionId: 'exit-six-heard', question: 'Which exit?', answer: 'Exit 6', wrong: ['Exit 9', 'Exit 16', 'Exit 60'], next: 'thanks' },
+    thanks: { kind: 'reply', intent: 'Thank them.', accepted: [{ expressionId: 'thank-you', next: 'announcement' }] },
+    announcement: { kind: 'line', expressionId: 'announcement-heard', next: 'announcement-catch' },
+    'announcement-catch': {
+      kind: 'catch',
+      expressionId: 'announcement-heard',
+      question: 'On the train: what did you hear?',
+      answer: 'This is Myeongdong; doors open on the right',
+      wrong: ['Next is Myeongdong; doors on the left', 'This is Myeongdong; doors on the left', 'Change here for line 4'],
+      next: 'end',
+    },
+    end: { kind: 'end' },
+  },
+}
+
+const tMoney: Conversation = {
+  id: 't-money',
+  topic: 'transport',
+  title: 'Topping up a T-money card',
+  setting: 'At a convenience store counter, with your T-money card.',
+  role: 'the clerk',
+  start: 'welcome',
+  turns: {
+    welcome: { kind: 'line', expressionId: 'welcome-heard', next: 'top-up' },
+    'top-up': { kind: 'reply', intent: 'Hand over your card and ask to top it up.', accepted: [{ expressionId: 'top-up', next: 'how-much' }], distractors: ['bill-please'] },
+    'how-much': { kind: 'line', expressionId: 'how-much-top-up-heard', next: 'amount' },
+    amount: {
+      kind: 'reply',
+      intent: 'Ask for 10,000 won.',
+      accepted: [
+        { expressionId: 'price-10000', next: 'pay' },
+        { expressionId: 'price-50000', next: 'pay' },
+      ],
+      // 열 is a native number: never used for money.
+      distractors: ['native-10'],
+    },
+    pay: {
+      kind: 'reply',
+      intent: 'Ask if you can pay by card.',
+      accepted: [
+        { expressionId: 'card-ok', next: 'cash-only' },
+        { expressionId: 'pay-cash', next: 'topped-up' },
+      ],
+    },
+    'cash-only': { kind: 'line', expressionId: 'top-up-cash-only-heard', next: 'cash-only-catch' },
+    'cash-only-catch': {
+      kind: 'catch',
+      expressionId: 'top-up-cash-only-heard',
+      question: 'What did they say?',
+      answer: 'Top-ups are cash only',
+      wrong: ['Cards cost extra', 'The machine is broken', 'Top-ups are free'],
+      next: 'cash',
+    },
+    cash: {
+      kind: 'reply',
+      intent: "Say you'll pay in cash.",
+      accepted: [
+        { expressionId: 'pay-cash', next: 'topped-up' },
+        { expressionId: 'atm-where', next: 'atm-there' },
+      ],
+    },
+    'atm-there': { kind: 'line', expressionId: 'atm-there-heard', next: 'after-atm' },
+    'after-atm': { kind: 'reply', intent: 'Back with cash: say you\'ll pay in cash.', accepted: [{ expressionId: 'pay-cash', next: 'topped-up' }] },
+    'topped-up': { kind: 'line', expressionId: 'topped-up-heard', next: 'balance-catch' },
+    'balance-catch': {
+      kind: 'catch',
+      expressionId: 'topped-up-heard',
+      question: "What's your balance now?",
+      answer: '12,000 won',
+      wrong: ['10,000 won', '2,000 won', '20,000 won'],
+      next: 'thanks',
+    },
+    thanks: { kind: 'reply', intent: 'Thank them.', accepted: [{ expressionId: 'thank-you', next: 'bye' }] },
+    bye: { kind: 'line', expressionId: 'goodbye-leaving', next: 'bye-reply' },
+    'bye-reply': {
+      kind: 'reply',
+      intent: "Say goodbye: you're the one leaving.",
+      accepted: [{ expressionId: 'goodbye-staying', next: 'end' }],
+      distractors: ['goodbye-leaving'],
+    },
+    end: { kind: 'end' },
+  },
+}
+
+const askingTheWay: Conversation = {
+  id: 'asking-the-way',
+  topic: 'directions',
+  title: 'Asking the way',
+  setting: "You're looking for the nearest subway station and stop a passer-by.",
+  role: 'the passer-by',
+  start: 'call',
+  turns: {
+    call: { kind: 'reply', intent: 'Get their attention.', accepted: [{ expressionId: 'excuse-me-attention', next: 'pardon' }], distractors: ['excuse-me-passing'] },
+    pardon: { kind: 'line', expressionId: 'pardon', next: 'where' },
+    where: {
+      kind: 'reply',
+      intent: 'Ask where the subway station is.',
+      accepted: [
+        { expressionId: 'station-where', next: 'answer' },
+        { expressionId: 'how-do-i-get-here', next: 'answer' },
+      ],
+      distractors: ['bathroom-where'],
+    },
+    // Sometimes the passer-by doesn't know either.
+    answer: {
+      kind: 'variant',
+      options: [
+        { weight: 2, next: 'directions' },
+        { weight: 1, next: 'dont-know' },
+      ],
+    },
+    directions: { kind: 'line', expressionId: 'go-straight-right-heard', next: 'directions-catch' },
+    'directions-catch': {
+      kind: 'catch',
+      expressionId: 'go-straight-right-heard',
+      question: 'Which way?',
+      answer: 'Straight, then right at the intersection',
+      wrong: ['Right, then straight', 'Straight, then left', 'Back the way you came'],
+      next: 'far',
+    },
+    far: {
+      kind: 'reply',
+      intent: 'Ask if it is far.',
+      accepted: [
+        { expressionId: 'is-it-far', next: 'five-minutes' },
+        { expressionId: 'is-it-close', next: 'five-minutes' },
+      ],
+    },
+    'five-minutes': { kind: 'line', expressionId: 'five-minutes-walk-heard', next: 'five-minutes-catch' },
+    'five-minutes-catch': {
+      kind: 'catch',
+      expressionId: 'five-minutes-walk-heard',
+      question: 'How far is it?',
+      answer: 'About 5 minutes on foot',
+      wrong: ['About 15 minutes', 'About 5 minutes by taxi', '5 stops'],
+      next: 'thanks',
+    },
+    thanks: {
+      kind: 'reply',
+      intent: 'Thank them for their help.',
+      accepted: [
+        { expressionId: 'thanks-for-help', next: 'end' },
+        { expressionId: 'thank-you', next: 'end' },
+      ],
+    },
+    'dont-know': { kind: 'line', expressionId: 'dont-know-area-heard', next: 'dont-know-reply' },
+    'dont-know-reply': {
+      kind: 'reply',
+      intent: "Say it's okay.",
+      accepted: [
+        { expressionId: 'its-okay', next: 'end' },
+        { expressionId: 'thank-you', next: 'end' },
+      ],
+    },
+    end: { kind: 'end' },
+  },
+}
+
+export const conversations: Conversation[] = [
+  convenienceStore,
+  cafe,
+  restaurantOrdering,
+  restaurantPaying,
+  subway,
+  taxi,
+  hotelCheckIn,
+  tMoney,
+  askingTheWay,
+]
