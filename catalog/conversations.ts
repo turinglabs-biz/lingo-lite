@@ -272,4 +272,350 @@ const cafe: Conversation = {
   },
 }
 
-export const conversations: Conversation[] = [convenienceStore, cafe]
+// Too long for one run, the restaurant is two Conversations: ordering, and paying at the end of the meal.
+const restaurantOrdering: Conversation = {
+  id: 'restaurant-ordering',
+  topic: 'food',
+  title: 'Restaurant: ordering',
+  setting: 'Lunch at a small Korean restaurant with a friend.',
+  role: 'the server',
+  start: 'how-many',
+  turns: {
+    'how-many': { kind: 'line', expressionId: 'how-many-heard', next: 'how-many-reply' },
+    'how-many-reply': {
+      kind: 'reply',
+      intent: 'Say there are two of you.',
+      accepted: [{ expressionId: 'two-people', next: 'sit' }],
+      // 개 counts things, not people.
+      distractors: ['two-of-them'],
+    },
+    sit: { kind: 'line', expressionId: 'sit-here-heard', next: 'menu' },
+    menu: {
+      kind: 'reply',
+      intent: 'Ask for an English menu.',
+      accepted: [
+        { expressionId: 'english-menu', next: 'english-menu-answer' },
+        { expressionId: 'menu-please', next: 'order' },
+      ],
+    },
+    'english-menu-answer': {
+      kind: 'variant',
+      options: [
+        { weight: 1, next: 'here-it-is' },
+        { weight: 1, next: 'no-english-menu' },
+      ],
+    },
+    'here-it-is': { kind: 'line', expressionId: 'here-you-are', next: 'order' },
+    'no-english-menu': { kind: 'line', expressionId: 'no-english-menu-heard', next: 'what-good' },
+    'what-good': { kind: 'reply', intent: "Ask what's good.", accepted: [{ expressionId: 'what-is-good', next: 'popular' }], distractors: ['what-is-this'] },
+    popular: { kind: 'line', expressionId: 'popular-heard', next: 'popular-catch' },
+    'popular-catch': {
+      kind: 'catch',
+      expressionId: 'popular-heard',
+      question: 'What do they recommend?',
+      answer: 'The kimchi stew: it is the most popular',
+      wrong: ['The kimchi stew is sold out', 'The kimchi stew is very spicy', 'Kimchi is free'],
+      next: 'that-one',
+    },
+    'that-one': { kind: 'reply', intent: 'Order that.', accepted: [{ expressionId: 'that-one-please', next: 'maybe-spicy' }], distractors: ['this-one'] },
+    order: { kind: 'line', expressionId: 'order-heard', next: 'order-reply' },
+    'order-reply': {
+      kind: 'reply',
+      intent: 'Point at a dish and order one.',
+      accepted: [
+        { expressionId: 'one-of-this', next: 'maybe-spicy' },
+        { expressionId: 'this-one-please', next: 'maybe-spicy' },
+      ],
+      distractors: ['one-more'],
+    },
+
+    'maybe-spicy': {
+      kind: 'variant',
+      options: [
+        { weight: 1, next: 'spicy' },
+        { weight: 1, next: 'water' },
+      ],
+    },
+    spicy: { kind: 'line', expressionId: 'spicy-heard', next: 'spicy-reply' },
+    'spicy-reply': {
+      kind: 'reply',
+      intent: 'Ask for it not spicy.',
+      accepted: [
+        { expressionId: 'not-spicy', next: 'water' },
+        { expressionId: 'yes', next: 'water' },
+        { expressionId: 'is-it-spicy', next: 'little-spicy' },
+      ],
+    },
+    'little-spicy': { kind: 'line', expressionId: 'little-spicy-heard', next: 'little-spicy-reply' },
+    'little-spicy-reply': {
+      kind: 'reply',
+      intent: 'Ask for it not spicy.',
+      accepted: [
+        { expressionId: 'not-spicy', next: 'water' },
+        { expressionId: 'its-okay', next: 'water' },
+      ],
+    },
+
+    water: { kind: 'line', expressionId: 'water-self-heard', next: 'water-catch' },
+    'water-catch': {
+      kind: 'catch',
+      expressionId: 'water-self-heard',
+      question: 'What about water?',
+      answer: 'You get it yourself',
+      wrong: ["They'll bring it", 'It costs extra', "There isn't any"],
+      next: 'call',
+    },
+    call: {
+      kind: 'reply',
+      intent: 'Later: call the server over.',
+      accepted: [{ expressionId: 'excuse-me-attention', next: 'yes-sir' }],
+      // 잠시만요 is for squeezing past someone, or "one moment".
+      distractors: ['excuse-me-passing'],
+    },
+    'yes-sir': { kind: 'line', expressionId: 'yes-sir-heard', next: 'more' },
+    more: {
+      kind: 'reply',
+      intent: 'Ask for more side dishes.',
+      accepted: [
+        { expressionId: 'more-side-dishes', next: 'more-answer' },
+        { expressionId: 'water-please', next: 'more-answer' },
+        { expressionId: 'one-more', next: 'more-answer' },
+      ],
+    },
+    'more-answer': {
+      kind: 'variant',
+      options: [
+        { weight: 1, next: 'sides-self' },
+        { weight: 1, next: 'bring-some' },
+      ],
+    },
+    'sides-self': { kind: 'line', expressionId: 'sides-self-heard', next: 'end' },
+    'bring-some': { kind: 'line', expressionId: 'bring-some-heard', next: 'end' },
+    end: { kind: 'end' },
+  },
+}
+
+const restaurantPaying: Conversation = {
+  id: 'restaurant-paying',
+  topic: 'food',
+  title: 'Restaurant: paying',
+  setting: "You've finished lunch with a friend and want to pay.",
+  role: 'the server',
+  start: 'call',
+  turns: {
+    call: { kind: 'reply', intent: 'Call the server over.', accepted: [{ expressionId: 'excuse-me-attention', next: 'yes-sir' }], distractors: ['excuse-me-passing'] },
+    'yes-sir': { kind: 'line', expressionId: 'yes-sir-heard', next: 'bill' },
+    bill: { kind: 'reply', intent: 'Ask for the bill.', accepted: [{ expressionId: 'bill-please', next: 'counter' }], distractors: ['menu-please'] },
+    counter: { kind: 'line', expressionId: 'pay-counter-heard', next: 'counter-catch' },
+    'counter-catch': {
+      kind: 'catch',
+      expressionId: 'pay-counter-heard',
+      question: 'Where do you pay?',
+      answer: 'At the counter',
+      wrong: ['At the table', 'At the kiosk', 'Next time'],
+      next: 'together',
+    },
+    together: { kind: 'line', expressionId: 'together-heard', next: 'together-reply' },
+    'together-reply': {
+      kind: 'reply',
+      intent: "Say yes, it's all together.",
+      accepted: [
+        { expressionId: 'yes', next: 'total' },
+        { expressionId: 'pay-separately', next: 'each' },
+      ],
+    },
+    total: { kind: 'line', expressionId: 'price-23000-heard', next: 'total-catch' },
+    'total-catch': { kind: 'catch', expressionId: 'price-23000-heard', question: 'How much is it?', answer: '23,000 won', wrong: ['32,000 won', '2,300 won', '20,300 won'], next: 'thanks' },
+    each: { kind: 'line', expressionId: 'price-11500-heard', next: 'each-catch' },
+    'each-catch': { kind: 'catch', expressionId: 'price-11500-heard', question: 'How much each?', answer: '11,500 won', wrong: ['15,100 won', '1,500 won', '11,050 won'], next: 'thanks' },
+    thanks: {
+      kind: 'reply',
+      intent: 'Thank them for the meal.',
+      accepted: [{ expressionId: 'after-meal', next: 'bye' }],
+      // 잘 먹겠습니다 is said before eating.
+      distractors: ['before-meal'],
+    },
+    bye: { kind: 'line', expressionId: 'goodbye-leaving', next: 'bye-reply' },
+    'bye-reply': {
+      kind: 'reply',
+      intent: "Say goodbye: you're the one leaving.",
+      accepted: [
+        { expressionId: 'goodbye-staying', next: 'end' },
+        { expressionId: 'thank-you', next: 'end' },
+      ],
+      distractors: ['goodbye-leaving'],
+    },
+    end: { kind: 'end' },
+  },
+}
+
+const taxi: Conversation = {
+  id: 'taxi',
+  topic: 'transport',
+  title: 'Taxi',
+  setting: 'You get into a taxi outside your hotel.',
+  role: 'the driver',
+  start: 'hello',
+  turns: {
+    hello: { kind: 'line', expressionId: 'hello', next: 'where-to' },
+    'where-to': { kind: 'line', expressionId: 'where-to-heard', next: 'destination' },
+    destination: {
+      kind: 'reply',
+      intent: 'Ask to go to Seoul Station.',
+      accepted: [
+        { expressionId: 'to-seoul-station', next: 'certainly' },
+        { expressionId: 'to-this-address', next: 'certainly' },
+      ],
+      distractors: ['stop-here'],
+    },
+    certainly: { kind: 'line', expressionId: 'certainly-heard', next: 'how-long' },
+    'how-long': { kind: 'reply', intent: 'Ask how long it takes.', accepted: [{ expressionId: 'how-long', next: 'twenty' }], distractors: ['is-it-far'] },
+    twenty: { kind: 'line', expressionId: 'twenty-minutes-heard', next: 'twenty-catch' },
+    'twenty-catch': {
+      kind: 'catch',
+      expressionId: 'twenty-minutes-heard',
+      question: 'How long does it take?',
+      answer: 'About 20 minutes',
+      wrong: ['About 2 minutes', 'About 12 minutes', 'About 2 hours'],
+      next: 'maybe-traffic',
+    },
+    'maybe-traffic': {
+      kind: 'variant',
+      options: [
+        { weight: 1, next: 'traffic' },
+        { weight: 1, next: 'drop-off' },
+      ],
+    },
+    traffic: { kind: 'line', expressionId: 'traffic-heard', next: 'traffic-reply' },
+    'traffic-reply': { kind: 'reply', intent: "Say it's okay.", accepted: [{ expressionId: 'its-okay', next: 'drop-off' }] },
+    'drop-off': { kind: 'line', expressionId: 'drop-off-heard', next: 'stop' },
+    stop: {
+      kind: 'reply',
+      intent: 'Ask them to stop here.',
+      accepted: [
+        { expressionId: 'stop-here', next: 'fare' },
+        { expressionId: 'over-there', next: 'fare' },
+      ],
+      // 쭉 가세요 is "keep going".
+      distractors: ['go-straight'],
+    },
+    fare: { kind: 'line', expressionId: 'price-12000-heard', next: 'fare-catch' },
+    'fare-catch': { kind: 'catch', expressionId: 'price-12000-heard', question: 'How much is the fare?', answer: '12,000 won', wrong: ['20,000 won', '2,000 won', '10,200 won'], next: 'pay' },
+    pay: {
+      kind: 'reply',
+      intent: 'Ask if you can pay by card.',
+      accepted: [
+        { expressionId: 'card-ok', next: 'tap' },
+        { expressionId: 'pay-cash', next: 'change' },
+      ],
+    },
+    tap: { kind: 'line', expressionId: 'tap-card-heard', next: 'maybe-receipt' },
+    change: { kind: 'line', expressionId: 'change-heard', next: 'maybe-receipt' },
+    'maybe-receipt': {
+      kind: 'variant',
+      options: [
+        { weight: 1, next: 'receipt' },
+        { weight: 2, next: 'bye' },
+      ],
+    },
+    receipt: { kind: 'line', expressionId: 'receipt-heard', next: 'receipt-reply' },
+    'receipt-reply': {
+      kind: 'reply',
+      intent: "Say you don't need it.",
+      accepted: [
+        { expressionId: 'its-okay', next: 'bye' },
+        { expressionId: 'receipt', next: 'bye' },
+        { expressionId: 'yes', next: 'bye' },
+      ],
+    },
+    bye: { kind: 'line', expressionId: 'goodbye-leaving', next: 'bye-reply' },
+    'bye-reply': {
+      kind: 'reply',
+      intent: 'Thank the driver as you get out.',
+      accepted: [
+        { expressionId: 'thank-you', next: 'end' },
+        { expressionId: 'keep-up-good-work', next: 'end' },
+      ],
+      distractors: ['goodbye-leaving'],
+    },
+    end: { kind: 'end' },
+  },
+}
+
+const hotelCheckIn: Conversation = {
+  id: 'hotel-check-in',
+  topic: 'hotel',
+  title: 'Hotel check-in',
+  setting: 'You reach the front desk at 1 p.m.',
+  role: 'the receptionist',
+  start: 'hello',
+  turns: {
+    hello: { kind: 'line', expressionId: 'hello-formal-heard', next: 'greet' },
+    greet: { kind: 'reply', intent: 'Greet them.', accepted: [{ expressionId: 'hello', next: 'check-in' }] },
+    'check-in': { kind: 'reply', intent: "Say you'd like to check in.", accepted: [{ expressionId: 'check-in', next: 'reservation' }], distractors: ['check-out'] },
+    reservation: { kind: 'line', expressionId: 'reservation-heard', next: 'reservation-reply' },
+    'reservation-reply': {
+      kind: 'reply',
+      intent: 'Say you have a reservation.',
+      accepted: [
+        { expressionId: 'have-reservation', next: 'passport' },
+        { expressionId: 'yes', next: 'passport' },
+      ],
+    },
+    passport: { kind: 'line', expressionId: 'passport-heard', next: 'passport-reply' },
+    'passport-reply': {
+      kind: 'reply',
+      intent: 'Hand it over.',
+      accepted: [
+        { expressionId: 'here-you-are', next: 'early-or-room' },
+        { expressionId: 'yes', next: 'early-or-room' },
+      ],
+    },
+    // Arriving early, or the room is ready.
+    'early-or-room': {
+      kind: 'variant',
+      options: [
+        { weight: 1, next: 'from-three' },
+        { weight: 1, next: 'room' },
+      ],
+    },
+    'from-three': { kind: 'line', expressionId: 'checkin-from-three-heard', next: 'from-three-catch' },
+    'from-three-catch': {
+      kind: 'catch',
+      expressionId: 'checkin-from-three-heard',
+      question: 'When can you check in?',
+      answer: 'From 3 o’clock',
+      wrong: ['From 4 o’clock', 'From 10 o’clock', 'In 30 minutes'],
+      next: 'luggage',
+    },
+    luggage: { kind: 'reply', intent: 'Ask them to keep your luggage.', accepted: [{ expressionId: 'keep-luggage', next: 'tag' }] },
+    tag: { kind: 'line', expressionId: 'luggage-tag-heard', next: 'breakfast' },
+    room: { kind: 'line', expressionId: 'room-heard', next: 'room-catch' },
+    'room-catch': {
+      kind: 'catch',
+      expressionId: 'room-heard',
+      question: 'Which room?',
+      answer: 'Room 703, 7th floor',
+      wrong: ['Room 307, 3rd floor', 'Room 730, 7th floor', 'Room 1703, 17th floor'],
+      next: 'breakfast',
+    },
+    breakfast: { kind: 'reply', intent: 'Ask what time breakfast is.', accepted: [{ expressionId: 'breakfast-time', next: 'breakfast-answer' }], distractors: ['checkout-time'] },
+    'breakfast-answer': { kind: 'line', expressionId: 'breakfast-heard', next: 'breakfast-catch' },
+    'breakfast-catch': {
+      kind: 'catch',
+      expressionId: 'breakfast-heard',
+      question: 'Breakfast is…',
+      answer: 'On the 1st floor, 7 to 10',
+      wrong: ['On the 7th floor, 1 to 10', 'On the 1st floor, 7 to 11', 'On the 10th floor, 7 to 10'],
+      next: 'checkout',
+    },
+    checkout: { kind: 'reply', intent: 'Ask what time check-out is.', accepted: [{ expressionId: 'checkout-time', next: 'checkout-answer' }], distractors: ['breakfast-time'] },
+    'checkout-answer': { kind: 'line', expressionId: 'checkout-heard', next: 'checkout-catch' },
+    'checkout-catch': { kind: 'catch', expressionId: 'checkout-heard', question: 'Check-out is at…', answer: '11 o’clock', wrong: ['1 o’clock', '10 o’clock', '12 o’clock'], next: 'elevator' },
+    elevator: { kind: 'line', expressionId: 'elevator-heard', next: 'thanks' },
+    thanks: { kind: 'reply', intent: 'Thank them.', accepted: [{ expressionId: 'thank-you', next: 'end' }] },
+    end: { kind: 'end' },
+  },
+}
+
+export const conversations: Conversation[] = [convenienceStore, cafe, restaurantOrdering, restaurantPaying, taxi, hotelCheckIn]

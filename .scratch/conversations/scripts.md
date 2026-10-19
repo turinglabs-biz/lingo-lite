@@ -118,6 +118,8 @@ The two pilots come first because they're the most frequent, they're short, and 
 
 ## 3. Restaurant (식당)
 
+*Built as two Conversations, **Restaurant: ordering** (steps 1–10) and **Restaurant: paying** (steps 9, 11–14): the whole meal ran past the 20-Turn limit, and the two moments come separately in real life.*
+
 *Setting:* lunch at a small Korean restaurant with a friend. *Other person:* the server.
 
 1. **Server:** 어서 오세요. 몇 분이세요? — Welcome. How many? `how-many-heard`

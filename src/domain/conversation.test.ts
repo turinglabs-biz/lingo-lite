@@ -253,7 +253,8 @@ describe('Every authored Conversation', () => {
   it('reaches every way on of every Variant over seeded runs', () => {
     for (const c of conversations) {
       const seen = new Set<string>()
-      for (let seed = 1; seed <= 60; seed++) walkIntended(c, seeded(seed)).forEach((id) => seen.add(id))
+      // Seeds spread out: a small seed's first draw is always near 0, so the first Variant would never vary.
+      for (let seed = 1; seed <= 60; seed++) walkIntended(c, seeded(seed * 7919 + 13)).forEach((id) => seen.add(id))
       for (const t of Object.values(c.turns)) {
         if (t.kind !== 'variant') continue
         for (const o of t.options) {
