@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { conversations } from '../../catalog/conversations.ts'
 import { catalog, expressionById } from '../catalog/index.ts'
-import { canPlay, checkReply, longestIntendedPath, pickVariant, prepareBatch, replyOptions, resolveVariants, validateConversation, walkIntended, type Conversation, type Turn } from './conversation.ts'
+import { isFluent } from './scheduler.ts'
+import { canPlay, checkReply, conversationStatus, isClean, longestIntendedPath, scheduleAfterRun, pickVariant, prepareBatch, replyOptions, resolveVariants, validateConversation, walkIntended, type Conversation, type Turn } from './conversation.ts'
 
 const seeded = (seed: number) => () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646
 type Reply = Extract<Turn, { kind: 'reply' }>
@@ -187,5 +188,63 @@ describe('Prepare', () => {
     const store = conversations.find((x) => x.id === 'convenience-store')!
     const batch = prepareBatch(store, order, new Set(), new Set())
     expect(canPlay(store, new Set(batch), new Set())).toBe(true)
+  })
+})
+
+describe('The Conversation schedule', () => {
+  const DAY = 86_400_000
+  const clean = { missed: 0, textShown: false }
+
+  it('starts with the first finished Guided run, and only Free runs grade it afterwards', () => {
+    expect(scheduleAfterRun(undefined, 'x', { mode: 'free', ...clean }, 0)).toBeUndefined()
+    const card = scheduleAfterRun(undefined, 'x', { mode: 'guided', ...clean }, 0)!
+    expect(card.conversationId).toBe('x')
+    expect(card.reps).toBe(1)
+    expect(scheduleAfterRun(card, 'x', { mode: 'guided', ...clean }, DAY)).toBeUndefined()
+    expect(scheduleAfterRun(card, 'x', { mode: 'free', ...clean }, card.due)!.reps).toBe(2)
+  })
+
+  it('brings a run with a slip back sooner than a clean one', () => {
+    let card = scheduleAfterRun(undefined, 'x', { mode: 'guided', ...clean }, 0)!
+    for (let i = 0; i < 3; i++) card = scheduleAfterRun(card, 'x', { mode: 'free', ...clean }, card.due)!
+    const good = scheduleAfterRun(card, 'x', { mode: 'free', ...clean }, card.due)!
+    const slip = scheduleAfterRun(card, 'x', { mode: 'free', missed: 1, textShown: false }, card.due)!
+    expect(slip.due).toBeLessThan(good.due)
+  })
+
+  it('counts a run as clean with Repair, but not with text shown or a miss', () => {
+    expect(isClean({ missed: 0, textShown: false })).toBe(true)
+    expect(isClean({ missed: 0, textShown: true })).toBe(false)
+    expect(isClean({ missed: 1, textShown: false })).toBe(false)
+  })
+
+  it('becomes Fluent once expected to be remembered for 7 days', () => {
+    let card = scheduleAfterRun(undefined, 'x', { mode: 'guided', ...clean }, 0)!
+    expect(isFluent(card)).toBe(false)
+    for (let i = 0; i < 8 && !card.fluentAt; i++) card = scheduleAfterRun(card, 'x', { mode: 'free', ...clean }, card.due)!
+    expect(isFluent(card)).toBe(true)
+    expect(card.fluentAt).toBeDefined()
+  })
+
+  it('reads as Needs, Ready, Due, Played or Fluent', () => {
+    const card = scheduleAfterRun(undefined, 'x', { mode: 'guided', ...clean }, 0)!
+    expect(conversationStatus(undefined, false, 0)).toBe('needs')
+    expect(conversationStatus(undefined, true, 0)).toBe('ready')
+    expect(conversationStatus(card, true, card.due)).toBe('due')
+    expect(conversationStatus(card, true, card.due - 1)).toBe('played')
+    expect(conversationStatus({ ...card, stability: 30, due: 10 * DAY }, true, DAY)).toBe('fluent')
+  })
+})
+
+describe('Free play options', () => {
+  const turn = fixture().turns.b as Reply
+  it('may offer two accepted Replies, those already met first', () => {
+    for (let seed = 1; seed < 10; seed++) {
+      const options = replyOptions(turn, 'shopping', catalog, new Set(), seeded(seed), 4, 'free', new Set(['bag-please']))
+      expect(options).toHaveLength(4)
+      expect(options).toContain('bag-please')
+      expect(options).toContain('no-bag')
+      expect(options).toContain('receipt')
+    }
   })
 })

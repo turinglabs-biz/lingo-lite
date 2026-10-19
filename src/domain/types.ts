@@ -64,6 +64,31 @@ export interface TopicStars {
   stars: number
 }
 
+/** The spaced-repetition fields every schedule shares (FSRS, with dates as epoch ms). */
+export type ScheduleFields = Pick<DirectionCard, 'due' | 'stability' | 'difficulty' | 'scheduledDays' | 'learningSteps' | 'reps' | 'lapses' | 'state' | 'lastReview'>
+
+/** A Conversation's own schedule: whole exchanges come back by spaced repetition, separately from Expressions. */
+export interface ConversationCard extends ScheduleFields {
+  conversationId: string
+  /** First time the Conversation became Fluent. */
+  fluentAt?: number
+}
+
+export type PlayMode = 'guided' | 'free'
+
+/** One finished run of a Conversation. */
+export interface ConversationRun {
+  id?: number
+  conversationId: string
+  sessionId: string
+  mode: PlayMode
+  startedAt: number
+  endedAt: number
+  missed: number
+  textShown: boolean
+  repairs: number
+}
+
 /** An Expression the learner put in Focus, and when. */
 export interface FocusMark {
   expressionId: string

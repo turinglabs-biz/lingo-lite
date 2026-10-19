@@ -1211,3 +1211,12 @@ h2 {
 .conversation-page h2 {
   margin-top: 18px;
 }
+.status-label.due {
+  background: var(--accent);
+  border-color: transparent;
+  color: var(--on-accent);
+}
+.status-label.fluent {
+  color: var(--gold);
+  border-color: var(--gold);
+}

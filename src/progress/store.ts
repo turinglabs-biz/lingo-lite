@@ -1,9 +1,10 @@
 import { catalog, expressionById, topics } from '../catalog/index.ts'
 import { db } from '../db.ts'
 import { computeStars, earnedStars, withInput, withoutIgnored } from '../domain/progress.ts'
+import { scheduleAfterRun } from '../domain/conversation.ts'
 import { learnedDirection } from '../domain/directions.ts'
 import { cardKey, gradeCard, isCorrect, newDirectionCard, refocusCard } from '../domain/scheduler.ts'
-import type { Direction, Grade, Session, SessionType } from '../domain/types.ts'
+import type { ConversationRun, Direction, Grade, Session, SessionType } from '../domain/types.ts'
 
 // Writes to Progress. Everything is keyed by Expression id, so Catalog edits keep Progress.
 
@@ -61,6 +62,20 @@ export async function recordReply(sessionId: string, conversationId: string, tur
 export async function recordCatch(sessionId: string, conversationId: string, turnId: string, expressionId: string, correct: boolean) {
   await db.answers.add({ at: Date.now(), sessionId, expressionId, kind: 'catch', correct, conversationId, turnId })
   await touchSession(sessionId)
+}
+
+/**
+ * A finished Conversation run: stored, and applied to the Conversation's own schedule (the first finished Guided run
+ * puts it there; after that, Free runs grade it). Never touches an Expression's card.
+ */
+export async function finishConversationRun(run: Omit<ConversationRun, 'id' | 'endedAt'>) {
+  const now = Date.now()
+  await db.transaction('rw', [db.conversationRuns, db.conversationCards], async () => {
+    await db.conversationRuns.add({ ...run, endedAt: now })
+    const card = await db.conversationCards.get(run.conversationId)
+    const next = scheduleAfterRun(card, run.conversationId, run, now)
+    if (next) await db.conversationCards.put(next)
+  })
 }
 
 export interface GradeResult {
@@ -146,8 +161,10 @@ export async function setIgnored(expressionId: string, on: boolean) {
 }
 
 export async function resetProgress() {
-  await db.transaction('rw', [db.introductions, db.cards, db.answers, db.sessions, db.stars, db.focus, db.ignored], async () => {
+  await db.transaction('rw', [db.introductions, db.cards, db.answers, db.sessions, db.stars, db.focus, db.ignored, db.conversationCards, db.conversationRuns], async () => {
     await Promise.all([
+      db.conversationCards.clear(),
+      db.conversationRuns.clear(),
       db.introductions.clear(),
       db.cards.clear(),
       db.answers.clear(),

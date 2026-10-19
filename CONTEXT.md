@@ -103,7 +103,7 @@ A session of up to 20 due Directions, scheduled by spaced repetition, with Focus
 A session of up to 20 Directions of Focus Expressions, due or not, started on demand, least likely to be remembered first. It is graded and counted like a Review session.
 
 **Conversation**:
-A scripted exchange in one everyday travel situation (a convenience store, a café, a taxi), in which the learner plays themself and the other person speaks with the app's Voices. It is a session: its answers count for XP, Streak, Practice time and Stats, but never change an Expression's schedule.
+A scripted exchange in one everyday travel situation (a convenience store, a café, a taxi), in which the learner plays themself and the other person speaks with the app's Voices. It is a session: its answers count for XP, Streak, Practice time and Stats, but never change an Expression's schedule. A Conversation has its own schedule instead: whole exchanges come back by spaced repetition.
 _Avoid_: Scenario, dialogue, role-play, scene, simulation
 
 **Turn**:
@@ -129,7 +129,17 @@ Asking the other person to repeat (네?), slow down (천천히 말해 주세요)
 Going through a Conversation once with every Line and intended Reply visible, text and all, to see what happens before playing it. Nothing is graded and it isn't a session.
 
 **Guided play**:
-Playing a Conversation with an English intent at each Reply saying what to say.
+Playing a Conversation with an English intent at each Reply saying what to say. The first finished Guided run puts the Conversation in its schedule; later Guided runs are practice and change nothing.
+
+**Free play**:
+Playing a Conversation without intents; up to two of the four options may be accepted, each leading its own way. Every finished Free run grades the Conversation: a Clean run counts as Good, anything else as Missed.
+
+**Clean run**:
+A finished run with no Missed Reply or Catch and no text shown. Repair is allowed.
+
+**Fluent**:
+A Conversation expected to be remembered for at least 7 days.
+_Avoid_: Mastered, completed
 
 **Learned**:
 An Expression whose Speak Direction (Listen, for a Heard Expression) is expected to be remembered for at least 7 days.

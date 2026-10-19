@@ -1,4 +1,6 @@
 import { shuffle } from './choices.ts'
+import { gradeConversationCard, isFluent, newConversationCard } from './scheduler.ts'
+import type { ConversationCard, PlayMode } from './types.ts'
 
 // Conversations: scripted exchanges in one everyday travel situation, in which the learner plays themself (see
 // CONTEXT.md). A Conversation is a map of Turns; every Turn refers to Expressions by id.
@@ -47,8 +49,9 @@ export interface Candidate {
 }
 
 /**
- * The four options for a Reply in Guided play: the intended Reply, the authored distractors, then other ordinary
- * Expressions of the Conversation's Topic. Never another accepted Reply (it would also be right), never a Heard
+ * The four options for a Reply. Guided play offers the intended Reply; Free play (no intent) up to two accepted
+ * Replies, those the learner has met first, each leading its own way. The rest are the authored distractors, then
+ * other ordinary Expressions of the Conversation's Topic. Never an accepted Reply presented as wrong, never a Heard
  * Expression (the learner never says one), never an Ignored one.
  */
 export function replyOptions(
@@ -58,19 +61,26 @@ export function replyOptions(
   ignored: Set<string>,
   random = Math.random,
   count = 4,
+  mode: PlayMode = 'guided',
+  introduced: Set<string> = new Set(),
 ): string[] {
   const accepted = new Set(turn.accepted.map((a) => a.expressionId))
   const byId = new Map(candidates.map((c) => [c.id, c]))
   const usable = (id: string) => !accepted.has(id) && !ignored.has(id) && !byId.get(id)?.heard
-  const target = turn.accepted.find((a) => !ignored.has(a.expressionId))?.expressionId ?? turn.accepted[0].expressionId
+  const open = turn.accepted.map((a) => a.expressionId).filter((id) => !ignored.has(id))
+  const intended = open[0] ?? turn.accepted[0].expressionId
+  const right =
+    mode === 'guided'
+      ? [intended]
+      : [...open.filter((id) => introduced.has(id)), ...open.filter((id) => !introduced.has(id))].slice(0, Math.min(2, Math.max(open.length, 1)))
   const wrong: string[] = []
-  for (const id of shuffle((turn.distractors ?? []).filter(usable), random)) if (wrong.length < count - 1) wrong.push(id)
+  for (const id of shuffle((turn.distractors ?? []).filter(usable), random)) if (wrong.length < count - right.length) wrong.push(id)
   const fill = shuffle(
     candidates.filter((c) => c.topic === topic && usable(c.id) && !wrong.includes(c.id)),
     random,
   )
-  for (const c of fill) if (wrong.length < count - 1) wrong.push(c.id)
-  return shuffle([target, ...wrong], random)
+  for (const c of fill) if (wrong.length < count - right.length) wrong.push(c.id)
+  return shuffle([...right, ...wrong], random)
 }
 
 export interface ReplyResult {
@@ -233,4 +243,33 @@ export function prepareBatch(c: Conversation, ordered: { id: string }[], introdu
   }
   const fresh = newExpressionsOf(c, ordered, introduced, ignored)
   return [...fresh.filter((id) => needed.has(id)), ...fresh.filter((id) => !needed.has(id))].slice(0, size)
+}
+
+/** A clean run: no Missed Reply or Catch, and no text shown. Repair is allowed, as it would be in Korea. */
+export const isClean = (run: { missed: number; textShown: boolean }) => run.missed === 0 && !run.textShown
+
+/**
+ * What a finished run does to the Conversation's schedule. The first finished Guided run puts it in the schedule;
+ * after that only Free runs grade it (clean = Good, otherwise Missed). Guided practice afterwards changes nothing.
+ * Returns the card to store, or undefined when nothing changes.
+ */
+export function scheduleAfterRun(
+  card: ConversationCard | undefined,
+  conversationId: string,
+  run: { mode: PlayMode; missed: number; textShown: boolean },
+  now: number,
+): ConversationCard | undefined {
+  if (card && run.mode === 'guided') return undefined
+  if (!card && run.mode === 'free') return undefined
+  return gradeConversationCard(card ?? newConversationCard(conversationId, now), isClean(run) ? 'good' : 'missed', now)
+}
+
+export type ConversationStatus = 'needs' | 'ready' | 'due' | 'played' | 'fluent'
+
+/** Where a Conversation stands: needs Prepare, ready for a first Guided run, due, played (and waiting) or Fluent. */
+export function conversationStatus(card: ConversationCard | undefined, playable: boolean, now: number): ConversationStatus {
+  if (!playable) return 'needs'
+  if (!card) return 'ready'
+  if (card.due <= now) return 'due'
+  return isFluent(card) ? 'fluent' : 'played'
 }

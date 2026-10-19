@@ -1,7 +1,7 @@
 import Dexie, { type EntityTable } from 'dexie'
 import { catalog } from './catalog/index.ts'
 import { cardKey, newDirectionCard } from './domain/scheduler.ts'
-import type { Answer, DirectionCard, FocusMark, IgnoredMark, Introduction, Session, TopicStars } from './domain/types.ts'
+import type { Answer, ConversationCard, ConversationRun, DirectionCard, FocusMark, IgnoredMark, Introduction, Session, TopicStars } from './domain/types.ts'
 
 /** Learner settings, part of Progress. */
 export interface Settings {
@@ -23,6 +23,8 @@ export const db = new Dexie('lingo-lite') as Dexie & {
   stars: EntityTable<TopicStars, 'topic'>
   focus: EntityTable<FocusMark, 'expressionId'>
   ignored: EntityTable<IgnoredMark, 'expressionId'>
+  conversationCards: EntityTable<ConversationCard, 'conversationId'>
+  conversationRuns: EntityTable<ConversationRun, 'id'>
 }
 
 db.version(1).stores({
@@ -76,3 +78,9 @@ db.version(6)
       if (!(await cards.get(key))) await cards.put(newDirectionCard(expressionId, 'listen', now))
     }
   })
+
+// v7: Conversations' own schedules and their finished runs. New tables; nothing else changes.
+db.version(7).stores({
+  conversationCards: 'conversationId, due',
+  conversationRuns: '++id, conversationId, endedAt',
+})

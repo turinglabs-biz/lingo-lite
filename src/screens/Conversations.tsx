@@ -4,7 +4,16 @@ import { playClip, playClipToEnd, stopClip } from '../audio/player.ts'
 import { VOICES } from '../audio/voices.ts'
 import { expressionById } from '../catalog/index.ts'
 import { ExpressionView } from '../components/ExpressionView.tsx'
-import { canPlay, expressionsOf, newExpressionsOf, prepareBatch, walkIntended, type Conversation } from '../domain/conversation.ts'
+import {
+  canPlay,
+  conversationStatus,
+  expressionsOf,
+  newExpressionsOf,
+  prepareBatch,
+  walkIntended,
+  type Conversation,
+} from '../domain/conversation.ts'
+import type { PlayMode } from '../domain/types.ts'
 import type { Progress } from '../progress/useProgress.ts'
 
 /**
@@ -22,7 +31,7 @@ export function ConversationsPage({
   progress: Progress
   openId: string | null
   onOpen: (id: string | null) => void
-  onPlay: (c: Conversation) => void
+  onPlay: (c: Conversation, mode: PlayMode) => void
   onPrepare: (batch: string[]) => void
   onClose: () => void
 }) {
@@ -32,7 +41,7 @@ export function ConversationsPage({
       <ConversationPage
         conversation={open}
         progress={progress}
-        onPlay={() => onPlay(open)}
+        onPlay={(mode) => onPlay(open, mode)}
         onPrepare={() => onPrepare(prepareBatch(open, progress.practiceCatalog, progress.introduced, progress.ignored))}
         onClose={() => onOpen(null)}
       />
@@ -47,7 +56,8 @@ export function ConversationsPage({
       </div>
       <p className="muted small">Short exchanges from everyday travel. You play yourself; listen first, then reply.</p>
       <ul className="list">
-        {conversations.map((c) => (
+        {/* Due ones first; otherwise the curated order. */}
+        {[...conversations].sort((a, b) => Number(statusOf(b, progress) === 'due') - Number(statusOf(a, progress) === 'due')).map((c) => (
           <li key={c.id}>
             <button type="button" className="row conversation-row" onClick={() => onOpen(c.id)}>
               <span className="topic-main">
@@ -63,11 +73,18 @@ export function ConversationsPage({
   )
 }
 
-/** Whether a Conversation can be played yet: "Needs N new" until every Reply Turn has a Reply the learner has met. */
+const statusOf = (c: Conversation, progress: Progress) =>
+  conversationStatus(progress.conversationCards.get(c.id), canPlay(c, progress.introduced, progress.ignored), progress.now)
+
+/** Where a Conversation stands: "Needs N new", Ready, Due, Played or Fluent. */
 function StatusLabel({ conversation, progress }: { conversation: Conversation; progress: Progress }) {
-  const fresh = newExpressionsOf(conversation, progress.practiceCatalog, progress.introduced, progress.ignored).length
-  if (!canPlay(conversation, progress.introduced, progress.ignored)) return <span className="status-label">Needs {fresh} new</span>
-  return <span className="status-label ready">Ready</span>
+  const status = statusOf(conversation, progress)
+  if (status === 'needs') {
+    const fresh = newExpressionsOf(conversation, progress.practiceCatalog, progress.introduced, progress.ignored).length
+    return <span className="status-label">Needs {fresh} new</span>
+  }
+  const text = { ready: 'Ready', due: 'Due', played: 'Played', fluent: 'Fluent' }[status]
+  return <span className={`status-label ${status}`}>{text}</span>
 }
 
 /** One Conversation: its setting, who you'll talk to, the Expressions it uses, Prepare, Watch and Play. */
@@ -80,11 +97,13 @@ function ConversationPage({
 }: {
   conversation: Conversation
   progress: Progress
-  onPlay: () => void
+  onPlay: (mode: PlayMode) => void
   onPrepare: () => void
   onClose: () => void
 }) {
   const [watching, setWatching] = useState(false)
+  // Guided until the Conversation is in its schedule; then Free, with Guided still there for practice.
+  const scheduled = progress.conversationCards.has(conversation.id)
   if (watching) return <ConversationWatch conversation={conversation} onClose={() => setWatching(false)} />
   const used = expressionsOf(conversation).filter((id) => !progress.ignored.has(id))
   const fresh = newExpressionsOf(conversation, progress.practiceCatalog, progress.introduced, progress.ignored)
@@ -105,9 +124,15 @@ function ConversationPage({
           Prepare · {batch.length} new
         </button>
       )}
-      <button type="button" className={playable ? 'primary-action' : 'secondary-action'} onClick={onPlay} disabled={!playable}>
-        Play
+      <button type="button" className={playable ? 'primary-action' : 'secondary-action'} onClick={() => onPlay(scheduled ? 'free' : 'guided')} disabled={!playable}>
+        {scheduled ? 'Play' : 'Play with hints'}
       </button>
+      {scheduled && playable && (
+        <button type="button" className="secondary-action" onClick={() => onPlay('guided')}>
+          Practise with hints
+        </button>
+      )}
+      {scheduled && <p className="muted small">Played without hints; a clean run brings it back later, a slip sooner. Practice with hints doesn't count.</p>}
       {!playable && <p className="muted small">Prepare first: you'll learn the replies this conversation asks for.</p>}
       <button type="button" className="secondary-action" onClick={() => setWatching(true)}>
         Watch

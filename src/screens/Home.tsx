@@ -68,7 +68,7 @@ export function Home({
       </button>
 
       <button type="button" className="secondary-action conversations-action" onClick={onConversations}>
-        Conversations
+        {progress.dueConversations > 0 ? `Conversations · ${progress.dueConversations} due` : 'Conversations'}
       </button>
 
       {allIntroduced && dueCount === 0 && <p className="muted small">Every Expression is introduced. Come back when reviews are due.</p>}

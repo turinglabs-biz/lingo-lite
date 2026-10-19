@@ -15,7 +15,9 @@ import {
 } from '../domain/conversation.ts'
 import { EchoBar } from '../echo/EchoMic.tsx'
 import { useIgnored } from '../progress/ignored.tsx'
-import { recordCatch, recordReply, touchSession } from '../progress/store.ts'
+import type { PlayMode } from '../domain/types.ts'
+import { useProgress } from '../progress/useProgress.ts'
+import { finishConversationRun, recordCatch, recordReply, touchSession } from '../progress/store.ts'
 import { Prompt, SessionFrame } from './parts.tsx'
 import { SessionInput } from './sessionInput.ts'
 import type { SummaryData } from './SessionSummary.tsx'
@@ -35,12 +37,24 @@ const REPAIRS = [
 ] as const
 
 /**
- * A Conversation in Guided play: the other person's Lines play as audio with the text hidden, and at each Reply the
- * learner reads the intent, says it aloud, then picks it from four options, as in Speak. Answers count for XP,
- * Practice time and Stats; no Expression's schedule changes.
+ * A Conversation run: the other person's Lines play as audio with the text hidden, and at each Reply the learner says
+ * it aloud, then picks it from four options, as in Speak. Guided play shows an intent at each Reply; Free play doesn't,
+ * and may accept two of the options. Answers count for XP, Practice time and Stats; a finished run updates the
+ * Conversation's own schedule. No Expression's schedule ever changes.
  */
-export function ConversationSession({ conversation, onEnd }: { conversation: Conversation; onEnd: (summary: Omit<SummaryData, 'streak'> | null) => void }) {
+export function ConversationSession({
+  conversation,
+  mode,
+  onEnd,
+}: {
+  conversation: Conversation
+  mode: PlayMode
+  onEnd: (summary: Omit<SummaryData, 'streak'> | null) => void
+}) {
   const tracker = useSessionTracker('conversation')
+  const progress = useProgress()
+  const [startedAt] = useState(() => Date.now())
+  const missed = useRef(0)
   const ignored = useIgnored()
   // Each speaker keeps one Voice for the whole run.
   const [voices] = useState(() => {
@@ -87,7 +101,7 @@ export function ConversationSession({ conversation, onEnd }: { conversation: Con
 
   const [options, setOptions] = useState<string[]>([])
   useEffect(() => {
-    if (turn.kind === 'reply') setOptions(replyOptions(turn, conversation.topic, catalog, ignored))
+    if (turn.kind === 'reply') setOptions(replyOptions(turn, conversation.topic, catalog, ignored, Math.random, 4, mode, progress?.introduced))
     if (turn.kind === 'catch') setOptions(shuffle([turn.answer, ...turn.wrong], Math.random))
     // Options are drawn once per Reply, so they don't reshuffle while Progress updates.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -99,11 +113,27 @@ export function ConversationSession({ conversation, onEnd }: { conversation: Con
     setResult({ ...r, picked: id })
     setStage('done')
     tracker.countAnswer(r.correct)
+    if (!r.correct) missed.current++
     setAnswered((n) => n + 1)
     const said = r.correct ? id : r.expected!
     setMessages((m) => [...m, { from: 'you', expressionId: said, ...(r.correct ? {} : { missed: id }) }])
     playClip(said, 'normal', voices.you)
     await recordReply(tracker.sessionId, conversation.id, turnId, said, r.correct)
+  }
+
+  async function finish() {
+    if (tracker.sessionId) {
+      await finishConversationRun({
+        conversationId: conversation.id,
+        sessionId: tracker.sessionId,
+        mode,
+        startedAt,
+        missed: missed.current,
+        textShown: textShown.current,
+        repairs: repairs.current,
+      })
+    }
+    onEnd(await tracker.finish())
   }
 
   /** Shows more of a Line's text. Any text shown keeps the run from being clean. */
@@ -135,6 +165,7 @@ export function ConversationSession({ conversation, onEnd }: { conversation: Con
     const correct = option === turn.answer
     setCaught({ picked: option, correct })
     tracker.countAnswer(correct)
+    if (!correct) missed.current++
     setAnswered((n) => n + 1)
     if (!correct) playClip(turn.expressionId, 'normal', voices.them)
     await recordCatch(tracker.sessionId, conversation.id, turnId, turn.expressionId, correct)
@@ -184,7 +215,7 @@ export function ConversationSession({ conversation, onEnd }: { conversation: Con
         )}
 
         {turn.kind === 'catch' && (
-          <div className="reply-panel">
+          <div className="reply-panel" data-turn={turnId}>
             <Prompt label="Did you catch it?">
               <p className="english-prompt">{turn.question}</p>
             </Prompt>
@@ -213,9 +244,9 @@ export function ConversationSession({ conversation, onEnd }: { conversation: Con
         )}
 
         {turn.kind === 'reply' && !lineNext && (
-          <div className="reply-panel">
+          <div className="reply-panel" data-turn={turnId}>
             <Prompt label="Your turn">
-              <p className="english-prompt">{turn.intent}</p>
+              {mode === 'guided' ? <p className="english-prompt">{turn.intent}</p> : <p className="english-prompt">What do you say?</p>}
             </Prompt>
             {stage === 'recall' && (
               <>
@@ -246,7 +277,7 @@ export function ConversationSession({ conversation, onEnd }: { conversation: Con
         )}
 
         {turn.kind === 'end' && (
-          <button type="button" className="primary-action" onClick={async () => onEnd(await tracker.finish())}>
+          <button type="button" className="primary-action" onClick={finish}>
             Finish
           </button>
         )}

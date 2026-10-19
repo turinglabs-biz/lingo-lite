@@ -5,7 +5,7 @@ import { db } from '../db.ts'
 import { cardsWithoutIgnored, dueCards, nextBatch, streaks, totalXp, withoutIgnored } from '../domain/progress.ts'
 import { learnedDirection, scheduledCards } from '../domain/directions.ts'
 import { isLearned } from '../domain/scheduler.ts'
-import type { Answer, DirectionCard, Session } from '../domain/types.ts'
+import type { Answer, ConversationCard, DirectionCard, Session } from '../domain/types.ts'
 
 export interface Progress {
   introduced: Set<string>
@@ -28,6 +28,11 @@ export interface Progress {
   nextBatchSize: number
   xp: number
   streak: { current: number; longest: number }
+  /** Each Conversation's own schedule, once it has one. */
+  conversationCards: Map<string, ConversationCard>
+  /** How many Conversations are due. */
+  dueConversations: number
+  now: number
 }
 
 /** Re-evaluates "now" every minute so due counts and Streak stay fresh while the app is open. */
@@ -49,7 +54,7 @@ function useNow(intervalMs = 60_000) {
 export function useProgress(): Progress | undefined {
   const now = useNow()
   const raw = useLiveQuery(async () => {
-    const [introductions, cards, answers, sessions, stars, focus, ignored] = await Promise.all([
+    const [introductions, cards, answers, sessions, stars, focus, ignored, conversationCards] = await Promise.all([
       db.introductions.toArray(),
       db.cards.toArray(),
       db.answers.toArray(),
@@ -57,8 +62,9 @@ export function useProgress(): Progress | undefined {
       db.stars.toArray(),
       db.focus.orderBy('at').toArray(),
       db.ignored.toArray(),
+      db.conversationCards.toArray(),
     ])
-    return { introductions, cards, answers, sessions, stars, focus, ignored }
+    return { introductions, cards, answers, sessions, stars, focus, ignored, conversationCards }
   }, [])
   if (!raw) return undefined
 
@@ -96,5 +102,8 @@ export function useProgress(): Progress | undefined {
     // XP counts every card ever Learned, including those a Heard Expression no longer schedules.
     xp: totalXp(raw.answers, raw.cards, raw.sessions),
     streak: streaks(raw.sessions, now),
+    conversationCards: new Map(raw.conversationCards.map((c) => [c.conversationId, c])),
+    dueConversations: raw.conversationCards.filter((c) => c.due <= now).length,
+    now,
   }
 }
