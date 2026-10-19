@@ -107,13 +107,20 @@ A scripted exchange in one everyday travel situation (a convenience store, a caf
 _Avoid_: Scenario, dialogue, role-play, scene, simulation
 
 **Turn**:
-One step of a Conversation: a Line or a Reply.
+One step of a Conversation: a Line, a Reply or a Catch.
 
 **Line**:
 A Turn where the other person says an Expression, usually a Heard Expression. It plays as audio with the text hidden until the learner asks for it.
 
 **Reply**:
 A Turn where the learner says something, always an Expression they say (never a Heard one). It is checked like Speak: say it aloud, then pick it from four options. Several Replies may be accepted, each leading on in its own way; after a miss, the intended one is shown and the Conversation carries on.
+
+**Catch**:
+A Turn where the learner picks what they understood from a Line (a price, a time, an instruction) from four English options. A miss shows the right answer and replays the Line.
+_Avoid_: Comprehension check, quiz
+
+**Variant**:
+One of several ways the other person may take at a point in a Conversation (asking about a bag or not; a different total), chosen at random each run, so a Conversation can't be memorised as one sequence.
 
 **Guided play**:
 Playing a Conversation with an English intent at each Reply saying what to say.

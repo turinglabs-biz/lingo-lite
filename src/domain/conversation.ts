@@ -19,6 +19,10 @@ export type Turn =
    * one a miss continues along. Distractors are authored wrong answers that teach a real confusion.
    */
   | { kind: 'reply'; intent: string; accepted: Accepted[]; distractors?: string[] }
+  /** The learner picks what they understood from a Line (a price, a time, an instruction) from four English options. */
+  | { kind: 'catch'; expressionId: string; question: string; answer: string; wrong: [string, string, string]; next: TurnId }
+  /** The other person may take one of several ways on; one is chosen at random each run, by weight. */
+  | { kind: 'variant'; options: { weight: number; next: TurnId }[] }
   | { kind: 'end' }
 
 export interface Conversation {
@@ -88,13 +92,55 @@ export function expressionsOf(c: Conversation): string[] {
   const ids: string[] = []
   const add = (id: string) => !ids.includes(id) && ids.push(id)
   for (const t of Object.values(c.turns)) {
-    if (t.kind === 'line') add(t.expressionId)
+    if (t.kind === 'line' || t.kind === 'catch') add(t.expressionId)
     if (t.kind === 'reply') t.accepted.forEach((a) => add(a.expressionId))
   }
   return ids
 }
 
-const nextOf = (t: Turn): TurnId[] => (t.kind === 'line' ? [t.next] : t.kind === 'reply' ? t.accepted.map((a) => a.next) : [])
+function nextOf(t: Turn): TurnId[] {
+  if (t.kind === 'line' || t.kind === 'catch') return [t.next]
+  if (t.kind === 'reply') return t.accepted.map((a) => a.next)
+  if (t.kind === 'variant') return t.options.map((o) => o.next)
+  return []
+}
+
+/** Picks one of a Variant's ways on, by weight. */
+export function pickVariant(turn: Extract<Turn, { kind: 'variant' }>, random = Math.random): TurnId {
+  const total = turn.options.reduce((sum, o) => sum + o.weight, 0)
+  let r = random() * total
+  for (const o of turn.options) if ((r -= o.weight) < 0) return o.next
+  return turn.options.at(-1)!.next
+}
+
+/** Follows Variants (choosing at random) until a Turn the learner sees: a Line, a Reply, a Catch or the end. */
+export function resolveVariants(c: Conversation, id: TurnId, random = Math.random): TurnId {
+  for (let n = 0; c.turns[id].kind === 'variant' && n < 100; n++) id = pickVariant(c.turns[id] as Extract<Turn, { kind: 'variant' }>, random)
+  return id
+}
+
+/** The Turns one run visits when every Reply is the intended one, with Variants chosen at random (as in Watch). */
+export function walkIntended(c: Conversation, random = Math.random): TurnId[] {
+  const visited: TurnId[] = []
+  let id = resolveVariants(c, c.start, random)
+  while (c.turns[id].kind !== 'end' && visited.length <= MAX_TURNS * 2) {
+    visited.push(id)
+    const t = c.turns[id]
+    id = resolveVariants(c, t.kind === 'reply' ? t.accepted[0].next : nextOf(t)[0], random)
+  }
+  return visited
+}
+
+/** The most Turns an intended run can take, over every Variant: for the progress bar. */
+export function longestIntendedPath(c: Conversation): number {
+  const longest = (id: TurnId, depth: number): number => {
+    const t = c.turns[id]
+    if (t.kind === 'end' || depth > MAX_TURNS * 2) return 0
+    if (t.kind === 'variant') return Math.max(...t.options.map((o) => longest(o.next, depth)))
+    return 1 + longest(t.kind === 'reply' ? t.accepted[0].next : nextOf(t)[0], depth + 1)
+  }
+  return longest(c.start, 0)
+}
 
 /** Returns a list of problems with a Conversation; empty means valid. */
 export function validateConversation(c: Conversation, expressions: Map<string, { heard?: boolean }>): string[] {
@@ -103,7 +149,16 @@ export function validateConversation(c: Conversation, expressions: Map<string, {
   if (!c.turns[c.start]) problems.push(`${c.id}: start Turn ${c.start} doesn't exist`)
   for (const [id, t] of Object.entries(c.turns)) {
     for (const next of nextOf(t)) if (!c.turns[next]) problems.push(`${at(id)}: next Turn ${next} doesn't exist`)
-    if (t.kind === 'line' && !expressions.has(t.expressionId)) problems.push(`${at(id)}: unknown Expression ${t.expressionId}`)
+    if ((t.kind === 'line' || t.kind === 'catch') && !expressions.has(t.expressionId)) problems.push(`${at(id)}: unknown Expression ${t.expressionId}`)
+    if (t.kind === 'catch') {
+      if (!t.question.trim() || !t.answer.trim()) problems.push(`${at(id)}: a Catch needs a question and an answer`)
+      if (t.wrong.length !== 3 || new Set(t.wrong).size !== 3) problems.push(`${at(id)}: a Catch needs three different wrong answers`)
+      if (t.wrong.includes(t.answer)) problems.push(`${at(id)}: a wrong answer is the right one`)
+    }
+    if (t.kind === 'variant') {
+      if (t.options.length < 2) problems.push(`${at(id)}: a Variant needs at least two ways on`)
+      if (t.options.some((o) => !(o.weight > 0))) problems.push(`${at(id)}: Variant weights must be positive`)
+    }
     if (t.kind === 'reply') {
       if (t.accepted.length === 0) problems.push(`${at(id)}: no accepted Reply`)
       if (!t.intent.trim()) problems.push(`${at(id)}: no intent`)
@@ -127,17 +182,9 @@ export function validateConversation(c: Conversation, expressions: Map<string, {
   walk(c.start)
   for (const id of Object.keys(c.turns)) if (!reached.has(id)) problems.push(`${at(id)}: can't be reached from the start`)
 
-  // Following the intended Reply everywhere (what a miss also does) reaches the End within MAX_TURNS.
-  let id = c.start
-  for (let n = 0; ; n++) {
-    const t = c.turns[id]
-    if (t.kind === 'end') break
-    if (n >= MAX_TURNS) {
-      problems.push(`${c.id}: the intended path doesn't end within ${MAX_TURNS} Turns`)
-      break
-    }
-    id = nextOf(t)[0]
-  }
+  // Following the intended Reply everywhere (what a miss also does) reaches the End within MAX_TURNS, whichever way
+  // each Variant goes.
+  if (longestIntendedPath(c) > MAX_TURNS) problems.push(`${c.id}: the intended path doesn't end within ${MAX_TURNS} Turns`)
   // And every Turn can still reach the End (no branch is a dead loop).
   const canEnd = new Set(Object.keys(c.turns).filter((id) => c.turns[id].kind === 'end'))
   for (let changed = true; changed; ) {

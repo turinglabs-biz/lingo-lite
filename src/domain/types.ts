@@ -24,10 +24,10 @@ export interface DirectionCard {
 }
 
 /**
- * 'check' is the listen-and-pick check in a Learn session; 'reply' is a Reply in a Conversation. Both are objectively
- * graded, and neither touches the schedule.
+ * 'check' is the listen-and-pick check in a Learn session; 'reply' and 'catch' are a Reply and a Catch in a
+ * Conversation. All are objectively graded, and none touches the schedule.
  */
-export type AnswerKind = Direction | 'check' | 'reply'
+export type AnswerKind = Direction | 'check' | 'reply' | 'catch'
 
 export interface Answer {
   id?: number

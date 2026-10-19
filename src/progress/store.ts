@@ -57,6 +57,12 @@ export async function recordReply(sessionId: string, conversationId: string, tur
   await touchSession(sessionId)
 }
 
+/** A Catch in a Conversation: like a Reply, recorded for XP, Practice time and Stats only. */
+export async function recordCatch(sessionId: string, conversationId: string, turnId: string, expressionId: string, correct: boolean) {
+  await db.answers.add({ at: Date.now(), sessionId, expressionId, kind: 'catch', correct, conversationId, turnId })
+  await touchSession(sessionId)
+}
+
 export interface GradeResult {
   /** The Expression became Learned for the first time with this answer. */
   becameLearned: boolean

@@ -12,34 +12,74 @@ const convenienceStore: Conversation = {
   start: 'welcome',
   turns: {
     welcome: { kind: 'line', expressionId: 'welcome-heard', next: 'greet' },
-    greet: { kind: 'reply', intent: 'Greet the clerk.', accepted: [{ expressionId: 'hello', next: 'heat' }], distractors: ['goodbye-staying'] },
+    greet: { kind: 'reply', intent: 'Greet the clerk.', accepted: [{ expressionId: 'hello', next: 'maybe-heat' }], distractors: ['goodbye-staying'] },
 
+    // Half the time the clerk offers to heat the kimbap.
+    'maybe-heat': {
+      kind: 'variant',
+      options: [
+        { weight: 1, next: 'heat' },
+        { weight: 1, next: 'maybe-bag' },
+      ],
+    },
     heat: { kind: 'line', expressionId: 'heat-up-heard', next: 'heat-reply' },
     'heat-reply': {
       kind: 'reply',
       intent: 'Ask them to heat it up.',
       accepted: [
         { expressionId: 'heat-it-up', next: 'wait' },
-        { expressionId: 'its-okay', next: 'bag' },
-        { expressionId: 'no', next: 'bag' },
+        { expressionId: 'its-okay', next: 'maybe-bag' },
+        { expressionId: 'no', next: 'maybe-bag' },
       ],
       // 포장해 주세요 is "to go" in a restaurant.
       distractors: ['to-go'],
     },
-    wait: { kind: 'line', expressionId: 'just-a-moment', next: 'bag' },
+    wait: { kind: 'line', expressionId: 'just-a-moment', next: 'maybe-bag' },
 
+    // Half the time the clerk asks about a bag.
+    'maybe-bag': {
+      kind: 'variant',
+      options: [
+        { weight: 1, next: 'bag' },
+        { weight: 1, next: 'total' },
+      ],
+    },
     bag: { kind: 'line', expressionId: 'need-bag-heard', next: 'bag-reply' },
     'bag-reply': {
       kind: 'reply',
       intent: "Say you don't need a bag.",
       accepted: [
-        { expressionId: 'no-bag', next: 'pay' },
-        { expressionId: 'no', next: 'pay' },
+        { expressionId: 'no-bag', next: 'total' },
+        { expressionId: 'no', next: 'total' },
         { expressionId: 'bag-please', next: 'bag-price' },
       ],
       distractors: ['receipt'],
     },
-    'bag-price': { kind: 'line', expressionId: 'bag-price-heard', next: 'pay' },
+    'bag-price': { kind: 'line', expressionId: 'bag-price-heard', next: 'bag-price-catch' },
+    'bag-price-catch': {
+      kind: 'catch',
+      expressionId: 'bag-price-heard',
+      question: 'How much is a bag?',
+      answer: '100 won',
+      wrong: ['1,000 won', '10 won', 'Free'],
+      next: 'total',
+    },
+
+    // The total, one of three.
+    total: {
+      kind: 'variant',
+      options: [
+        { weight: 1, next: 'price-3200' },
+        { weight: 1, next: 'price-4500' },
+        { weight: 1, next: 'price-6800' },
+      ],
+    },
+    'price-3200': { kind: 'line', expressionId: 'price-3200-heard', next: 'catch-3200' },
+    'catch-3200': { kind: 'catch', expressionId: 'price-3200-heard', question: 'How much is it?', answer: '3,200 won', wrong: ['2,300 won', '3,020 won', '32,000 won'], next: 'pay' },
+    'price-4500': { kind: 'line', expressionId: 'price-4500-heard', next: 'catch-4500' },
+    'catch-4500': { kind: 'catch', expressionId: 'price-4500-heard', question: 'How much is it?', answer: '4,500 won', wrong: ['5,400 won', '4,050 won', '45,000 won'], next: 'pay' },
+    'price-6800': { kind: 'line', expressionId: 'price-6800-heard', next: 'catch-6800' },
+    'catch-6800': { kind: 'catch', expressionId: 'price-6800-heard', question: 'How much is it?', answer: '6,800 won', wrong: ['8,600 won', '6,080 won', '68,000 won'], next: 'pay' },
 
     pay: {
       kind: 'reply',
@@ -50,8 +90,17 @@ const convenienceStore: Conversation = {
       ],
       distractors: ['too-expensive'],
     },
-    'insert-card': { kind: 'line', expressionId: 'insert-card-heard', next: 'points' },
-    change: { kind: 'line', expressionId: 'change-heard', next: 'points' },
+    'insert-card': { kind: 'line', expressionId: 'insert-card-heard', next: 'maybe-points' },
+    change: { kind: 'line', expressionId: 'change-heard', next: 'maybe-points' },
+
+    // A third of the time the clerk asks for a points card.
+    'maybe-points': {
+      kind: 'variant',
+      options: [
+        { weight: 1, next: 'points' },
+        { weight: 2, next: 'receipt' },
+      ],
+    },
 
     points: { kind: 'line', expressionId: 'points-card-heard', next: 'points-reply' },
     'points-reply': {

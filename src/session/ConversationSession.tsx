@@ -3,10 +3,19 @@ import { playClip } from '../audio/player.ts'
 import { VOICES, type Voice } from '../audio/voices.ts'
 import { catalog, expressionById } from '../catalog/index.ts'
 import { ExpressionView } from '../components/ExpressionView.tsx'
-import { checkReply, replyOptions, type Conversation, type ReplyResult, type TurnId } from '../domain/conversation.ts'
+import { shuffle } from '../domain/choices.ts'
+import {
+  checkReply,
+  longestIntendedPath,
+  replyOptions,
+  resolveVariants,
+  type Conversation,
+  type ReplyResult,
+  type TurnId,
+} from '../domain/conversation.ts'
 import { EchoBar } from '../echo/EchoMic.tsx'
 import { useIgnored } from '../progress/ignored.tsx'
-import { recordReply, touchSession } from '../progress/store.ts'
+import { recordCatch, recordReply, touchSession } from '../progress/store.ts'
 import { Prompt, SessionFrame } from './parts.tsx'
 import { SessionInput } from './sessionInput.ts'
 import type { SummaryData } from './SessionSummary.tsx'
@@ -14,13 +23,6 @@ import { useSessionTracker } from './useSessionTracker.ts'
 
 /** One message in the chat: something the other person said, or the learner's Reply. */
 type Message = { from: 'them'; expressionId: string } | { from: 'you'; expressionId: string; missed?: string }
-
-/** How many Turns the intended path takes, for the progress bar. */
-function pathLength(c: Conversation): number {
-  let n = 0
-  for (let t = c.turns[c.start]; t.kind !== 'end'; n++) t = c.turns[t.kind === 'line' ? t.next : t.accepted[0].next]
-  return n
-}
 
 /**
  * A Conversation in Guided play: the other person's Lines play as audio with the text hidden, and at each Reply the
@@ -35,23 +37,30 @@ export function ConversationSession({ conversation, onEnd }: { conversation: Con
     const them = VOICES[Math.floor(Math.random() * VOICES.length)]
     return { them, you: VOICES.find((v) => v !== them)! as Voice }
   })
-  const [turnId, setTurnId] = useState<TurnId>(conversation.start)
+  // Variants are decided the moment the Conversation reaches them.
+  const [turnId, setTurnId] = useState<TurnId>(() => resolveVariants(conversation, conversation.start))
+  const [lineNext, setLineNext] = useState<TurnId | null>(null)
+  const [total] = useState(() => longestIntendedPath(conversation))
   const [messages, setMessages] = useState<Message[]>([])
   const [stage, setStage] = useState<'recall' | 'pick' | 'done'>('recall')
   const [result, setResult] = useState<(ReplyResult & { picked: string }) | null>(null)
+  const [caught, setCaught] = useState<{ picked: string; correct: boolean } | null>(null)
+  const [answered, setAnswered] = useState(0)
   const textShown = useRef(false)
   const entered = useRef<TurnId | null>(null)
   const chatEnd = useRef<HTMLDivElement>(null)
   const turn = conversation.turns[turnId]
 
-  // Entering a Line: it joins the chat and plays. A Line followed by a Reply or the end moves straight on.
+  // Entering a Line: it joins the chat and plays. Unless another Line follows, the Conversation moves straight on.
   useEffect(() => {
     if (entered.current === turnId) return
     entered.current = turnId
     if (turn.kind !== 'line') return
     setMessages((m) => [...m, { from: 'them', expressionId: turn.expressionId }])
     playClip(turn.expressionId, 'normal', voices.them)
-    if (conversation.turns[turn.next].kind !== 'line') setTurnId(turn.next)
+    const following = resolveVariants(conversation, turn.next)
+    if (conversation.turns[following].kind === 'line') setLineNext(following)
+    else setTurnId(following)
   }, [turnId, turn, conversation, voices])
 
   useEffect(() => {
@@ -61,6 +70,7 @@ export function ConversationSession({ conversation, onEnd }: { conversation: Con
   const [options, setOptions] = useState<string[]>([])
   useEffect(() => {
     if (turn.kind === 'reply') setOptions(replyOptions(turn, conversation.topic, catalog, ignored))
+    if (turn.kind === 'catch') setOptions(shuffle([turn.answer, ...turn.wrong], Math.random))
     // Options are drawn once per Reply, so they don't reshuffle while Progress updates.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [turnId])
@@ -71,22 +81,36 @@ export function ConversationSession({ conversation, onEnd }: { conversation: Con
     setResult({ ...r, picked: id })
     setStage('done')
     tracker.countAnswer(r.correct)
+    setAnswered((n) => n + 1)
     const said = r.correct ? id : r.expected!
     setMessages((m) => [...m, { from: 'you', expressionId: said, ...(r.correct ? {} : { missed: id }) }])
     playClip(said, 'normal', voices.you)
     await recordReply(tracker.sessionId, conversation.id, turnId, said, r.correct)
   }
 
+  /** A Catch: what did they say? A miss shows the right answer and replays the Line. */
+  async function pickCatch(option: string) {
+    if (turn.kind !== 'catch' || !tracker.sessionId) return
+    const correct = option === turn.answer
+    setCaught({ picked: option, correct })
+    tracker.countAnswer(correct)
+    setAnswered((n) => n + 1)
+    if (!correct) playClip(turn.expressionId, 'normal', voices.them)
+    await recordCatch(tracker.sessionId, conversation.id, turnId, turn.expressionId, correct)
+  }
+
   function next(to: TurnId) {
     setResult(null)
+    setCaught(null)
+    setLineNext(null)
     setStage('recall')
-    setTurnId(to)
+    setTurnId(resolveVariants(conversation, to))
   }
 
   const intended = turn.kind === 'reply' ? turn.accepted[0].expressionId : undefined
   return (
     <SessionInput.Provider value={() => tracker.sessionId && touchSession(tracker.sessionId)}>
-      <SessionFrame title={conversation.title} position={Math.min(messages.length, pathLength(conversation))} total={pathLength(conversation)} onQuit={() => onEnd(null)}>
+      <SessionFrame title={conversation.title} position={Math.min(messages.length + answered, total)} total={total} onQuit={() => onEnd(null)}>
         <p className="muted small conversation-setting">{conversation.setting}</p>
         <div className="chat">
           {messages.map((m, i) =>
@@ -102,10 +126,33 @@ export function ConversationSession({ conversation, onEnd }: { conversation: Con
           <div ref={chatEnd} />
         </div>
 
-        {turn.kind === 'line' && (
-          <button type="button" className="primary-action" onClick={() => next(turn.next)}>
+        {turn.kind === 'line' && lineNext && (
+          <button type="button" className="primary-action" onClick={() => next(lineNext)}>
             Next
           </button>
+        )}
+
+        {turn.kind === 'catch' && (
+          <div className="reply-panel">
+            <Prompt label="Did you catch it?">
+              <p className="english-prompt">{turn.question}</p>
+            </Prompt>
+            <div className="options">
+              {options.map((o) => {
+                const state = !caught ? '' : o === turn.answer ? 'right' : o === caught.picked ? 'wrong' : 'dim'
+                return (
+                  <button key={o} type="button" className={`option ${state}`} disabled={!!caught} onClick={() => pickCatch(o)}>
+                    {o}
+                  </button>
+                )
+              })}
+            </div>
+            {caught && (
+              <button type="button" className="primary-action" onClick={() => next(turn.next)}>
+                Next
+              </button>
+            )}
+          </div>
         )}
 
         {turn.kind === 'reply' && (

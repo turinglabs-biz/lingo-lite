@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { conversations } from '../../catalog/conversations.ts'
 import { catalog, expressionById } from '../catalog/index.ts'
-import { checkReply, replyOptions, validateConversation, type Conversation, type Turn } from './conversation.ts'
+import { checkReply, longestIntendedPath, pickVariant, replyOptions, resolveVariants, validateConversation, walkIntended, type Conversation, type Turn } from './conversation.ts'
 
 const seeded = (seed: number) => () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646
 type Reply = Extract<Turn, { kind: 'reply' }>
@@ -107,5 +107,53 @@ describe('replyOptions', () => {
       expect(options).not.toContain('receipt')
       expect(options).not.toContain('how-much')
     }
+  })
+})
+
+describe('Variants', () => {
+  const store = conversations.find((c) => c.id === 'convenience-store')!
+
+  it('take every way on over a few seeded runs of the Convenience store', () => {
+    const variantTargets = Object.values(store.turns).flatMap((t) => (t.kind === 'variant' ? t.options.map((o) => o.next) : []))
+    const seen = new Set<string>()
+    for (let seed = 1; seed <= 30; seed++) walkIntended(store, seeded(seed)).forEach((id) => seen.add(id))
+    // A way on is either visited itself or (when it is another Variant) resolved past.
+    for (const target of variantTargets) expect(seen.has(resolveVariants(store, target, () => 0)) || seen.has(target), target).toBe(true)
+    for (const price of ['price-3200', 'price-4500', 'price-6800']) expect(seen.has(price), price).toBe(true)
+  })
+
+  it('pick by weight', () => {
+    const turn = { kind: 'variant' as const, options: [{ weight: 1, next: 'a' }, { weight: 3, next: 'b' }] }
+    expect(pickVariant(turn, () => 0.2)).toBe('a')
+    expect(pickVariant(turn, () => 0.3)).toBe('b')
+    expect(pickVariant(turn, () => 0.99)).toBe('b')
+  })
+
+  it('make a run vary between seeds', () => {
+    const runs = new Set([1, 2, 3, 4, 5, 6].map((seed) => walkIntended(store, seeded(seed)).join()))
+    expect(runs.size).toBeGreaterThan(1)
+  })
+
+  it('count toward the longest intended path, used by the progress bar', () => {
+    const longest = longestIntendedPath(store)
+    for (let seed = 1; seed <= 20; seed++) expect(walkIntended(store, seeded(seed)).length).toBeLessThanOrEqual(longest)
+  })
+})
+
+describe('Catch and Variant validation', () => {
+  it('reports a Catch whose wrong answers include the right one, or repeat', () => {
+    const c = fixture()
+    c.turns.c = { kind: 'catch', expressionId: 'bag-price-heard', question: 'How much is a bag?', answer: '100 won', wrong: ['100 won', '10 won', '10 won'], next: 'end' }
+    const problems = validateConversation(c, expressionById).join('\n')
+    expect(problems).toMatch(/a wrong answer is the right one/)
+    expect(problems).toMatch(/three different wrong answers/)
+  })
+
+  it('reports a Variant with one way on or a weight of zero', () => {
+    const c = fixture()
+    c.turns.a = { kind: 'variant', options: [{ weight: 0, next: 'b' }] }
+    const problems = validateConversation(c, expressionById).join('\n')
+    expect(problems).toMatch(/at least two ways on/)
+    expect(problems).toMatch(/weights must be positive/)
   })
 })

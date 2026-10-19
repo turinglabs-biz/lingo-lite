@@ -176,6 +176,19 @@ const rows: Record<TopicId, Row[]> = {
     ['points-card-heard', 2, 'po-in-teu ka-deu i-sseu-se-yo?', '포인트 카드 있으세요?', 'Do you have a points card?'],
     ['change-heard', 2, 'geo-seu-reum-tton yeo-gi it-sseum-ni-da', '거스름돈 여기 있습니다', "Here's your change."],
     ['bag-price-heard', 3, 'bong-tu-neun baek wo-ni-e-yo', '봉투는 백 원이에요', 'Bags are 100 won.'],
+    // Prices as a cashier says them: a fixed set, reused by Conversations and their Catches.
+    ['price-2000-heard', 2, 'i-cheon wo-nim-ni-da', '이천 원입니다', "That's 2,000 won."],
+    ['price-3200-heard', 2, 'sam-cheo-ni-baek wo-nim-ni-da', '삼천이백 원입니다', "That's 3,200 won."],
+    ['price-3500-heard', 3, 'sam-cheo-no-baek wo-nim-ni-da', '삼천오백 원입니다', "That's 3,500 won."],
+    ['price-4000-heard', 2, 'sa-cheon wo-nim-ni-da', '사천 원입니다', "That's 4,000 won."],
+    ['price-4500-heard', 1, 'sa-cheo-no-baek wo-nim-ni-da', '사천오백 원입니다', "That's 4,500 won."],
+    ['price-5000-heard', 1, 'o-cheon wo-nim-ni-da', '오천 원입니다', "That's 5,000 won."],
+    ['price-5500-heard', 3, 'o-cheo-no-baek wo-nim-ni-da', '오천오백 원입니다', "That's 5,500 won."],
+    ['price-6800-heard', 3, 'yuk-cheon-pal-baek wo-nim-ni-da', '육천팔백 원입니다', "That's 6,800 won."],
+    ['price-11500-heard', 3, 'man cheo-no-baek wo-nim-ni-da', '만 천오백 원입니다', "That's 11,500 won."],
+    ['price-12000-heard', 2, 'man i-cheon wo-nim-ni-da', '만 이천 원입니다', "That's 12,000 won."],
+    ['price-23000-heard', 2, 'i-man sam-cheon wo-nim-ni-da', '이만 삼천 원입니다', "That's 23,000 won."],
+    ['price-35000-heard', 3, 'sam-man o-cheon wo-nim-ni-da', '삼만 오천 원입니다', "That's 35,000 won."],
     ['two-of-them', 2, 'du gae ju-se-yo', '두 개 주세요', 'Two of them, please'],
   ],
   food: [
@@ -360,6 +373,7 @@ const HEARD = new Set([
   'change-heard',
   'bag-price-heard',
   'heat-up-heard',
+  ...['2000', '3200', '3500', '4000', '4500', '5000', '5500', '6800', '11500', '12000', '23000', '35000'].map((n) => `price-${n}-heard`),
 ])
 
 export const expressions: Expression[] = topics.flatMap((t) =>
