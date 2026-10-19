@@ -122,6 +122,12 @@ _Avoid_: Comprehension check, quiz
 **Variant**:
 One of several ways the other person may take at a point in a Conversation (asking about a bag or not; a different total), chosen at random each run, so a Conversation can't be memorised as one sequence.
 
+**Repair**:
+Asking the other person to repeat (네?), slow down (천천히 말해 주세요) or switch to English (영어 하세요?), always available under the latest Line. The learner says it, and the other person repeats the Line, repeats it slowly, or its text appears. It is never a mistake and never graded.
+
+**Watch**:
+Going through a Conversation once with every Line and intended Reply visible, text and all, to see what happens before playing it. Nothing is graded and it isn't a session.
+
 **Guided play**:
 Playing a Conversation with an English intent at each Reply saying what to say.
 

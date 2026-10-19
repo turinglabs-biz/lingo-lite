@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { playClip } from '../audio/player.ts'
+import { playClip, playClipToEnd } from '../audio/player.ts'
 import { VOICES, type Voice } from '../audio/voices.ts'
 import { catalog, expressionById } from '../catalog/index.ts'
 import { ExpressionView } from '../components/ExpressionView.tsx'
@@ -22,7 +22,17 @@ import type { SummaryData } from './SessionSummary.tsx'
 import { useSessionTracker } from './useSessionTracker.ts'
 
 /** One message in the chat: something the other person said, or the learner's Reply. */
-type Message = { from: 'them'; expressionId: string } | { from: 'you'; expressionId: string; missed?: string }
+type Message =
+  /** `shown`: how much of the Line's text is visible (none; Romanization and Hangul; also the English). */
+  | { from: 'them'; expressionId: string; shown: 0 | 1 | 2 }
+  | { from: 'you'; expressionId: string; missed?: string; repair?: boolean }
+
+/** Repair: what the learner can say under any Line, and what the other person does in answer. */
+const REPAIRS = [
+  { expressionId: 'pardon', does: 'repeat' },
+  { expressionId: 'slowly-please', does: 'slow' },
+  { expressionId: 'speak-english', does: 'text' },
+] as const
 
 /**
  * A Conversation in Guided play: the other person's Lines play as audio with the text hidden, and at each Reply the
@@ -47,6 +57,7 @@ export function ConversationSession({ conversation, onEnd }: { conversation: Con
   const [caught, setCaught] = useState<{ picked: string; correct: boolean } | null>(null)
   const [answered, setAnswered] = useState(0)
   const textShown = useRef(false)
+  const repairs = useRef(0)
   const entered = useRef<TurnId | null>(null)
   const chatEnd = useRef<HTMLDivElement>(null)
   const turn = conversation.turns[turnId]
@@ -56,7 +67,7 @@ export function ConversationSession({ conversation, onEnd }: { conversation: Con
     if (entered.current === turnId) return
     entered.current = turnId
     if (turn.kind !== 'line') return
-    setMessages((m) => [...m, { from: 'them', expressionId: turn.expressionId }])
+    setMessages((m) => [...m, { from: 'them', expressionId: turn.expressionId, shown: 0 }])
     playClip(turn.expressionId, 'normal', voices.them)
     const following = resolveVariants(conversation, turn.next)
     if (conversation.turns[following].kind === 'line') setLineNext(following)
@@ -88,6 +99,29 @@ export function ConversationSession({ conversation, onEnd }: { conversation: Con
     await recordReply(tracker.sessionId, conversation.id, turnId, said, r.correct)
   }
 
+  /** Shows more of a Line's text. Any text shown keeps the run from being clean. */
+  function showText(index: number, level: 1 | 2) {
+    textShown.current = true
+    setMessages((m) => m.map((msg, i) => (i === index && msg.from === 'them' ? { ...msg, shown: Math.max(msg.shown, level) as 1 | 2 } : msg)))
+  }
+
+  /**
+   * Repair: the learner says 네?, 천천히 말해 주세요 or 영어 하세요?, and the other person repeats the last Line, repeats it
+   * slowly, or (as a last resort) the text appears. Never a mistake.
+   */
+  async function repair(r: (typeof REPAIRS)[number]) {
+    const index = messages.findLastIndex((m) => m.from === 'them')
+    if (index < 0) return
+    const line = messages[index].expressionId
+    repairs.current++
+    if (tracker.sessionId) touchSession(tracker.sessionId)
+    setMessages((m) => [...m, { from: 'you', expressionId: r.expressionId, repair: true }])
+    await playClipToEnd(r.expressionId, 'normal', voices.you)
+    if (r.does === 'repeat') playClip(line, 'normal', voices.them)
+    if (r.does === 'slow') playClip(line, 'slow', voices.them)
+    if (r.does === 'text') showText(index, 2)
+  }
+
   /** A Catch: what did they say? A miss shows the right answer and replays the Line. */
   async function pickCatch(option: string) {
     if (turn.kind !== 'catch' || !tracker.sessionId) return
@@ -115,9 +149,9 @@ export function ConversationSession({ conversation, onEnd }: { conversation: Con
         <div className="chat">
           {messages.map((m, i) =>
             m.from === 'them' ? (
-              <LineBubble key={i} expressionId={m.expressionId} role={conversation.role} voice={voices.them} onShowText={() => (textShown.current = true)} />
+              <LineBubble key={i} expressionId={m.expressionId} role={conversation.role} voice={voices.them} shown={m.shown} onShow={(level) => showText(i, level)} />
             ) : (
-              <div key={i} className={m.missed ? 'bubble you missed' : 'bubble you'}>
+              <div key={i} className={m.missed ? 'bubble you missed' : m.repair ? 'bubble you repair' : 'bubble you'}>
                 <ExpressionView expression={expressionById.get(m.expressionId)!} size="compact" />
                 {m.missed && <p className="small bubble-note">You picked {expressionById.get(m.missed)!.romanization}; this one fits.</p>}
               </div>
@@ -125,6 +159,16 @@ export function ConversationSession({ conversation, onEnd }: { conversation: Con
           )}
           <div ref={chatEnd} />
         </div>
+
+        {turn.kind !== 'end' && messages.some((m) => m.from === 'them') && (
+          <div className="repair-chips" aria-label="Ask them to repeat">
+            {REPAIRS.map((r) => (
+              <button key={r.expressionId} type="button" className="chip" onClick={() => repair(r)}>
+                {expressionById.get(r.expressionId)!.hangul}
+              </button>
+            ))}
+          </div>
+        )}
 
         {turn.kind === 'line' && lineNext && (
           <button type="button" className="primary-action" onClick={() => next(lineNext)}>
@@ -199,8 +243,19 @@ export function ConversationSession({ conversation, onEnd }: { conversation: Con
 }
 
 /** The other person's Line: audio first, the text only on request (Romanization and Hangul, then the English). */
-function LineBubble({ expressionId, role, voice, onShowText }: { expressionId: string; role: string; voice: Voice; onShowText: () => void }) {
-  const [shown, setShown] = useState<0 | 1 | 2>(0)
+function LineBubble({
+  expressionId,
+  role,
+  voice,
+  shown,
+  onShow,
+}: {
+  expressionId: string
+  role: string
+  voice: Voice
+  shown: 0 | 1 | 2
+  onShow: (level: 1 | 2) => void
+}) {
   const e = expressionById.get(expressionId)!
   return (
     <div className="bubble them">
@@ -216,10 +271,7 @@ function LineBubble({ expressionId, role, voice, onShowText }: { expressionId: s
           <button
             type="button"
             className="show-text"
-            onClick={() => {
-              onShowText()
-              setShown((s) => (s + 1) as 1 | 2)
-            }}
+            onClick={() => onShow(shown === 0 ? 1 : 2)}
           >
             {shown === 0 ? 'Show text' : 'Show meaning'}
           </button>

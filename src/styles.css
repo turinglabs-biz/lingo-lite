@@ -1176,3 +1176,20 @@ h2 {
   flex-direction: column;
   gap: 10px;
 }
+.bubble.you.repair {
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.repair-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: -6px 0 12px;
+}
+.bubble.playing {
+  outline: 2px solid var(--accent);
+}
+.watch-catch {
+  align-self: center;
+  margin: 0;
+}
