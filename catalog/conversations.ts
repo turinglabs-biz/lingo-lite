@@ -805,6 +805,208 @@ const askingTheWay: Conversation = {
   },
 }
 
+const clothesShop: Conversation = {
+  id: 'clothes-shop',
+  topic: 'shopping',
+  title: 'Clothes shop',
+  setting: 'A small clothing shop in Myeongdong.',
+  role: 'the shop assistant',
+  // Trimmed to fit 20 Turns on its longest path: the greeting and goodbye are practised elsewhere.
+  start: 'looking',
+  turns: {
+    looking: { kind: 'line', expressionId: 'looking-for-heard', next: 'looking-reply' },
+    'looking-reply': { kind: 'reply', intent: "Say you're just looking.", accepted: [{ expressionId: 'just-looking', next: 'price' }], distractors: ['ill-take-this'] },
+    price: { kind: 'reply', intent: 'Ask how much this is.', accepted: [{ expressionId: 'how-much', next: 'price-answer' }], distractors: ['what-is-this'] },
+    'price-answer': { kind: 'line', expressionId: 'price-35000-heard', next: 'price-catch' },
+    'price-catch': { kind: 'catch', expressionId: 'price-35000-heard', question: 'How much is it?', answer: '35,000 won', wrong: ['53,000 won', '3,500 won', '30,500 won'], next: 'try-on' },
+    'try-on': { kind: 'reply', intent: 'Ask if you can try it on.', accepted: [{ expressionId: 'try-on', next: 'fitting-room' }], distractors: ['can-i-take-photo'] },
+    'fitting-room': { kind: 'line', expressionId: 'fitting-room-heard', next: 'bigger' },
+    bigger: { kind: 'reply', intent: 'Ask for a bigger one.', accepted: [{ expressionId: 'bigger-one', next: 'size' }], distractors: ['another-colour'] },
+    size: {
+      kind: 'variant',
+      options: [
+        { weight: 1, next: 'one-moment' },
+        { weight: 1, next: 'sold-out' },
+      ],
+    },
+    'one-moment': { kind: 'line', expressionId: 'excuse-me-passing', next: 'take-it' },
+    'sold-out': { kind: 'line', expressionId: 'sold-out-heard', next: 'sold-out-catch' },
+    'sold-out-catch': {
+      kind: 'catch',
+      expressionId: 'sold-out-heard',
+      question: 'What did they say?',
+      answer: 'That size is sold out',
+      wrong: ["It's on sale", "It's in the back", "It's the last one"],
+      next: 'colour',
+    },
+    colour: { kind: 'reply', intent: 'Ask for another colour.', accepted: [{ expressionId: 'another-colour', next: 'this-colour' }], distractors: ['bigger-one'] },
+    'this-colour': { kind: 'line', expressionId: 'this-colour-heard', next: 'take-it' },
+    'take-it': { kind: 'reply', intent: "Say you'll take it.", accepted: [{ expressionId: 'ill-take-this', next: 'tax-refund' }], distractors: ['too-expensive'] },
+    'tax-refund': { kind: 'reply', intent: 'Ask about a tax refund.', accepted: [{ expressionId: 'tax-refund', next: 'passport' }] },
+    passport: { kind: 'line', expressionId: 'passport-have-heard', next: 'passport-reply' },
+    'passport-reply': { kind: 'reply', intent: 'Hand it over.', accepted: [{ expressionId: 'here-you-are', next: 'instalment' }] },
+    instalment: { kind: 'line', expressionId: 'instalment-heard', next: 'instalment-reply' },
+    'instalment-reply': {
+      kind: 'reply',
+      intent: 'Say yes: one payment.',
+      accepted: [{ expressionId: 'yes', next: 'wrap' }],
+      // 아니요 would ask for instalments.
+      distractors: ['no'],
+    },
+    wrap: { kind: 'line', expressionId: 'gift-wrap-heard', next: 'wrap-reply' },
+    'wrap-reply': {
+      kind: 'reply',
+      intent: 'Say no thanks.',
+      accepted: [
+        { expressionId: 'its-okay', next: 'end' },
+        { expressionId: 'yes', next: 'end' },
+      ],
+      // 포장해 주세요 is taught as "to go" in a restaurant; here the shop's 포장 means gift wrap.
+      distractors: ['to-go'],
+    },
+    end: { kind: 'end' },
+  },
+}
+
+const marketStall: Conversation = {
+  id: 'market-stall',
+  topic: 'food',
+  title: 'Market stall',
+  setting: 'A hotteok stall in a traditional market.',
+  role: 'the vendor',
+  start: 'welcome',
+  turns: {
+    welcome: { kind: 'line', expressionId: 'welcome-heard', next: 'what' },
+    what: { kind: 'line', expressionId: 'what-can-i-get-heard', next: 'what-is-this' },
+    'what-is-this': { kind: 'reply', intent: 'Point and ask what this is.', accepted: [{ expressionId: 'what-is-this', next: 'hotteok' }], distractors: ['how-much'] },
+    hotteok: { kind: 'line', expressionId: 'hotteok-heard', next: 'hotteok-catch' },
+    'hotteok-catch': { kind: 'catch', expressionId: 'hotteok-heard', question: 'What is it like?', answer: "It's sweet", wrong: ["It's spicy", "It's sold out", "It's cold"], next: 'how-much' },
+    'how-much': { kind: 'reply', intent: 'Ask how much.', accepted: [{ expressionId: 'how-much', next: 'each' }], distractors: ['what-is-this'] },
+    each: { kind: 'line', expressionId: 'each-price-heard', next: 'each-catch' },
+    'each-catch': { kind: 'catch', expressionId: 'each-price-heard', question: 'How much?', answer: '2,000 won each', wrong: ['2 for 1,000 won', '12,000 won', '2,000 won for all'], next: 'order' },
+    order: {
+      kind: 'reply',
+      intent: 'Order two.',
+      accepted: [{ expressionId: 'two-of-them', next: 'haggle' }],
+      // 명 counts people.
+      distractors: ['two-people'],
+    },
+    haggle: {
+      kind: 'reply',
+      intent: 'Ask for a discount.',
+      accepted: [
+        { expressionId: 'discount', next: 'two-for' },
+        { expressionId: 'good', next: 'total' },
+      ],
+    },
+    'two-for': { kind: 'line', expressionId: 'two-for-heard', next: 'two-for-catch' },
+    'two-for-catch': { kind: 'catch', expressionId: 'two-for-heard', question: "What's the deal?", answer: 'Two for 3,500 won', wrong: ['Two for 5,300 won', 'Two for 2,500 won', 'Three for 3,500 won'], next: 'pay' },
+    total: { kind: 'line', expressionId: 'price-4000-heard', next: 'pay' },
+    pay: {
+      kind: 'reply',
+      intent: 'Ask if you can pay by card.',
+      accepted: [
+        { expressionId: 'card-ok', next: 'cash-only' },
+        { expressionId: 'pay-cash', next: 'enjoy' },
+      ],
+    },
+    'cash-only': { kind: 'line', expressionId: 'cash-only-heard', next: 'cash' },
+    cash: {
+      kind: 'reply',
+      intent: "Say you'll pay in cash.",
+      accepted: [
+        { expressionId: 'pay-cash', next: 'enjoy' },
+        { expressionId: 'atm-where', next: 'atm-there' },
+      ],
+    },
+    'atm-there': { kind: 'line', expressionId: 'atm-there-heard', next: 'after-atm' },
+    'after-atm': { kind: 'reply', intent: "Back with cash: say you'll pay in cash.", accepted: [{ expressionId: 'pay-cash', next: 'enjoy' }] },
+    enjoy: { kind: 'line', expressionId: 'enjoy-heard', next: 'thanks' },
+    thanks: {
+      kind: 'reply',
+      intent: 'Thank them before you eat.',
+      accepted: [
+        { expressionId: 'before-meal', next: 'end' },
+        { expressionId: 'thank-you', next: 'end' },
+      ],
+      // 잘 먹었습니다 is for after the meal.
+      distractors: ['after-meal'],
+    },
+    end: { kind: 'end' },
+  },
+}
+
+const smallTalk: Conversation = {
+  id: 'small-talk',
+  topic: 'smalltalk',
+  title: 'Small talk',
+  setting: 'An older guest at your guesthouse starts chatting over breakfast.',
+  role: 'the guest',
+  start: 'where-from',
+  turns: {
+    'where-from': { kind: 'line', expressionId: 'where-from-heard', next: 'where-from-reply' },
+    'where-from-reply': {
+      kind: 'reply',
+      intent: "Say you're from Europe.",
+      accepted: [{ expressionId: 'from-europe', next: 'first-time' }],
+      // 어디예요? asks where something is.
+      distractors: ['where-is-it'],
+    },
+    'first-time': { kind: 'line', expressionId: 'first-time-heard', next: 'first-time-reply' },
+    'first-time-reply': {
+      kind: 'reply',
+      intent: 'Say yes, it is your first time.',
+      accepted: [
+        { expressionId: 'first-time-korea', next: 'compliment' },
+        { expressionId: 'yes', next: 'compliment' },
+      ],
+    },
+    compliment: { kind: 'line', expressionId: 'korean-good-heard', next: 'compliment-reply' },
+    'compliment-reply': {
+      kind: 'reply',
+      intent: 'Answer modestly.',
+      accepted: [
+        { expressionId: 'not-at-all', next: 'how-is-korea' },
+        { expressionId: 'a-little-korean', next: 'how-is-korea' },
+        { expressionId: 'thank-you', next: 'how-is-korea' },
+      ],
+      distractors: ['dont-speak-korean'],
+    },
+    'how-is-korea': { kind: 'line', expressionId: 'how-is-korea-heard', next: 'how-is-korea-reply' },
+    'how-is-korea-reply': {
+      kind: 'reply',
+      intent: 'Say you really like Korea.',
+      accepted: [
+        { expressionId: 'like-korea', next: 'how-long' },
+        { expressionId: 'its-fun', next: 'how-long' },
+        { expressionId: 'the-best', next: 'how-long' },
+      ],
+      distractors: ['hungry'],
+    },
+    'how-long': { kind: 'line', expressionId: 'how-long-stay-heard', next: 'how-long-reply' },
+    'how-long-reply': { kind: 'reply', intent: "Say you're staying for a month.", accepted: [{ expressionId: 'staying-a-month', next: 'photo' }], distractors: ['thirty-minutes'] },
+    photo: {
+      kind: 'reply',
+      intent: 'Ask them to take a photo of you.',
+      accepted: [{ expressionId: 'take-our-photo', next: 'one-more' }],
+      // 사진 찍어도 돼요? asks if you may take a photo.
+      distractors: ['can-i-take-photo'],
+    },
+    'one-more': { kind: 'line', expressionId: 'one-more-photo-heard', next: 'one-more-catch' },
+    'one-more-catch': {
+      kind: 'catch',
+      expressionId: 'one-more-photo-heard',
+      question: 'What did they say at the end?',
+      answer: "They'll take one more",
+      wrong: ["They're done", 'Smile', 'Move closer'],
+      next: 'enjoy',
+    },
+    enjoy: { kind: 'line', expressionId: 'enjoy-trip-heard', next: 'thanks' },
+    thanks: { kind: 'reply', intent: 'Thank them.', accepted: [{ expressionId: 'thank-you', next: 'end' }] },
+    end: { kind: 'end' },
+  },
+}
+
 export const conversations: Conversation[] = [
   convenienceStore,
   cafe,
@@ -815,4 +1017,7 @@ export const conversations: Conversation[] = [
   hotelCheckIn,
   tMoney,
   askingTheWay,
+  clothesShop,
+  marketStall,
+  smallTalk,
 ]

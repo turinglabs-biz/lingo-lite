@@ -169,6 +169,14 @@ const rows: Record<TopicId, Row[]> = {
     ['bigger-one', 3, 'deo keun geo i-sseo-yo?', '더 큰 거 있어요?', 'Do you have a bigger one?'],
     ['try-on', 3, 'i-beo bwa-do dwae-yo?', '입어 봐도 돼요?', 'Can I try it on?'],
     ['tax-refund', 3, 'taek-seu ri-peon-deu dwae-yo?', '택스 리펀드 돼요?', 'Can I get a tax refund?'],
+    // Heard in a clothes shop.
+    ['looking-for-heard', 2, 'cha-jeu-si-neun geo i-sseu-se-yo?', '찾으시는 거 있으세요?', 'Looking for anything in particular?'],
+    ['fitting-room-heard', 3, 'ne, ta-ri-si-reun jeo-jjo-gi-e-yo', '네, 탈의실은 저쪽이에요', 'Sure, the fitting room is over there.'],
+    ['sold-out-heard', 3, 'jwe-song-hae-yo, geu sa-i-jeu-neun da na-ga-sseo-yo', '죄송해요, 그 사이즈는 다 나갔어요', 'Sorry, that size is sold out.'],
+    ['this-colour-heard', 3, 'i sae-geun eo-tteo-se-yo?', '이 색은 어떠세요?', 'How about this colour?'],
+    ['passport-have-heard', 2, 'yeo-kkwon i-sseu-se-yo?', '여권 있으세요?', 'Do you have your passport?', 'Asked for a tax refund.'],
+    ['instalment-heard', 2, 'il-ssi-bul-lo hae deu-ril-kka-yo?', '일시불로 해 드릴까요?', 'In a single payment?', 'The card-instalment question. Just say 네.'],
+    ['gift-wrap-heard', 3, 'po-jang-hae deu-ril-kka-yo?', '포장해 드릴까요?', 'Shall I gift-wrap it?', 'In a shop 포장 means wrapping; in a restaurant it means "to go".'],
     ['cheap', 3, 'ssa-yo', '싸요', "It's cheap"],
     ['throw-it-away', 3, 'beo-ryeo ju-se-yo', '버려 주세요', 'Please throw it away', 'For the receipt you don’t want.'],
     // Heard at the convenience store counter.
@@ -192,6 +200,12 @@ const rows: Record<TopicId, Row[]> = {
     ['price-23000-heard', 2, 'i-man sam-cheon wo-nim-ni-da', '이만 삼천 원입니다', "That's 23,000 won."],
     ['price-35000-heard', 3, 'sam-man o-cheon wo-nim-ni-da', '삼만 오천 원입니다', "That's 35,000 won."],
     ['two-of-them', 2, 'du gae ju-se-yo', '두 개 주세요', 'Two of them, please'],
+    // Heard at a market stall.
+    ['what-can-i-get-heard', 2, 'mwo deu-ril-kka-yo?', '뭐 드릴까요?', 'What can I get you?'],
+    ['hotteok-heard', 3, 'ho-tteo-gi-e-yo. da-ra-yo', '호떡이에요. 달아요', "It's hotteok. It's sweet."],
+    ['each-price-heard', 2, 'han gae-e i-cheon wo-ni-e-yo', '한 개에 이천 원이에요', '2,000 won each.'],
+    ['two-for-heard', 3, 'geu-reom du gae-e sam-cheo-no-baek won hae deu-ril-kke-yo', '그럼 두 개에 삼천오백 원 해 드릴게요', 'All right, two for 3,500 won.'],
+    ['cash-only-heard', 2, 'jwe-song-hae-yo, hyeon-geum-man dwae-yo', '죄송해요, 현금만 돼요', 'Sorry, cash only.', 'Common at market stalls and street food.'],
   ],
   food: [
     ['water-please', 1, 'mul ju-se-yo', '물 주세요', 'Water, please', 'Water is free; often self-service from a dispenser.'],
@@ -403,6 +417,14 @@ const rows: Record<TopicId, Row[]> = {
     ['first-time-korea', 2, 'han-gu-geun cheo-eu-mi-e-yo', '한국은 처음이에요', "It's my first time in Korea"],
     ['can-i-take-photo', 2, 'sa-jin jji-geo-do dwae-yo?', '사진 찍어도 돼요?', 'Can I take a photo?'],
     ['take-our-photo', 2, 'sa-jin jji-geo ju-sil ssu i-sseo-yo?', '사진 찍어 주실 수 있어요?', 'Could you take a photo of us?'],
+    ['staying-a-month', 3, 'han dal i-sseo-yo', '한 달 있어요', "I'm staying for a month"],
+    // Heard in small talk.
+    ['first-time-heard', 2, 'han-gu-geun cheo-eu-mi-e-yo?', '한국은 처음이에요?', 'Is this your first time in Korea?'],
+    ['korean-good-heard', 2, 'han-gu-geo jal-ha-si-ne-yo!', '한국어 잘하시네요!', 'Your Korean is good!', 'A kind compliment; 아니에요 is the modest answer.'],
+    ['how-is-korea-heard', 2, 'han-guk eo-ttae-yo?', '한국 어때요?', 'How do you like Korea?'],
+    ['how-long-stay-heard', 2, 'han-gu-ge eol-ma-na i-sseo-yo?', '한국에 얼마나 있어요?', 'How long are you in Korea?'],
+    ['one-more-photo-heard', 3, 'ha-na, dul, set! han jang deo jji-geul-kke-yo', '하나, 둘, 셋! 한 장 더 찍을게요', "One, two, three! I'll take one more."],
+    ['enjoy-trip-heard', 2, 'jeul-geo-un yeo-haeng dwe-se-yo!', '즐거운 여행 되세요!', 'Enjoy your trip!'],
     ['like-korea', 3, 'han-guk neo-mu jo-a-yo', '한국 너무 좋아요', 'I really like Korea'],
     ['whats-your-name', 3, 'i-reu-mi mwo-e-yo?', '이름이 뭐예요?', "What's your name?"],
     ['its-fun', 3, 'jae-mi-i-sseo-yo', '재미있어요', "It's fun"],
@@ -479,6 +501,27 @@ const HEARD = new Set([
   'go-straight-right-heard',
   'five-minutes-walk-heard',
   'dont-know-area-heard',
+  // Clothes shop
+  'looking-for-heard',
+  'fitting-room-heard',
+  'sold-out-heard',
+  'this-colour-heard',
+  'passport-have-heard',
+  'instalment-heard',
+  'gift-wrap-heard',
+  // Market stall
+  'what-can-i-get-heard',
+  'hotteok-heard',
+  'each-price-heard',
+  'two-for-heard',
+  'cash-only-heard',
+  // Small talk
+  'first-time-heard',
+  'korean-good-heard',
+  'how-is-korea-heard',
+  'how-long-stay-heard',
+  'one-more-photo-heard',
+  'enjoy-trip-heard',
   ...['2000', '3200', '3500', '4000', '4500', '5000', '5500', '6800', '11500', '12000', '23000', '35000'].map((n) => `price-${n}-heard`),
 ])
 
