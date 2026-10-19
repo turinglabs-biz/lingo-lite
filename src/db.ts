@@ -1,4 +1,5 @@
 import Dexie, { type EntityTable } from 'dexie'
+import { catalog } from './catalog/index.ts'
 import { cardKey, newDirectionCard } from './domain/scheduler.ts'
 import type { Answer, DirectionCard, FocusMark, IgnoredMark, Introduction, Session, TopicStars } from './domain/types.ts'
 
@@ -59,3 +60,19 @@ db.version(4).stores({
 db.version(5).stores({
   ignored: 'expressionId, at',
 })
+
+// v6: Heard Expressions. One the learner only hears is practised by Listen alone, which used to unlock only after a
+// correct Speak answer: an introduced Heard Expression without a Listen card gets one, due now. Its Speak and See cards
+// are kept (just no longer scheduled), so making it ordinary again restores them.
+db.version(6)
+  .stores({})
+  .upgrade(async (tx) => {
+    const cards = tx.table<DirectionCard, string>('cards')
+    const now = Date.now()
+    const heard = catalog.filter((e) => e.heard).map((e) => e.id)
+    const introduced = await tx.table<Introduction, string>('introductions').where('expressionId').anyOf(heard).toArray()
+    for (const { expressionId } of introduced) {
+      const key = cardKey(expressionId, 'listen')
+      if (!(await cards.get(key))) await cards.put(newDirectionCard(expressionId, 'listen', now))
+    }
+  })

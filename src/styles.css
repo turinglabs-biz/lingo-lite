@@ -1090,3 +1090,19 @@ h2 {
   padding: 3px 4px;
   border-bottom: 1px solid var(--line);
 }
+
+/* Heard Expressions: an ear before the meaning (the learner hears it, never says it). */
+.heard-mark {
+  display: inline-flex;
+  vertical-align: -0.15em;
+  margin-right: 4px;
+  color: var(--muted, currentColor);
+}
+.heard-mark svg {
+  width: 1em;
+  height: 1em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}

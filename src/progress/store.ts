@@ -1,6 +1,7 @@
 import { catalog, expressionById, topics } from '../catalog/index.ts'
 import { db } from '../db.ts'
 import { computeStars, earnedStars, withInput, withoutIgnored } from '../domain/progress.ts'
+import { learnedDirection } from '../domain/directions.ts'
 import { cardKey, gradeCard, isCorrect, newDirectionCard, refocusCard } from '../domain/scheduler.ts'
 import type { Direction, Grade, Session, SessionType } from '../domain/types.ts'
 
@@ -26,13 +27,17 @@ export async function finishSession(sessionId: string) {
   await db.sessions.put({ ...withInput(session, now), endedAt: now })
 }
 
-/** First exposure: the Expression now counts as introduced and its Speak Direction enters the schedule. */
+/**
+ * First exposure: the Expression now counts as introduced and its deciding Direction enters the schedule (Speak, or
+ * Listen for a Heard Expression).
+ */
 export async function introduce(expressionId: string) {
   const now = Date.now()
+  const expression = expressionById.get(expressionId)
   await db.transaction('rw', [db.introductions, db.cards, db.stars, db.ignored], async () => {
     if (await db.introductions.get(expressionId)) return
     await db.introductions.put({ expressionId, at: now })
-    await db.cards.put(newDirectionCard(expressionId, 'speak', now))
+    await db.cards.put(newDirectionCard(expressionId, expression ? learnedDirection(expression) : 'speak', now))
     await updateStars(expressionById.get(expressionId)?.topic)
   })
 }
@@ -48,14 +53,15 @@ export interface GradeResult {
   becameLearned: boolean
 }
 
-/** Grades one Direction. The first correct Speak answer unlocks Listen and See. */
+/** Grades one Direction. The first correct Speak answer unlocks Listen and See (a Heard Expression has only Listen). */
 export async function grade(sessionId: string, expressionId: string, direction: Direction, g: Grade): Promise<GradeResult> {
   const now = Date.now()
+  const learnedBy = learnedDirection(expressionById.get(expressionId) ?? {})
   let becameLearned = false
   await db.transaction('rw', [db.cards, db.answers, db.stars, db.sessions, db.focus, db.ignored, db.introductions], async () => {
     const key = cardKey(expressionId, direction)
     const card = (await db.cards.get(key)) ?? newDirectionCard(expressionId, direction, now)
-    const next = gradeCard(card, g, now, !!(await db.focus.get(expressionId)))
+    const next = gradeCard(card, g, now, !!(await db.focus.get(expressionId)), learnedBy)
     becameLearned = !card.learnedAt && !!next.learnedAt
     await db.cards.put(next)
     await db.answers.add({ at: now, sessionId, expressionId, kind: direction, correct: isCorrect(g), grade: g })
@@ -80,10 +86,10 @@ async function updateStars(topic: string | undefined) {
     ignored,
   ).map((e) => e.id)
   const introduced = new Set((await db.introductions.where('expressionId').anyOf(ids).toArray()).map((i) => i.expressionId))
-  const speak = await db.cards.bulkGet(ids.map((id) => cardKey(id, 'speak')))
-  const speakCards = new Map(speak.filter((c) => !!c).map((c) => [c.expressionId, c]))
+  const deciding = await db.cards.bulkGet(ids.map((id) => cardKey(id, learnedDirection(expressionById.get(id)!))))
+  const learnedCards = new Map(deciding.filter((c) => !!c).map((c) => [c.expressionId, c]))
   const previous = (await db.stars.get(topic))?.stars ?? 0
-  const stars = earnedStars(previous, computeStars(ids, introduced, speakCards))
+  const stars = earnedStars(previous, computeStars(ids, introduced, learnedCards))
   if (stars !== previous) await db.stars.put({ topic, stars })
 }
 

@@ -45,6 +45,8 @@ export interface Expression {
   hangul: string
   english: string
   usageNote?: string
+  /** A Heard Expression: the learner only ever hears it. Listen is its one Direction, and it has no Illustration. */
+  heard?: true
 }
 
 export const topics: Topic[] = [
@@ -332,6 +334,10 @@ const rows: Record<TopicId, Row[]> = {
   ],
 }
 
+// Heard Expressions: what staff, drivers and announcements say, never the learner. They model real staff speech, so
+// honorific (-시-) and formal (-ㅂ니다) forms are expected here.
+const HEARD = new Set(['welcome-heard', 'hello-formal-heard', 'how-many-heard', 'for-here-heard', 'this-station-heard'])
+
 export const expressions: Expression[] = topics.flatMap((t) =>
   rows[t.id].map(([id, tier, romanization, hangul, english, usageNote]) => ({
     id,
@@ -341,5 +347,6 @@ export const expressions: Expression[] = topics.flatMap((t) =>
     hangul,
     english,
     ...(usageNote ? { usageNote } : {}),
+    ...(HEARD.has(id) ? { heard: true as const } : {}),
   })),
 )

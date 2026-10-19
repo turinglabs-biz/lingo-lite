@@ -3,9 +3,13 @@ import { hasDrawing, illustrationOf, illustrationSiblings, illustrationSvg } fro
 import { catalog } from './index.ts'
 
 describe('Illustrations', () => {
-  it('cover every Expression', () => {
-    const missing = catalog.filter((e) => !illustrationSvg(e.id)).map((e) => e.id)
+  it('cover every Expression except Heard ones', () => {
+    const missing = catalog.filter((e) => !e.heard && !illustrationSvg(e.id)).map((e) => e.id)
     expect(missing).toEqual([])
+  })
+
+  it('never belong to a Heard Expression (the learner never sees one as a picture prompt)', () => {
+    expect(catalog.filter((e) => e.heard && illustrationSvg(e.id)).map((e) => e.id)).toEqual([])
   })
 
   it('only map known Expressions to existing drawings', () => {
@@ -17,7 +21,7 @@ describe('Illustrations', () => {
   })
 
   it('are well-formed SVG', () => {
-    for (const e of catalog) {
+    for (const e of catalog.filter((e) => !e.heard)) {
       const svg = illustrationSvg(e.id)!
       expect(svg.startsWith('<svg viewBox="0 0 48 48"')).toBe(true)
       expect(svg).not.toMatch(/undefined|NaN/)

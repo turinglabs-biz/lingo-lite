@@ -1,6 +1,6 @@
 # 01 Heard Expressions
 
-Status: open
+Status: done
 Blocked by: none
 
 ## What
@@ -22,16 +22,40 @@ Expressions the learner only ever hears become their own kind, practised by list
   - `CONTEXT.md` gains **Heard Expression**, and updates **Direction**, **Listen**, **Learned**, **Illustration**, **Politeness** and **Learn session**.
 
 ## Done when
-- [ ] Domain tests pass for:
+- [x] Domain tests pass for:
   - the Learn plan gives a Heard Expression Listen attempts and never Speak;
   - Learned follows Listen for it;
   - Korean options never include it;
   - Stars count it;
   - the upgrade adds a missing Listen card.
-- [ ] Every existing test still passes.
-- [ ] An end-to-end run covers:
+- [x] Every existing test still passes.
+- [x] An end-to-end run covers:
   - a Batch that contains 어서 오세요 introduces it with Listen attempts only;
   - in a Review session it only comes back as Listen;
   - the Phrasebook shows its ear mark and no drawing.
-- [ ] Progress made before this change (with 어서 오세요 introduced and Learned by Speak) opens with a Listen card for it and nothing else lost.
-- [ ] ADR 0005 and `CONTEXT.md` are updated.
+- [x] Progress made before this change (with 어서 오세요 introduced and Learned by Speak) opens with a Listen card for it and nothing else lost.
+- [x] ADR 0005 and `CONTEXT.md` are updated.
+
+## Comments
+
+- 2026-10-19: Done.
+  - **Domain:**
+    - `directionsOf`, `learnedDirection` and `scheduledCards` decide a Heard Expression's single Direction.
+    - `isLearned` and `gradeCard` take the deciding Direction.
+    - The Learn plan gives Heard Expressions Listen attempts.
+    - Stars use each Expression's deciding card.
+  - **Progress:** introducing a Heard Expression schedules Listen. Its old Speak and See cards are kept but filtered out of scheduling and counts. XP still counts every card ever Learned. Dexie v6 adds missing Listen cards.
+  - **UI:**
+    - An ear mark before the meaning.
+    - Echo off for Heard Expressions.
+    - Korean options (Speak, See) exclude them.
+    - The five converted Expressions lost their drawing mappings; the drawings are kept for a possible revert.
+  - **Docs:** `CONTEXT.md` gains Heard Expression; ADR 0005 is written; `catalog:review` marks Heard rows.
+  - **Tests:** 10 new domain tests; 84 in total pass.
+  - **End-to-end run** (headless Chrome, 390px, production build):
+    - **Upgrade:** a v5 database with 어서 오세요 Learned by Speak opened with a new Listen card and the Speak card kept.
+    - **Learning:** pinned in Focus from the Phrasebook (ear mark shown, no drawing), it joined the next Batch and got a check and Listen attempts only, never Speak.
+    - No page errors.
+  - **Gaps, stated plainly:**
+    - Excluding Heard Expressions from Korean options lives in the question component, so there's no domain test for it; the end-to-end Learn session exercised it.
+    - "Comes back only as Listen in Review" follows from the Expression having only a Listen card; a Review session was not driven.

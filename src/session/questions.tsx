@@ -23,15 +23,18 @@ interface QuestionProps {
   onNext: () => void
 }
 
-function useOptions(expressionId: string, introduced: Set<string>, fixed?: string[]) {
+/** Heard Expressions: never a Korean option, since the learner never says them. */
+const HEARD_IDS = catalog.filter((e) => e.heard).map((e) => e.id)
+
+function useOptions(expressionId: string, introduced: Set<string>, fixed: string[] | undefined, korean: boolean) {
   const ignored = useIgnored()
   // Computed once per question so options don't reshuffle while Progress updates. Ignored Expressions are never
-  // offered, and neither are the answer's Illustration siblings (they would also be correct).
-  const [options] = useState(
-    () =>
-      fixed ??
-      choiceOptions(expressionById.get(expressionId)!, catalog, new Set([...illustrationSiblings(expressionId), ...ignored]), introduced),
-  )
+  // offered, and neither are the answer's Illustration siblings (they would also be correct). Korean options (Speak,
+  // See) never include a Heard Expression.
+  const [options] = useState(() => {
+    const excluded = new Set([...illustrationSiblings(expressionId), ...ignored, ...(korean ? HEARD_IDS : [])])
+    return fixed ?? choiceOptions(expressionById.get(expressionId)!, catalog, excluded, introduced)
+  })
   return options
 }
 
@@ -89,7 +92,7 @@ const english = (id: string) => expressionById.get(id)!.english
 /** English prompt → say it aloud (optionally Echo it) → pick the Korean → the phrase plays. */
 export function SpeakQuestion({ expressionId, introduced, options: fixed, onAnswer, onNext }: QuestionProps) {
   const e = expressionById.get(expressionId)!
-  const options = useOptions(expressionId, introduced, fixed)
+  const options = useOptions(expressionId, introduced, fixed, true)
   const [stage, setStage] = useState<'recall' | 'pick' | 'done'>('recall')
   return (
     <>
@@ -124,7 +127,7 @@ export function SpeakQuestion({ expressionId, introduced, options: fixed, onAnsw
 
 /** The Clip plays → pick the English. */
 export function ListenQuestion({ expressionId, introduced, options: fixed, onAnswer, onNext }: QuestionProps) {
-  const options = useOptions(expressionId, introduced, fixed)
+  const options = useOptions(expressionId, introduced, fixed, false)
   const [done, setDone] = useState(false)
   useEffect(() => {
     playClip(expressionId, 'normal')
@@ -154,7 +157,7 @@ export function ListenQuestion({ expressionId, introduced, options: fixed, onAns
  */
 export function SeeQuestion({ expressionId, introduced, options: fixed, onAnswer, onNext }: QuestionProps) {
   const e = expressionById.get(expressionId)!
-  const options = useOptions(expressionId, introduced, fixed)
+  const options = useOptions(expressionId, introduced, fixed, true)
   const [done, setDone] = useState(false)
   return (
     <>

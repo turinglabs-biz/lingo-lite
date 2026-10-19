@@ -1,7 +1,7 @@
 import { createEmptyCard, fsrs, Rating, State, type Card, type Grade as FsrsGrade } from 'ts-fsrs'
 import type { Direction, DirectionCard, Grade } from './types.ts'
 
-/** Speak stability (days) at which an Expression counts as Learned. */
+/** Stability (days) of the deciding Direction at which an Expression counts as Learned. */
 export const LEARNED_STABILITY_DAYS = 7
 
 /** Recall each review aims for: normally 90%; for Focus Expressions 95%, so they come up about 2–3× as often. */
@@ -23,13 +23,13 @@ export function newDirectionCard(expressionId: string, direction: Direction, now
 }
 
 /**
- * Applies one Grade, aiming for higher recall when the Expression is in Focus. Sets `learnedAt` the first time a Speak
- * card reaches Learned.
+ * Applies one Grade, aiming for higher recall when the Expression is in Focus. Sets `learnedAt` the first time the
+ * card that decides Learned (Speak; Listen for a Heard Expression) reaches it.
  */
-export function gradeCard(card: DirectionCard, grade: Grade, now: number, focus = false): DirectionCard {
+export function gradeCard(card: DirectionCard, grade: Grade, now: number, focus = false, learnedBy: Direction = 'speak'): DirectionCard {
   const { card: next } = (focus ? focusScheduler : scheduler).next(toFsrs(card), new Date(now), RATING[grade])
   const graded = fromFsrs(next, card)
-  if (card.direction === 'speak' && !card.learnedAt && isLearned(graded)) graded.learnedAt = now
+  if (!card.learnedAt && isLearned(graded, learnedBy)) graded.learnedAt = now
   return graded
 }
 
@@ -48,8 +48,9 @@ export function retrievability(card: DirectionCard, now: number): number {
   return scheduler.get_retrievability(toFsrs(card), new Date(now), false)
 }
 
-export function isLearned(card: DirectionCard | undefined): boolean {
-  return !!card && card.direction === 'speak' && card.stability >= LEARNED_STABILITY_DAYS
+/** Learned is decided by one Direction: Speak, or Listen for a Heard Expression. */
+export function isLearned(card: DirectionCard | undefined, learnedBy: Direction = 'speak'): boolean {
+  return !!card && card.direction === learnedBy && card.stability >= LEARNED_STABILITY_DAYS
 }
 
 export const isCorrect = (grade: Grade) => grade !== 'missed'
