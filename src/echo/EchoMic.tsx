@@ -1,6 +1,7 @@
 // Echo in the main flow: a hold-to-talk mic wherever the learner can say an Expression, after hearing it or from memory
 // on a Speak question. Hidden while Echo is off in Settings. It never changes a Grade or XP; in a session it counts as input for Practice time.
 import { useContext } from 'react'
+import { expressionById } from '../catalog/index.ts'
 import { SessionInput } from '../session/sessionInput.ts'
 import { EchoButton, EchoScore } from './EchoButton.tsx'
 import { useEchoStatus } from './EchoProvider.tsx'
@@ -19,7 +20,8 @@ function useMainFlowEcho(expressionId: string) {
  */
 export function EchoBar({ expressionId, hint = 'Say it back to see how close you were' }: { expressionId: string; hint?: string }) {
   const { status, echo } = useMainFlowEcho(expressionId)
-  if (status.kind === 'off') return null
+  // A Heard Expression is never said by the learner, so there is nothing to echo.
+  if (status.kind === 'off' || expressionById.get(expressionId)?.heard) return null
   return (
     <div className="echo-bar">
       <EchoButton state={echo.state} disabled={status.kind !== 'ready'} onBegin={echo.begin} onEnd={echo.end} />

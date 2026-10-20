@@ -11,6 +11,10 @@ import { Phrasebook } from './screens/Phrasebook.tsx'
 import { SettingsScreen } from './screens/Settings.tsx'
 import { Stats } from './screens/Stats.tsx'
 import { Topics } from './screens/Topics.tsx'
+import type { Conversation } from './domain/conversation.ts'
+import type { PlayMode } from './domain/types.ts'
+import { ConversationsPage } from './screens/Conversations.tsx'
+import { ConversationSession } from './session/ConversationSession.tsx'
 import { LearnSession } from './session/LearnSession.tsx'
 import { ReviewSession } from './session/ReviewSession.tsx'
 import { SessionSummary, type SummaryData } from './session/SessionSummary.tsx'
@@ -26,6 +30,7 @@ type TabId = (typeof TABS)[number]['id']
 
 type Active =
   | { kind: 'learn'; batch: string[] }
+  | { kind: 'conversation'; conversation: Conversation; mode: PlayMode }
   | { kind: 'review' | 'focus'; cards: DirectionCard[] }
   | { kind: 'summary'; data: SummaryData }
   | null
@@ -37,6 +42,8 @@ export function App() {
   const [active, setActive] = useState<Active>(null)
   const [echoLab, setEchoLab] = useState(false)
   const [focusPage, setFocusPage] = useState(false)
+  const [conversationsPage, setConversationsPage] = useState(false)
+  const [openConversation, setOpenConversation] = useState<string | null>(null)
 
   if (!progress) return <div className="app loading" />
 
@@ -58,6 +65,7 @@ export function App() {
   }
 
   if (echoLab) return <EchoLab onClose={() => setEchoLab(false)} />
+  if (active?.kind === 'conversation') return <ConversationSession conversation={active.conversation} mode={active.mode} onEnd={endSession} />
   if (active?.kind === 'learn') return <LearnSession batch={active.batch} introduced={progress.introduced} onEnd={endSession} />
   if (active?.kind === 'review' || active?.kind === 'focus')
     return <ReviewSession cards={active.cards} type={active.kind} introduced={progress.introduced} onEnd={endSession} />
@@ -70,6 +78,19 @@ export function App() {
     )
   // After a Focus session (and its summary), the learner is back on the Focus page.
   if (focusPage) return <FocusPage progress={progress} onStart={startFocus} onClose={() => setFocusPage(false)} />
+  // Likewise, after a Conversation the learner is back on the Conversations page.
+  if (conversationsPage)
+    return (
+      <ConversationsPage
+        progress={progress}
+        openId={openConversation}
+        onOpen={setOpenConversation}
+        onPlay={(conversation, mode) => setActive({ kind: 'conversation', conversation, mode })}
+        // Prepare is an ordinary Learn session on the Conversation's missing Expressions.
+        onPrepare={(batch) => setActive({ kind: 'learn', batch })}
+        onClose={() => setConversationsPage(false)}
+      />
+    )
 
   return (
     <div className="app">
@@ -88,7 +109,7 @@ export function App() {
         </span>
       </header>
       <main>
-        {tab === 'home' && <Home progress={progress} onReview={startReview} onLearn={startLearn} onFocus={() => setFocusPage(true)} />}
+        {tab === 'home' && <Home progress={progress} onReview={startReview} onLearn={startLearn} onFocus={() => setFocusPage(true)} onConversations={() => setConversationsPage(true)} />}
         {tab === 'topics' && (
           <Topics
             progress={progress}

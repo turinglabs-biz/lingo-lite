@@ -1,7 +1,7 @@
 import { createEmptyCard, fsrs, Rating, State, type Card, type Grade as FsrsGrade } from 'ts-fsrs'
-import type { Direction, DirectionCard, Grade } from './types.ts'
+import type { ConversationCard, Direction, DirectionCard, Grade, ScheduleFields } from './types.ts'
 
-/** Speak stability (days) at which an Expression counts as Learned. */
+/** Stability (days) of the deciding Direction at which an Expression counts as Learned. */
 export const LEARNED_STABILITY_DAYS = 7
 
 /** Recall each review aims for: normally 90%; for Focus Expressions 95%, so they come up about 2–3× as often. */
@@ -11,6 +11,11 @@ export const FOCUS_RETENTION = 0.95
 const DAY_MS = 86_400_000
 const scheduler = fsrs({ request_retention: RETENTION, enable_fuzz: true, enable_short_term: true })
 const focusScheduler = fsrs({ request_retention: FOCUS_RETENTION, enable_fuzz: true, enable_short_term: true })
+/**
+ * Conversations come back as whole exchanges, so in days, never minutes: no short-term (re)learning steps. A run with
+ * a slip brings the Conversation back the next day or so.
+ */
+const conversationScheduler = fsrs({ request_retention: RETENTION, enable_fuzz: true, enable_short_term: false })
 /** Without fuzz, for re-dating a card when Focus changes (the same card always gets the same date). */
 const intervals = { normal: fsrs({ request_retention: RETENTION }), focus: fsrs({ request_retention: FOCUS_RETENTION }) }
 
@@ -23,13 +28,13 @@ export function newDirectionCard(expressionId: string, direction: Direction, now
 }
 
 /**
- * Applies one Grade, aiming for higher recall when the Expression is in Focus. Sets `learnedAt` the first time a Speak
- * card reaches Learned.
+ * Applies one Grade, aiming for higher recall when the Expression is in Focus. Sets `learnedAt` the first time the
+ * card that decides Learned (Speak; Listen for a Heard Expression) reaches it.
  */
-export function gradeCard(card: DirectionCard, grade: Grade, now: number, focus = false): DirectionCard {
+export function gradeCard(card: DirectionCard, grade: Grade, now: number, focus = false, learnedBy: Direction = 'speak'): DirectionCard {
   const { card: next } = (focus ? focusScheduler : scheduler).next(toFsrs(card), new Date(now), RATING[grade])
   const graded = fromFsrs(next, card)
-  if (card.direction === 'speak' && !card.learnedAt && isLearned(graded)) graded.learnedAt = now
+  if (!card.learnedAt && isLearned(graded, learnedBy)) graded.learnedAt = now
   return graded
 }
 
@@ -48,13 +53,46 @@ export function retrievability(card: DirectionCard, now: number): number {
   return scheduler.get_retrievability(toFsrs(card), new Date(now), false)
 }
 
-export function isLearned(card: DirectionCard | undefined): boolean {
-  return !!card && card.direction === 'speak' && card.stability >= LEARNED_STABILITY_DAYS
+/** Learned is decided by one Direction: Speak, or Listen for a Heard Expression. */
+export function isLearned(card: DirectionCard | undefined, learnedBy: Direction = 'speak'): boolean {
+  return !!card && card.direction === learnedBy && card.stability >= LEARNED_STABILITY_DAYS
 }
 
 export const isCorrect = (grade: Grade) => grade !== 'missed'
 
-function toFsrs(c: DirectionCard): Card {
+/** A Conversation enters its own schedule, graded like a Direction at the normal recall target. */
+export function newConversationCard(conversationId: string, now: number): ConversationCard {
+  return { conversationId, ...scheduleFields(createEmptyCard(new Date(now))) }
+}
+
+/** Grades a Conversation's card for one finished run. Sets `fluentAt` the first time it becomes Fluent. */
+export function gradeConversationCard(card: ConversationCard, grade: Grade, now: number): ConversationCard {
+  const { card: next } = conversationScheduler.next(toFsrs(card), new Date(now), RATING[grade])
+  const graded: ConversationCard = { conversationId: card.conversationId, ...scheduleFields(next), ...(card.fluentAt ? { fluentAt: card.fluentAt } : {}) }
+  if (!graded.fluentAt && isFluent(graded)) graded.fluentAt = now
+  return graded
+}
+
+/** Fluent: a Conversation expected to be remembered for at least as long as Learned asks of an Expression. */
+export function isFluent(card: ConversationCard | undefined): boolean {
+  return !!card && card.stability >= LEARNED_STABILITY_DAYS
+}
+
+function scheduleFields(c: Card): ScheduleFields {
+  return {
+    due: c.due.getTime(),
+    stability: c.stability,
+    difficulty: c.difficulty,
+    scheduledDays: c.scheduled_days,
+    learningSteps: c.learning_steps,
+    reps: c.reps,
+    lapses: c.lapses,
+    state: c.state,
+    ...(c.last_review ? { lastReview: c.last_review.getTime() } : {}),
+  }
+}
+
+function toFsrs(c: ScheduleFields): Card {
   return {
     due: new Date(c.due),
     stability: c.stability,

@@ -45,6 +45,8 @@ export interface Expression {
   hangul: string
   english: string
   usageNote?: string
+  /** A Heard Expression: the learner only ever hears it. Listen is its one Direction, and it has no Illustration. */
+  heard?: true
 }
 
 export const topics: Topic[] = [
@@ -82,6 +84,7 @@ const rows: Record<TopicId, Row[]> = {
     ['hello-formal-heard', 3, 'an-nyeong-ha-sim-ni-kka', '안녕하십니까', 'Hello (very formal)', 'Heard from staff in hotels, banks and department stores.'],
     ['see-you-again', 3, 'tto bwa-yo', '또 봐요', 'See you again'],
     ['have-a-nice-day', 3, 'jo-eun ha-ru bo-nae-se-yo', '좋은 하루 보내세요', 'Have a nice day'],
+    ['keep-up-good-work', 2, 'su-go-ha-se-yo', '수고하세요', '(said when leaving someone at work)', 'To a driver or shop assistant as you leave. Some find it too familiar for elders.'],
     ['good-night', 3, 'an-nyeong-hi ju-mu-se-yo', '안녕히 주무세요', 'Good night'],
     ['thanks-soft', 3, 'go-ma-wo-yo', '고마워요', 'Thanks (softer)'],
   ],
@@ -112,6 +115,7 @@ const rows: Record<TopicId, Row[]> = {
     ['what-is-this', 2, 'i-ge mwo-e-yo?', '이게 뭐예요?', 'What is this?'],
     ['help-me-please', 3, 'jom do-wa-ju-se-yo', '좀 도와주세요', 'Could you help me, please?', 'Everyday request, not an emergency.'],
     ['really', 3, 'jin-jja-yo?', '진짜요?', 'Really?'],
+    ['here-you-are', 1, 'yeo-gi i-sseo-yo', '여기 있어요', 'Here you are / Here it is', 'Handing something over: your passport, card or cash. Staff say it too.'],
   ],
   numbers: [
     ['sino-1', 1, 'il', '일', 'one (Sino-Korean)', 'Sino-Korean numbers: prices, phone numbers, floors, minutes.'],
@@ -165,8 +169,43 @@ const rows: Record<TopicId, Row[]> = {
     ['bigger-one', 3, 'deo keun geo i-sseo-yo?', '더 큰 거 있어요?', 'Do you have a bigger one?'],
     ['try-on', 3, 'i-beo bwa-do dwae-yo?', '입어 봐도 돼요?', 'Can I try it on?'],
     ['tax-refund', 3, 'taek-seu ri-peon-deu dwae-yo?', '택스 리펀드 돼요?', 'Can I get a tax refund?'],
+    // Heard in a clothes shop.
+    ['looking-for-heard', 2, 'cha-jeu-si-neun geo i-sseu-se-yo?', '찾으시는 거 있으세요?', 'Looking for anything in particular?'],
+    ['fitting-room-heard', 3, 'ne, ta-ri-si-reun jeo-jjo-gi-e-yo', '네, 탈의실은 저쪽이에요', 'Sure, the fitting room is over there.'],
+    ['sold-out-heard', 3, 'jwe-song-hae-yo, geu sa-i-jeu-neun da na-ga-sseo-yo', '죄송해요, 그 사이즈는 다 나갔어요', 'Sorry, that size is sold out.'],
+    ['this-colour-heard', 3, 'i sae-geun eo-tteo-se-yo?', '이 색은 어떠세요?', 'How about this colour?'],
+    ['passport-have-heard', 2, 'yeo-kkwon i-sseu-se-yo?', '여권 있으세요?', 'Do you have your passport?', 'Asked for a tax refund.'],
+    ['instalment-heard', 2, 'il-ssi-bul-lo hae deu-ril-kka-yo?', '일시불로 해 드릴까요?', 'In a single payment?', 'The card-instalment question. Just say 네.'],
+    ['gift-wrap-heard', 3, 'po-jang-hae deu-ril-kka-yo?', '포장해 드릴까요?', 'Shall I gift-wrap it?', 'In a shop 포장 means wrapping; in a restaurant it means "to go".'],
     ['cheap', 3, 'ssa-yo', '싸요', "It's cheap"],
+    ['throw-it-away', 3, 'beo-ryeo ju-se-yo', '버려 주세요', 'Please throw it away', 'For the receipt you don’t want.'],
+    // Heard at the convenience store counter.
+    ['need-bag-heard', 1, 'bong-tu pi-ryo-ha-se-yo?', '봉투 필요하세요?', 'Do you need a bag?'],
+    ['receipt-heard', 1, 'yeong-su-jeung deu-ril-kka-yo?', '영수증 드릴까요?', 'Would you like the receipt?'],
+    ['insert-card-heard', 1, 'ka-deu kko-ja ju-se-yo', '카드 꽂아 주세요', 'Please insert your card.'],
+    ['points-card-heard', 2, 'po-in-teu ka-deu i-sseu-se-yo?', '포인트 카드 있으세요?', 'Do you have a points card?'],
+    ['change-heard', 2, 'geo-seu-reum-tton yeo-gi it-sseum-ni-da', '거스름돈 여기 있습니다', "Here's your change."],
+    ['bag-price-heard', 3, 'bong-tu-neun baek wo-ni-e-yo', '봉투는 백 원이에요', 'Bags are 100 won.'],
+    // Prices as a cashier says them: a fixed set, reused by Conversations and their Catches.
+    ['price-2000-heard', 2, 'i-cheon wo-nim-ni-da', '이천 원입니다', "That's 2,000 won."],
+    ['price-3200-heard', 2, 'sam-cheo-ni-baek wo-nim-ni-da', '삼천이백 원입니다', "That's 3,200 won."],
+    ['price-3500-heard', 3, 'sam-cheo-no-baek wo-nim-ni-da', '삼천오백 원입니다', "That's 3,500 won."],
+    ['price-4000-heard', 2, 'sa-cheon wo-nim-ni-da', '사천 원입니다', "That's 4,000 won."],
+    ['price-4500-heard', 1, 'sa-cheo-no-baek wo-nim-ni-da', '사천오백 원입니다', "That's 4,500 won."],
+    ['price-5000-heard', 1, 'o-cheon wo-nim-ni-da', '오천 원입니다', "That's 5,000 won."],
+    ['price-5500-heard', 3, 'o-cheo-no-baek wo-nim-ni-da', '오천오백 원입니다', "That's 5,500 won."],
+    ['price-6800-heard', 3, 'yuk-cheon-pal-baek wo-nim-ni-da', '육천팔백 원입니다', "That's 6,800 won."],
+    ['price-11500-heard', 3, 'man cheo-no-baek wo-nim-ni-da', '만 천오백 원입니다', "That's 11,500 won."],
+    ['price-12000-heard', 2, 'man i-cheon wo-nim-ni-da', '만 이천 원입니다', "That's 12,000 won."],
+    ['price-23000-heard', 2, 'i-man sam-cheon wo-nim-ni-da', '이만 삼천 원입니다', "That's 23,000 won."],
+    ['price-35000-heard', 3, 'sam-man o-cheon wo-nim-ni-da', '삼만 오천 원입니다', "That's 35,000 won."],
     ['two-of-them', 2, 'du gae ju-se-yo', '두 개 주세요', 'Two of them, please'],
+    // Heard at a market stall.
+    ['what-can-i-get-heard', 2, 'mwo deu-ril-kka-yo?', '뭐 드릴까요?', 'What can I get you?'],
+    ['hotteok-heard', 3, 'ho-tteo-gi-e-yo. da-ra-yo', '호떡이에요. 달아요', "It's hotteok. It's sweet."],
+    ['each-price-heard', 2, 'han gae-e i-cheon wo-ni-e-yo', '한 개에 이천 원이에요', '2,000 won each.'],
+    ['two-for-heard', 3, 'geu-reom du gae-e sam-cheo-no-baek won hae deu-ril-kke-yo', '그럼 두 개에 삼천오백 원 해 드릴게요', 'All right, two for 3,500 won.'],
+    ['cash-only-heard', 2, 'jwe-song-hae-yo, hyeon-geum-man dwae-yo', '죄송해요, 현금만 돼요', 'Sorry, cash only.', 'Common at market stalls and street food.'],
   ],
   food: [
     ['water-please', 1, 'mul ju-se-yo', '물 주세요', 'Water, please', 'Water is free; often self-service from a dispenser.'],
@@ -194,11 +233,27 @@ const rows: Record<TopicId, Row[]> = {
     ['chopsticks', 3, 'jeot-kka-rak', '젓가락', 'chopsticks'],
     ['spoon', 3, 'sut-kka-rak', '숟가락', 'spoon'],
     ['tissue', 3, 'hyu-ji', '휴지', 'tissue / napkin'],
+    ['that-one-please', 2, 'geu-geol-lo ju-se-yo', '그걸로 주세요', "I'll have that one, please", 'After a recommendation.'],
+    ['pay-separately', 2, 'tta-ro ge-san-hal-kke-yo', '따로 계산할게요', "We'll pay separately"],
+    // Heard in a restaurant.
+    ['sit-here-heard', 2, 'i-jjo-geu-ro an-jeu-se-yo', '이쪽으로 앉으세요', 'Please sit over here.'],
+    ['no-english-menu-heard', 3, 'jwe-song-hae-yo, yeong-eo me-nyu-neun eop-sseo-yo', '죄송해요, 영어 메뉴는 없어요', "Sorry, we don't have an English menu."],
+    ['popular-heard', 3, 'gim-chi-jji-gae-ga je-il jal-la-ga-yo', '김치찌개가 제일 잘 나가요', 'The kimchi stew is the most popular.'],
+    ['spicy-heard', 2, 'maep-kke hae deu-ril-kka-yo?', '맵게 해 드릴까요?', 'Shall I make it spicy?'],
+    ['little-spicy-heard', 3, 'jo-geum mae-wo-yo', '조금 매워요', "It's a little spicy."],
+    ['water-self-heard', 1, 'mu-reun sel-peu-e-yo', '물은 셀프예요', 'Water is self-service.', 'Look for the water dispenser and cups.'],
+    ['sides-self-heard', 2, 'ban-cha-neun sel-peu-e-yo', '반찬은 셀프예요', 'Side dishes are self-service.'],
+    ['yes-sir-heard', 3, 'ne, son-nim', '네, 손님', 'Yes? (to a customer)'],
+    ['bring-some-heard', 3, 'ne, gat-tta deu-ril-kke-yo', '네, 갖다 드릴게요', "Sure, I'll bring some."],
+    ['pay-counter-heard', 1, 'ge-sa-neun ka-un-teo-e-seo hae ju-se-yo', '계산은 카운터에서 해 주세요', 'Please pay at the counter.'],
+    ['together-heard', 2, 'ga-chi ge-san-hae deu-ril-kka-yo?', '같이 계산해 드릴까요?', 'All together?'],
     ['soju', 3, 'so-ju', '소주', 'soju'],
     ['rice', 3, 'bap', '밥', 'rice / meal'],
     ['pork-belly', 3, 'sam-gyeop-sal', '삼겹살', 'pork belly (Korean BBQ)'],
     ['good-restaurant-nearby', 3, 'i geun-cheo-e mat-jjip i-sseo-yo?', '이 근처에 맛집 있어요?', 'Is there a good restaurant nearby?'],
     ['hungry', 3, 'bae-go-pa-yo', '배고파요', "I'm hungry"],
+    ['heat-it-up', 2, 'de-wo ju-se-yo', '데워 주세요', 'Please heat it up', 'At the convenience store, for a lunch box or kimbap.'],
+    ['heat-up-heard', 2, 'de-wo deu-ril-kka-yo?', '데워 드릴까요?', 'Shall I heat it up?', 'Heard at the convenience store counter.'],
   ],
   cafe: [
     ['iced-americano', 1, 'a-i-seu a-me-ri-ka-no han jan ju-se-yo', '아이스 아메리카노 한 잔 주세요', 'One iced americano, please'],
@@ -216,6 +271,15 @@ const rows: Record<TopicId, Row[]> = {
     ['milk', 3, 'u-yu', '우유', 'milk'],
     ['power-outlet', 3, 'kon-sen-teu i-sseo-yo?', '콘센트 있어요?', 'Is there a power outlet?'],
     ['bottle-of-water', 3, 'mul han byeong', '물 한 병', 'a bottle of water'],
+    ['americano', 2, 'a-me-ri-ka-no han jan ju-se-yo', '아메리카노 한 잔 주세요', 'One americano, please', 'Expect to be asked: hot or iced?'],
+    ['regular-size', 3, 're-gyul-leo-ro ju-se-yo', '레귤러로 주세요', 'Regular size, please'],
+    // Heard at the café counter.
+    ['order-heard', 1, 'ju-mun-ha-si-ge-sseo-yo?', '주문하시겠어요?', 'Would you like to order?', 'Heard at cafés and restaurants.'],
+    ['hot-or-iced-heard', 2, 'tta-tteu-tan geo-yo, a-i-seu-yo?', '따뜻한 거요, 아이스요?', 'Hot or iced?'],
+    ['size-heard', 2, 'sa-i-jeu-neun eo-tteo-ke hae deu-ril-kka-yo?', '사이즈는 어떻게 해 드릴까요?', 'What size would you like?'],
+    ['buzzer-heard', 2, 'jin-dong-bel ul-li-myeon ga-ji-reo wa ju-se-yo', '진동벨 울리면 가지러 와 주세요', 'Please come and collect it when the buzzer goes off.'],
+    ['wifi-on-receipt-heard', 3, 'yeong-su-jeung a-rae-e i-sseo-yo', '영수증 아래에 있어요', "It's at the bottom of the receipt."],
+    ['enjoy-heard', 2, 'ma-sit-kke deu-se-yo', '맛있게 드세요', 'Enjoy!', 'Heard when your food or drink is served.'],
   ],
   directions: [
     ['bathroom-where', 1, 'hwa-jang-sil eo-di-e-yo?', '화장실 어디예요?', 'Where is the bathroom?'],
@@ -239,6 +303,11 @@ const rows: Record<TopicId, Row[]> = {
     ['which-floor', 3, 'myeot cheung-i-e-yo?', '몇 층이에요?', 'Which floor is it?'],
     ['atm-where', 3, 'e-i-ti-em eo-di i-sseo-yo?', 'ATM 어디 있어요?', 'Where is an ATM?'],
     ['map', 3, 'ji-do', '지도', 'map'],
+    ['station-where', 1, 'ji-ha-cheol-lyeok eo-di-e-yo?', '지하철역 어디예요?', 'Where is the subway station?'],
+    // Heard when asking the way.
+    ['go-straight-right-heard', 2, 'jjuk ga-da-ga sa-geo-ri-e-seo o-reun-jjo-geu-ro ga-se-yo', '쭉 가다가 사거리에서 오른쪽으로 가세요', 'Go straight, then turn right at the intersection.'],
+    ['five-minutes-walk-heard', 3, 'a-ni-yo, geo-reo-seo o bun-jjeum geol-lyeo-yo', '아니요, 걸어서 오 분쯤 걸려요', 'No, about five minutes on foot.'],
+    ['dont-know-area-heard', 3, 'jwe-song-hae-yo, jeo-do yeo-gi jal mol-la-yo', '죄송해요, 저도 여기 잘 몰라요', "Sorry, I don't really know this area either."],
   ],
   transport: [
     ['to-this-address', 1, 'i ju-so-ro ga ju-se-yo', '이 주소로 가 주세요', 'Please take me to this address', 'Show the address on your phone to the taxi driver.'],
@@ -255,10 +324,28 @@ const rows: Record<TopicId, Row[]> = {
     ['where-transfer', 2, 'eo-di-seo ga-ra-ta-yo?', '어디서 갈아타요?', 'Where do I transfer?'],
     ['airport', 2, 'gong-hang', '공항', 'airport'],
     ['this-station-heard', 3, 'i-beon nyeo-geun', '이번 역은', 'This station is …', 'Heard in subway announcements.'],
+    // Heard in the subway.
+    ['go-ahead-heard', 3, 'ne, mal-sseum-ha-se-yo', '네, 말씀하세요', 'Yes, go ahead.'],
+    ['line-four-heard', 2, 'sa-ho-seon ta-se-yo', '사호선 타세요', 'Take line 4.'],
+    ['line-four-there-heard', 3, 'sa-ho-seo-neun jeo-jjo-gi-e-yo', '사호선은 저쪽이에요', 'Line 4 is over there.'],
+    ['exit-six-heard', 2, 'yuk-ppeon chul-gu-ro na-ga-se-yo', '육 번 출구로 나가세요', 'Take exit 6.'],
+    ['announcement-heard', 2, 'i-beon nyeo-geun myeong-dong, myeong-dong-nyeo-gim-ni-da. nae-ri-sil mu-neun o-reun-jjo-gim-ni-da', '이번 역은 명동, 명동역입니다. 내리실 문은 오른쪽입니다', 'This station is Myeongdong. The doors will open on the right.'],
+    // Heard when topping up a T-money card.
+    ['how-much-top-up-heard', 2, 'eol-ma chung-jeon-hae deu-ril-kka-yo?', '얼마 충전해 드릴까요?', 'How much shall I put on it?'],
+    ['top-up-cash-only-heard', 2, 'chung-jeo-neun hyeon-geum-man dwae-yo', '충전은 현금만 돼요', 'Top-ups are cash only.', 'True at most convenience stores.'],
+    ['atm-there-heard', 3, 'e-i-ti-e-meun jeo-jjo-ge i-sseo-yo', 'ATM은 저쪽에 있어요', 'The ATM is over there.'],
+    ['topped-up-heard', 3, 'chung-jeon-dwaet-sseum-ni-da. ja-nae-geun man i-cheon wo-ni-e-yo', '충전됐습니다. 잔액은 만 이천 원이에요', 'Done. Your balance is 12,000 won.'],
     ['ticket', 3, 'pyo', '표', 'ticket'],
     ['ticket-to-busan', 3, 'bu-san ga-neun pyo han jang ju-se-yo', '부산 가는 표 한 장 주세요', 'One ticket to Busan, please'],
     ['train-station', 3, 'gi-cha-yeok', '기차역', 'train station'],
     ['getting-off', 3, 'nae-ryeo-yo', '내려요', "I'm getting off"],
+    // Heard in a taxi.
+    ['where-to-heard', 1, 'eo-di-ro ga-se-yo?', '어디로 가세요?', 'Where to?'],
+    ['certainly-heard', 2, 'ne, al-get-sseum-ni-da', '네, 알겠습니다', 'Certainly.'],
+    ['twenty-minutes-heard', 3, 'i-sip-ppun-jjeum geol-lyeo-yo', '이십 분쯤 걸려요', 'It takes about twenty minutes.'],
+    ['traffic-heard', 3, 'ji-geum gi-ri jom ma-kyeo-yo', '지금 길이 좀 막혀요', "The traffic's a bit heavy right now."],
+    ['drop-off-heard', 1, 'eo-di-seo nae-ryeo deu-ril-kka-yo?', '어디서 내려 드릴까요?', 'Where shall I drop you off?'],
+    ['tap-card-heard', 1, 'ka-deu yeo-gi dae ju-se-yo', '카드 여기 대 주세요', 'Tap your card here.'],
   ],
   hotel: [
     ['have-reservation', 1, 'ye-ya-kae-sseo-yo', '예약했어요', 'I have a reservation'],
@@ -272,6 +359,19 @@ const rows: Record<TopicId, Row[]> = {
     ['breakfast-time', 3, 'jo-sik myeot ssi-e-yo?', '조식 몇 시예요?', 'What time is breakfast?'],
     ['key-card', 3, 'ka-deu-ki', '카드키', 'key card'],
     ['elevator', 3, 'el-li-be-i-teo', '엘리베이터', 'elevator'],
+    // Heard at the front desk.
+    ['reservation-heard', 1, 'ye-ya-ka-syeo-sseo-yo?', '예약하셨어요?', 'Do you have a reservation?'],
+    ['passport-heard', 1, 'yeo-kkwon bo-yeo ju-si-ge-sseo-yo?', '여권 보여 주시겠어요?', 'May I see your passport?'],
+    ['checkin-from-three-heard', 2, 'che-keu-i-neun se si-bu-teo-e-yo', '체크인은 세 시부터예요', 'Check-in is from three o’clock.'],
+    ['luggage-tag-heard', 3, 'jim-pyo yeo-gi it-sseum-ni-da', '짐표 여기 있습니다', "Here's your luggage tag."],
+    ['room-heard', 3, 'bang-eun chil cheung, chil-baek-sam ho-im-ni-da', '방은 칠 층, 칠백삼 호입니다', 'Your room is 703, on the 7th floor.'],
+    ['breakfast-heard', 3, 'jo-si-geun il cheung-e-seo il-gop-ssi-bu-teo yeol-ssi-kka-ji-e-yo', '조식은 일 층에서 일곱 시부터 열 시까지예요', 'Breakfast is on the first floor, from seven to ten.'],
+    ['checkout-heard', 2, 'che-keu-a-u-seun yeol-han si-im-ni-da', '체크아웃은 열한 시입니다', 'Check-out is at eleven.'],
+    ['elevator-heard', 3, 'el-li-be-i-teo-neun o-reun-jjo-ge it-sseum-ni-da', '엘리베이터는 오른쪽에 있습니다', 'The elevator is on the right.'],
+    // Heard at check-out.
+    ['key-card-heard', 2, 'ka-deu-ki ju-si-ge-sseo-yo?', '카드키 주시겠어요?', 'Could I have your key card?'],
+    ['minibar-heard', 3, 'mi-ni-ba i-yong-ha-syeo-sseo-yo?', '미니바 이용하셨어요?', 'Did you use the minibar?'],
+    ['back-when-heard', 3, 'myeot-ssi-e cha-jeu-reo o-se-yo?', '몇 시에 찾으러 오세요?', 'What time will you come back for it?'],
   ],
   time: [
     ['what-time-open', 2, 'myeot ssi-e yeo-reo-yo?', '몇 시에 열어요?', 'What time do you open?'],
@@ -311,6 +411,15 @@ const rows: Record<TopicId, Row[]> = {
     ['lost-wallet', 3, 'ji-ga-beul i-reo-beo-ryeo-sseo-yo', '지갑을 잃어버렸어요', 'I lost my wallet'],
     ['urgent', 3, 'geu-pae-yo', '급해요', "It's urgent"],
     ['police-112', 3, 'il-il-i', '일일이', '112 (police)', 'Emergency number for the police.'],
+    ['since-yesterday', 3, 'eo-je-bu-teo-yo', '어제부터요', 'Since yesterday'],
+    // Heard at the pharmacy.
+    ['problem-heard', 2, 'eo-di-ga bul-pyeon-ha-se-yo?', '어디가 불편하세요?', 'What seems to be the problem?'],
+    ['where-hurts-heard', 2, 'eo-di-ga a-peu-se-yo?', '어디가 아프세요?', 'Where does it hurt?'],
+    ['since-when-heard', 2, 'eon-je-bu-teo a-peu-syeo-sseo-yo?', '언제부터 아프셨어요?', 'Since when have you been unwell?'],
+    ['allergy-heard', 2, 'al-le-reu-gi i-sseu-se-yo?', '알레르기 있으세요?', 'Do you have any allergies?'],
+    ['medicine-ok-heard', 3, 'i ya-geun gwaen-cha-na-yo', '이 약은 괜찮아요', 'This medicine is fine.'],
+    ['dosage-heard', 2, 'i yak ha-ru-e se beon, si-ku-e deu-se-yo', '이 약 하루에 세 번, 식후에 드세요', 'Take this three times a day, after meals.'],
+    ['drowsy-heard', 3, 'jol-lil-ssu i-sseo-yo', '졸릴 수 있어요', 'It may make you drowsy.'],
   ],
   smalltalk: [
     ['nice-to-meet-you', 1, 'man-na-seo ban-ga-wo-yo', '만나서 반가워요', 'Nice to meet you'],
@@ -321,6 +430,14 @@ const rows: Record<TopicId, Row[]> = {
     ['first-time-korea', 2, 'han-gu-geun cheo-eu-mi-e-yo', '한국은 처음이에요', "It's my first time in Korea"],
     ['can-i-take-photo', 2, 'sa-jin jji-geo-do dwae-yo?', '사진 찍어도 돼요?', 'Can I take a photo?'],
     ['take-our-photo', 2, 'sa-jin jji-geo ju-sil ssu i-sseo-yo?', '사진 찍어 주실 수 있어요?', 'Could you take a photo of us?'],
+    ['staying-a-month', 3, 'han dal i-sseo-yo', '한 달 있어요', "I'm staying for a month"],
+    // Heard in small talk.
+    ['first-time-heard', 2, 'han-gu-geun cheo-eu-mi-e-yo?', '한국은 처음이에요?', 'Is this your first time in Korea?'],
+    ['korean-good-heard', 2, 'han-gu-geo jal-ha-si-ne-yo!', '한국어 잘하시네요!', 'Your Korean is good!', 'A kind compliment; 아니에요 is the modest answer.'],
+    ['how-is-korea-heard', 2, 'han-guk eo-ttae-yo?', '한국 어때요?', 'How do you like Korea?'],
+    ['how-long-stay-heard', 2, 'han-gu-ge eol-ma-na i-sseo-yo?', '한국에 얼마나 있어요?', 'How long are you in Korea?'],
+    ['one-more-photo-heard', 3, 'ha-na, dul, set! han jang deo jji-geul-kke-yo', '하나, 둘, 셋! 한 장 더 찍을게요', "One, two, three! I'll take one more."],
+    ['enjoy-trip-heard', 2, 'jeul-geo-un yeo-haeng dwe-se-yo!', '즐거운 여행 되세요!', 'Enjoy your trip!'],
     ['like-korea', 3, 'han-guk neo-mu jo-a-yo', '한국 너무 좋아요', 'I really like Korea'],
     ['whats-your-name', 3, 'i-reu-mi mwo-e-yo?', '이름이 뭐예요?', "What's your name?"],
     ['its-fun', 3, 'jae-mi-i-sseo-yo', '재미있어요', "It's fun"],
@@ -332,6 +449,107 @@ const rows: Record<TopicId, Row[]> = {
   ],
 }
 
+// Heard Expressions: what staff, drivers and announcements say, never the learner. They model real staff speech, so
+// honorific (-시-) and formal (-ㅂ니다) forms are expected here.
+const HEARD = new Set([
+  'welcome-heard',
+  'hello-formal-heard',
+  'how-many-heard',
+  'for-here-heard',
+  'this-station-heard',
+  // Convenience store
+  'need-bag-heard',
+  'receipt-heard',
+  'insert-card-heard',
+  'points-card-heard',
+  'change-heard',
+  'bag-price-heard',
+  'heat-up-heard',
+  // Café
+  'order-heard',
+  'hot-or-iced-heard',
+  'size-heard',
+  'buzzer-heard',
+  'wifi-on-receipt-heard',
+  'enjoy-heard',
+  // Restaurant
+  'sit-here-heard',
+  'no-english-menu-heard',
+  'popular-heard',
+  'spicy-heard',
+  'little-spicy-heard',
+  'water-self-heard',
+  'sides-self-heard',
+  'yes-sir-heard',
+  'bring-some-heard',
+  'pay-counter-heard',
+  'together-heard',
+  // Taxi
+  'where-to-heard',
+  'certainly-heard',
+  'twenty-minutes-heard',
+  'traffic-heard',
+  'drop-off-heard',
+  'tap-card-heard',
+  // Hotel
+  'reservation-heard',
+  'passport-heard',
+  'checkin-from-three-heard',
+  'luggage-tag-heard',
+  'room-heard',
+  'breakfast-heard',
+  'checkout-heard',
+  'elevator-heard',
+  // Subway and T-money
+  'go-ahead-heard',
+  'line-four-heard',
+  'line-four-there-heard',
+  'exit-six-heard',
+  'announcement-heard',
+  'how-much-top-up-heard',
+  'top-up-cash-only-heard',
+  'atm-there-heard',
+  'topped-up-heard',
+  // Asking the way
+  'go-straight-right-heard',
+  'five-minutes-walk-heard',
+  'dont-know-area-heard',
+  // Clothes shop
+  'looking-for-heard',
+  'fitting-room-heard',
+  'sold-out-heard',
+  'this-colour-heard',
+  'passport-have-heard',
+  'instalment-heard',
+  'gift-wrap-heard',
+  // Market stall
+  'what-can-i-get-heard',
+  'hotteok-heard',
+  'each-price-heard',
+  'two-for-heard',
+  'cash-only-heard',
+  // Small talk
+  'first-time-heard',
+  'korean-good-heard',
+  'how-is-korea-heard',
+  'how-long-stay-heard',
+  'one-more-photo-heard',
+  'enjoy-trip-heard',
+  // Pharmacy
+  'problem-heard',
+  'where-hurts-heard',
+  'since-when-heard',
+  'allergy-heard',
+  'medicine-ok-heard',
+  'dosage-heard',
+  'drowsy-heard',
+  // Hotel check-out
+  'key-card-heard',
+  'minibar-heard',
+  'back-when-heard',
+  ...['2000', '3200', '3500', '4000', '4500', '5000', '5500', '6800', '11500', '12000', '23000', '35000'].map((n) => `price-${n}-heard`),
+])
+
 export const expressions: Expression[] = topics.flatMap((t) =>
   rows[t.id].map(([id, tier, romanization, hangul, english, usageNote]) => ({
     id,
@@ -341,5 +559,6 @@ export const expressions: Expression[] = topics.flatMap((t) =>
     hangul,
     english,
     ...(usageNote ? { usageNote } : {}),
+    ...(HEARD.has(id) ? { heard: true as const } : {}),
   })),
 )

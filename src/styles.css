@@ -1090,3 +1090,133 @@ h2 {
   padding: 3px 4px;
   border-bottom: 1px solid var(--line);
 }
+
+/* Heard Expressions: an ear before the meaning (the learner hears it, never says it). */
+.heard-mark {
+  display: inline-flex;
+  vertical-align: -0.15em;
+  margin-right: 4px;
+  color: var(--muted, currentColor);
+}
+.heard-mark svg {
+  width: 1em;
+  height: 1em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/* Conversations: a chat. The other person on the left, the learner on the right. */
+.conversation-setting {
+  margin: 0 0 10px;
+}
+.chat {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.bubble {
+  max-width: 85%;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+.bubble.them {
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+.bubble.you {
+  align-self: flex-end;
+  background: var(--accent-soft);
+  border-color: transparent;
+  border-bottom-right-radius: 4px;
+}
+.bubble.you.missed {
+  outline: 1px dashed var(--accent);
+}
+.bubble-who {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.bubble-play {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.bubble-play .play {
+  border: none;
+  border-radius: 999px;
+  width: 36px;
+  height: 36px;
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.bubble-play .play.slow {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.show-text {
+  border: none;
+  background: none;
+  color: var(--accent);
+  font-size: 0.85rem;
+  padding: 4px 2px;
+}
+.bubble-note {
+  margin: 4px 0 0;
+  color: var(--muted);
+}
+.reply-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.bubble.you.repair {
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.repair-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: -6px 0 12px;
+}
+.bubble.playing {
+  outline: 2px solid var(--accent);
+}
+.watch-catch {
+  align-self: center;
+  margin: 0;
+}
+.status-label {
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  white-space: nowrap;
+}
+.status-label.ready {
+  background: var(--accent-soft);
+  border-color: transparent;
+  color: var(--accent);
+}
+.conversation-page h2 {
+  margin-top: 18px;
+}
+.status-label.due {
+  background: var(--accent);
+  border-color: transparent;
+  color: var(--on-accent);
+}
+.status-label.fluent {
+  color: var(--gold);
+  border-color: var(--gold);
+}

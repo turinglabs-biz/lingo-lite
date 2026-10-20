@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { playClip } from '../audio/player.ts'
-import { expressionById } from '../catalog/index.ts'
+import { catalog, expressionById } from '../catalog/index.ts'
 import { ExpressionView } from '../components/ExpressionView.tsx'
 import { Illustration } from '../components/Illustration.tsx'
 import { PlayButtons } from '../components/PlayButtons.tsx'
 import { EchoBar } from '../echo/EchoMic.tsx'
-import { afterSpeakGrade, planLearnSession, type LearnStep } from '../domain/learnPlan.ts'
+import { afterAttemptGrade, planLearnSession, type LearnStep } from '../domain/learnPlan.ts'
 import { useIgnored } from '../progress/ignored.tsx'
 import { grade, introduce, recordCheck, touchSession } from '../progress/store.ts'
 import { Prompt, SessionFrame } from './parts.tsx'
@@ -14,7 +14,10 @@ import { SessionInput } from './sessionInput.ts'
 import type { SummaryData } from './SessionSummary.tsx'
 import { useSessionTracker } from './useSessionTracker.ts'
 
-const TITLE = { expose: 'New', check: 'Listen and pick', speak: 'Say it' }
+/** Heard Expressions get Listen attempts instead of Speak attempts. */
+const HEARD = new Set(catalog.filter((e) => e.heard).map((e) => e.id))
+
+const TITLE = { expose: 'New', check: 'Listen and pick', speak: 'Say it', listen: 'Listen' }
 
 /** Introduces one Batch: exposure with audio, a listen-and-pick check, then repeated Speak questions. */
 export function LearnSession({
@@ -27,7 +30,7 @@ export function LearnSession({
   onEnd: (summary: Omit<SummaryData, 'streak'> | null) => void
 }) {
   const tracker = useSessionTracker('learn')
-  const [steps, setSteps] = useState<LearnStep[]>(() => planLearnSession(batch))
+  const [steps, setSteps] = useState<LearnStep[]>(() => planLearnSession(batch, Math.random, HEARD))
   const [index, setIndex] = useState(0)
   // Distractors prefer what the learner has met, including this Batch.
   const [known] = useState(() => new Set([...introduced, ...batch]))
@@ -55,12 +58,13 @@ export function LearnSession({
     await recordCheck(tracker.sessionId, step.id, correct)
   }
 
-  async function onSpeak(correct: boolean) {
-    if (!tracker.sessionId || step.kind !== 'speak') return
+  /** A Speak attempt, or a Listen attempt for a Heard Expression: graded into the schedule. */
+  async function onAttempt(correct: boolean) {
+    if (!tracker.sessionId || (step.kind !== 'speak' && step.kind !== 'listen')) return
     tracker.countAnswer(correct)
-    const { becameLearned } = await grade(tracker.sessionId, step.id, 'speak', correct ? 'good' : 'missed')
+    const { becameLearned } = await grade(tracker.sessionId, step.id, step.kind, correct ? 'good' : 'missed')
     if (becameLearned) tracker.countLearned(step.id)
-    setSteps((s) => afterSpeakGrade(s, step, !correct))
+    setSteps((s) => afterAttemptGrade(s, step, !correct))
   }
 
   if (!step) return null
@@ -86,7 +90,8 @@ export function LearnSession({
         {step.kind === 'check' && (
           <ListenQuestion key={index} expressionId={step.id} introduced={known} onAnswer={onCheck} onNext={next} />
         )}
-        {step.kind === 'speak' && <SpeakQuestion key={index} expressionId={step.id} introduced={known} onAnswer={onSpeak} onNext={next} />}
+        {step.kind === 'speak' && <SpeakQuestion key={index} expressionId={step.id} introduced={known} onAnswer={onAttempt} onNext={next} />}
+        {step.kind === 'listen' && <ListenQuestion key={index} expressionId={step.id} introduced={known} onAnswer={onAttempt} onNext={next} />}
       </SessionFrame>
     </SessionInput.Provider>
   )

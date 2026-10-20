@@ -1,7 +1,19 @@
 import { BACKLOG_WARNING, BATCH_SIZE } from '../domain/progress.ts'
 import type { Progress } from '../progress/useProgress.ts'
 
-export function Home({ progress, onReview, onLearn, onFocus }: { progress: Progress; onReview: () => void; onLearn: () => void; onFocus: () => void }) {
+export function Home({
+  progress,
+  onReview,
+  onLearn,
+  onFocus,
+  onConversations,
+}: {
+  progress: Progress
+  onReview: () => void
+  onLearn: () => void
+  onFocus: () => void
+  onConversations: () => void
+}) {
   const { dueCount, nextBatchSize, introduced, learned, focus, ignored, practiceCatalog } = progress
   // Ignored Expressions are left out of every count.
   const introducedCount = [...introduced].filter((id) => !ignored.has(id)).length
@@ -53,6 +65,10 @@ export function Home({ progress, onReview, onLearn, onFocus }: { progress: Progr
 
       <button type="button" className="secondary-action focus-action" onClick={onFocus}>
         Focus · {focus.size} {focus.size === 1 ? 'Expression' : 'Expressions'}
+      </button>
+
+      <button type="button" className="secondary-action conversations-action" onClick={onConversations}>
+        {progress.dueConversations > 0 ? `Conversations · ${progress.dueConversations} due` : 'Conversations'}
       </button>
 
       {allIntroduced && dueCount === 0 && <p className="muted small">Every Expression is introduced. Come back when reviews are due.</p>}

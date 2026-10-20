@@ -23,8 +23,11 @@ export interface DirectionCard {
   learnedAt?: number
 }
 
-/** 'check' is the listen-and-pick check in a Learn session; it is objectively graded. */
-export type AnswerKind = Direction | 'check'
+/**
+ * 'check' is the listen-and-pick check in a Learn session; 'reply' and 'catch' are a Reply and a Catch in a
+ * Conversation. All are objectively graded, and none touches the schedule.
+ */
+export type AnswerKind = Direction | 'check' | 'reply' | 'catch'
 
 export interface Answer {
   id?: number
@@ -34,9 +37,12 @@ export interface Answer {
   kind: AnswerKind
   correct: boolean
   grade?: Grade
+  /** For a Conversation answer: which Conversation and Turn. */
+  conversationId?: string
+  turnId?: string
 }
 
-export type SessionType = 'learn' | 'review' | 'focus'
+export type SessionType = 'learn' | 'review' | 'focus' | 'conversation'
 
 export interface Session {
   id: string
@@ -56,6 +62,31 @@ export interface Introduction {
 export interface TopicStars {
   topic: string
   stars: number
+}
+
+/** The spaced-repetition fields every schedule shares (FSRS, with dates as epoch ms). */
+export type ScheduleFields = Pick<DirectionCard, 'due' | 'stability' | 'difficulty' | 'scheduledDays' | 'learningSteps' | 'reps' | 'lapses' | 'state' | 'lastReview'>
+
+/** A Conversation's own schedule: whole exchanges come back by spaced repetition, separately from Expressions. */
+export interface ConversationCard extends ScheduleFields {
+  conversationId: string
+  /** First time the Conversation became Fluent. */
+  fluentAt?: number
+}
+
+export type PlayMode = 'guided' | 'free'
+
+/** One finished run of a Conversation. */
+export interface ConversationRun {
+  id?: number
+  conversationId: string
+  sessionId: string
+  mode: PlayMode
+  startedAt: number
+  endedAt: number
+  missed: number
+  textShown: boolean
+  repairs: number
 }
 
 /** An Expression the learner put in Focus, and when. */

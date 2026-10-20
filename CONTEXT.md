@@ -10,6 +10,10 @@ A minimal, offline trainer for the few hundred Korean expressions a traveller ac
 The unit of learning: one Korean word or phrase with its Romanization, Hangul, English meaning and Clips.
 _Avoid_: Word, phrase, card, item, vocab
 
+**Heard Expression**:
+An Expression the learner only ever hears: a staff question, an instruction, an announcement, a price. It has one Direction, Listen, and no Illustration, and is never offered as a Korean option or echoed.
+_Avoid_: Heard line, staff phrase, passive Expression
+
 **Topic**:
 A named group of Expressions for one travel situation (e.g. Greetings, Numbers, Food & ordering). Every Expression belongs to exactly one Topic.
 _Avoid_: Category, unit, deck, lesson
@@ -32,11 +36,11 @@ The Korean-script form of an Expression, always shown as a subtle secondary line
 An optional short hint on when or to whom an Expression is said (e.g. "to staff", "when leaving a shop").
 
 **Illustration**:
-A simple single-color line drawing attached to an Expression, drawn to follow the Catalog and never the other way round. Every Expression has one. It is shown at first exposure, after reveal, in the Phrasebook and as the See prompt (with its English meaning), never on a Speak or Listen prompt.
+A simple single-color line drawing attached to an Expression, drawn to follow the Catalog and never the other way round. Every Expression has one, except Heard Expressions. It is shown at first exposure, after reveal, in the Phrasebook and as the See prompt (with its English meaning), never on a Speak or Listen prompt.
 _Avoid_: Image, icon, graphic, picture, visual
 
 **Politeness**:
-Every Expression uses polite *-yo* speech, except fixed set phrases conventionally said in formal *-mnida* form. Casual speech is never taught.
+Every Expression the learner says uses polite *-yo* speech, except fixed set phrases conventionally said in formal *-mnida* form. Casual speech is never taught. Heard Expressions are what staff really say, so they include honorific and formal forms the learner understands but never uses.
 
 ### Audio
 
@@ -51,19 +55,19 @@ The Expression spoken at natural speed by one Voice.
 The Normal Clip time-stretched to 0.75× speed without changing pitch. It is derived from the Normal Clip, never recorded separately.
 
 **Voice**:
-One of exactly two synthetic speakers (one female, one male) used for all Clips. Each playback uses a randomly chosen Voice.
+One of exactly two synthetic speakers (one female, one male) used for all Clips. Each playback uses a randomly chosen Voice, except in a Conversation, where each speaker keeps one Voice for the whole run.
 
 ### Learning
 
 **Direction**:
-One way of practising an Expression, with its own schedule. Every Expression has three: Speak, Listen and See.
+One way of practising an Expression, with its own schedule. Every Expression has three: Speak, Listen and See, except Heard Expressions, which have only Listen.
 
 **Speak**:
 The Direction where the learner sees the English meaning, says the Korean aloud, then picks it from four Korean options; the app checks the answer and plays the phrase.
 _Avoid_: Recall, production
 
 **Listen**:
-The Direction where the learner hears a Normal Clip and picks its meaning from four English options; the app checks the answer. It unlocks after the first successful Speak answer.
+The Direction where the learner hears a Normal Clip and picks its meaning from four English options; the app checks the answer. It unlocks after the first successful Speak answer, except for a Heard Expression, where it is there from introduction.
 _Avoid_: Recognition, comprehension
 
 **See**:
@@ -89,7 +93,7 @@ The next 15 new Expressions of one Topic the learner picks, chosen like a Batch 
 _Avoid_: Topic lesson, topic session
 
 **Learn session**:
-A session introducing one Batch or Topic Batch: first exposure with audio, one listen-and-pick check, then repeated Speak attempts.
+A session introducing one Batch or Topic Batch: first exposure with audio, one listen-and-pick check, then repeated Speak attempts (Listen attempts for Heard Expressions).
 _Avoid_: Lesson
 
 **Review session**:
@@ -98,8 +102,47 @@ A session of up to 20 due Directions, scheduled by spaced repetition, with Focus
 **Focus session**:
 A session of up to 20 Directions of Focus Expressions, due or not, started on demand, least likely to be remembered first. It is graded and counted like a Review session.
 
+**Conversation**:
+A scripted exchange in one everyday travel situation (a convenience store, a café, a taxi), in which the learner plays themself and the other person speaks with the app's Voices. It is a session: its answers count for XP, Streak, Practice time and Stats, but never change an Expression's schedule. A Conversation has its own schedule instead: whole exchanges come back by spaced repetition.
+_Avoid_: Scenario, dialogue, role-play, scene, simulation
+
+**Turn**:
+One step of a Conversation: a Line, a Reply or a Catch.
+
+**Line**:
+A Turn where the other person says an Expression, usually a Heard Expression. It plays as audio with the text hidden until the learner asks for it.
+
+**Reply**:
+A Turn where the learner says something, always an Expression they say (never a Heard one). It is checked like Speak: say it aloud, then pick it from four options. Several Replies may be accepted, each leading on in its own way; after a miss, the intended one is shown and the Conversation carries on.
+
+**Catch**:
+A Turn where the learner picks what they understood from a Line (a price, a time, an instruction) from four English options. A miss shows the right answer and replays the Line.
+_Avoid_: Comprehension check, quiz
+
+**Variant**:
+One of several ways the other person may take at a point in a Conversation (asking about a bag or not; a different total), chosen at random each run, so a Conversation can't be memorised as one sequence.
+
+**Repair**:
+Asking the other person to repeat (네?), slow down (천천히 말해 주세요) or switch to English (영어 하세요?), always available under the latest Line. The learner says it, and the other person repeats the Line, repeats it slowly, or its text appears. It is never a mistake and never graded.
+
+**Watch**:
+Going through a Conversation once with every Line and intended Reply visible, text and all, to see what happens before playing it. Nothing is graded and it isn't a session.
+
+**Guided play**:
+Playing a Conversation with an English intent at each Reply saying what to say. The first finished Guided run puts the Conversation in its schedule; later Guided runs are practice and change nothing.
+
+**Free play**:
+Playing a Conversation without intents; up to two of the four options may be accepted, each leading its own way. Every finished Free run grades the Conversation: a Clean run counts as Good, anything else as Missed.
+
+**Clean run**:
+A finished run with no Missed Reply or Catch and no text shown. Repair is allowed.
+
+**Fluent**:
+A Conversation expected to be remembered for at least 7 days.
+_Avoid_: Mastered, completed
+
 **Learned**:
-An Expression whose Speak Direction is expected to be remembered for at least 7 days.
+An Expression whose Speak Direction (Listen, for a Heard Expression) is expected to be remembered for at least 7 days.
 _Avoid_: Known, mastered
 
 **Focus**:

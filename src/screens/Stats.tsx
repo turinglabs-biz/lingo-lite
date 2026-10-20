@@ -84,6 +84,14 @@ export function Stats({ progress }: { progress: Progress }) {
           <b>{pct(acc.check)}</b>
           <span>Listen-and-pick · {acc.check.answers}</span>
         </div>
+        <div>
+          <b>{pct(acc.reply)}</b>
+          <span>Conversation replies · {acc.reply.answers}</span>
+        </div>
+        <div>
+          <b>{pct(acc.catch)}</b>
+          <span>Catches · {acc.catch.answers}</span>
+        </div>
       </div>
       <p className="muted small">Every answer is checked by the app. Listen-and-pick is the check in Learn sessions.</p>
 

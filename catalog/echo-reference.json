@@ -2,248 +2,318 @@
  "native": {
   "hello": {
    "full": 0.772,
-   "zero": 0.241,
-   "hash": "60f91af2b23a"
+   "zero": 0.258,
+   "hash": "ca50d0b12bd9"
   },
   "yes": {
    "full": 0.995,
-   "zero": 0.038,
-   "hash": "34d70cc200fe"
+   "zero": 0.033,
+   "hash": "858424f2b4de"
   },
   "how-much": {
    "full": 0.718,
-   "zero": 0.195,
-   "hash": "eb681cf0c7c2"
+   "zero": 0.158,
+   "hash": "e0dc92b200cb"
+  },
+  "water-please": {
+   "full": 0.887,
+   "zero": 0.17,
+   "hash": "8425b1f6e6cb"
+  },
+  "iced-americano": {
+   "full": 0.905,
+   "zero": 0.065,
+   "hash": "462a6abb39c3"
   },
   "sino-1": {
    "full": 0.884,
    "zero": 0.001,
    "hash": "3310b4ae92f5"
   },
-  "water-please": {
-   "full": 0.887,
-   "zero": 0.185,
-   "hash": "705cf6b0b5b9"
-  },
-  "iced-americano": {
-   "full": 0.905,
-   "zero": 0.043,
-   "hash": "fb5447a7c1c4"
-  },
   "bathroom-where": {
    "full": 0.918,
-   "zero": 0.063,
-   "hash": "a588e7a8f24b"
+   "zero": 0.071,
+   "hash": "76db00bd777c"
   },
   "to-this-address": {
    "full": 0.996,
-   "zero": 0.073,
-   "hash": "ad8e09c86433"
+   "zero": 0.104,
+   "hash": "47f44b46c1a5"
   },
   "have-reservation": {
    "full": 0.917,
    "zero": 0.139,
-   "hash": "0c341f703712"
+   "hash": "0a4bfe719bdd"
   },
   "help": {
    "full": 0.831,
-   "zero": 0.125,
-   "hash": "72036feacf25"
+   "zero": 0.13,
+   "hash": "a941a7e05493"
   },
   "nice-to-meet-you": {
    "full": 0.881,
-   "zero": 0.06,
-   "hash": "a4b703a9bc8b"
+   "zero": 0.125,
+   "hash": "e01fef5d58a6"
+  },
+  "thank-you": {
+   "full": 0.817,
+   "zero": 0.121,
+   "hash": "c882a0eceb47"
+  },
+  "no": {
+   "full": 0.922,
+   "zero": 0.245,
+   "hash": "ade36e4ec2ef"
+  },
+  "this-one-please": {
+   "full": 0.998,
+   "zero": 0.139,
+   "hash": "04012701d5ca"
+  },
+  "bill-please": {
+   "full": 0.901,
+   "zero": 0.244,
+   "hash": "7e0d1fd87ec9"
+  },
+  "order-heard": {
+   "full": 0.872,
+   "zero": 0.122,
+   "hash": "c69fc90fe900"
   },
   "sino-2": {
    "full": 0.914,
    "zero": 0,
    "hash": "669aa3901878"
   },
-  "thank-you": {
-   "full": 0.817,
-   "zero": 0.125,
-   "hash": "80a54f4e5d7a"
-  },
-  "no": {
-   "full": 0.922,
-   "zero": 0.245,
-   "hash": "a21d36fcd684"
-  },
-  "this-one-please": {
-   "full": 0.998,
-   "zero": 0.239,
-   "hash": "0b86b49bf928"
-  },
-  "bill-please": {
-   "full": 0.901,
-   "zero": 0.189,
-   "hash": "0e02668fc3a6"
-  },
   "where-is-it": {
    "full": 0.971,
-   "zero": 0.191,
-   "hash": "1447443ea614"
+   "zero": 0.204,
+   "hash": "61d791fda681"
   },
   "stop-here": {
    "full": 0.992,
-   "zero": 0.115,
-   "hash": "c030848d15d0"
+   "zero": 0.117,
+   "hash": "dcc61bad5ec7"
+  },
+  "reservation-heard": {
+   "full": 0.914,
+   "zero": 0.165,
+   "hash": "49e478f0ad8b"
+  },
+  "it-hurts": {
+   "full": 0.998,
+   "zero": 0.214,
+   "hash": "518b2fb755ad"
+  },
+  "cheers": {
+   "full": 0.815,
+   "zero": 0.035,
+   "hash": "7bb64cf46bbc"
+  },
+  "sorry": {
+   "full": 0.844,
+   "zero": 0.133,
+   "hash": "d59d9e0f264b"
+  },
+  "its-okay": {
+   "full": 0.923,
+   "zero": 0.112,
+   "hash": "5b8e0554de71"
+  },
+  "card-ok": {
+   "full": 0.776,
+   "zero": 0.124,
+   "hash": "d90894dd01fd"
+  },
+  "delicious": {
+   "full": 0.976,
+   "zero": 0.144,
+   "hash": "f440db767e11"
   },
   "sino-3": {
    "full": 0.836,
    "zero": 0.006,
    "hash": "df5bfdd341f4"
   },
-  "it-hurts": {
-   "full": 0.998,
-   "zero": 0.214,
-   "hash": "ed7059cd4d3d"
-  },
-  "cheers": {
-   "full": 0.815,
-   "zero": 0.018,
-   "hash": "495ab69f3204"
-  },
-  "sorry": {
-   "full": 0.844,
-   "zero": 0.133,
-   "hash": "aed0b91e50da"
-  },
-  "its-okay": {
-   "full": 0.923,
-   "zero": 0.111,
-   "hash": "7063e50c7922"
-  },
-  "card-ok": {
-   "full": 0.776,
-   "zero": 0.134,
-   "hash": "e3d3b31217d7"
-  },
-  "delicious": {
-   "full": 0.976,
-   "zero": 0.143,
-   "hash": "39e1b72e1233"
-  },
   "here": {
    "full": 0.689,
-   "zero": 0.038,
-   "hash": "534c1a0eae89"
+   "zero": 0.039,
+   "hash": "2fb6ba80375c"
+  },
+  "where-to-heard": {
+   "full": 0.861,
+   "zero": 0.18,
+   "hash": "be28754e4d6e"
+  },
+  "passport-heard": {
+   "full": 0.861,
+   "zero": 0.109,
+   "hash": "cc0bfb3122d5"
+  },
+  "excuse-me-attention": {
+   "full": 0.889,
+   "zero": 0.177,
+   "hash": "a350f9e90706"
+  },
+  "give-me-please": {
+   "full": 0.965,
+   "zero": 0.203,
+   "hash": "c2446e349fb6"
+  },
+  "need-bag-heard": {
+   "full": 0.885,
+   "zero": 0.142,
+   "hash": "474216a4952d"
+  },
+  "one-person": {
+   "full": 0.825,
+   "zero": 0.145,
+   "hash": "c20fae7fb9cd"
+  },
+  "station-where": {
+   "full": 0.806,
+   "zero": 0.143,
+   "hash": "6c488acff2aa"
+  },
+  "drop-off-heard": {
+   "full": 0.97,
+   "zero": 0.107,
+   "hash": "b725d8e748b0"
+  },
+  "goodbye-leaving": {
+   "full": 0.801,
+   "zero": 0.245,
+   "hash": "879fd1ca2329"
   },
   "native-1": {
    "full": 0.899,
    "zero": 0.015,
    "hash": "cdfe0c89b9ac"
   },
-  "excuse-me-attention": {
-   "full": 0.889,
-   "zero": 0.177,
-   "hash": "61150cbb6668"
-  },
-  "give-me-please": {
-   "full": 0.965,
-   "zero": 0.204,
-   "hash": "6d318698931f"
-  },
-  "one-person": {
-   "full": 0.825,
-   "zero": 0.147,
-   "hash": "2afac8d7b806"
-  },
-  "goodbye-leaving": {
-   "full": 0.801,
-   "zero": 0.235,
-   "hash": "e72f9a2615c1"
-  },
   "dont-speak-korean": {
    "full": 0.991,
-   "zero": 0.131,
-   "hash": "ad644a44c510"
+   "zero": 0.126,
+   "hash": "7c3b00770db0"
+  },
+  "receipt-heard": {
+   "full": 0.944,
+   "zero": 0.072,
+   "hash": "ed0c8253f294"
   },
   "two-people": {
    "full": 0.84,
-   "zero": 0.153,
-   "hash": "f5247a661451"
+   "zero": 0.147,
+   "hash": "a9d6764fe18d"
+  },
+  "tap-card-heard": {
+   "full": 0.977,
+   "zero": 0.1,
+   "hash": "55dcf3bf7cfe"
+  },
+  "goodbye-staying": {
+   "full": 0.549,
+   "zero": 0.132,
+   "hash": "2df4e03c734c"
+  },
+  "speak-english": {
+   "full": 0.942,
+   "zero": 0.215,
+   "hash": "130c2a761858"
+  },
+  "insert-card-heard": {
+   "full": 0.884,
+   "zero": 0.141,
+   "hash": "d8648c9a2e0f"
+  },
+  "menu-please": {
+   "full": 0.944,
+   "zero": 0.187,
+   "hash": "66cdd0ada591"
+  },
+  "this-one": {
+   "full": 0.93,
+   "zero": 0.008,
+   "hash": "bb956848a324"
+  },
+  "price-4500-heard": {
+   "full": 0.938,
+   "zero": 0.059,
+   "hash": "8369e583b32e"
   },
   "native-2": {
    "full": 0.383,
    "zero": 0.002,
    "hash": "65f31d8a77a3"
   },
-  "goodbye-staying": {
-   "full": 0.549,
-   "zero": 0.129,
-   "hash": "dd02065365c9"
-  },
-  "speak-english": {
-   "full": 0.942,
-   "zero": 0.214,
-   "hash": "c7a771dddc0c"
-  },
-  "menu-please": {
-   "full": 0.944,
-   "zero": 0.156,
-   "hash": "0a81a79b3d1c"
-  },
-  "this-one": {
-   "full": 0.93,
-   "zero": 0.008,
-   "hash": "3a45f2ee2fc2"
+  "water-self-heard": {
+   "full": 0.978,
+   "zero": 0.104,
+   "hash": "bc76ebd1679c"
   },
   "pardon": {
    "full": 0.992,
-   "zero": 0.038,
-   "hash": "52ec58924812"
+   "zero": 0.033,
+   "hash": "b06dfddeb692"
+  },
+  "price-5000-heard": {
+   "full": 0.991,
+   "zero": 0.026,
+   "hash": "24d2f7609ab8"
+  },
+  "pay-counter-heard": {
+   "full": 0.945,
+   "zero": 0.071,
+   "hash": "9728255bccc7"
+  },
+  "here-you-are": {
+   "full": 0.836,
+   "zero": 0.165,
+   "hash": "5274139e5757"
   },
   "thank-you-2": {
    "full": 0.894,
    "zero": 0.066,
-   "hash": "a2d396c71f0a"
+   "hash": "e83bd97a1cdc"
   },
   "i-dont-understand": {
    "full": 0.938,
-   "zero": 0.195,
-   "hash": "cd81e76e0c71"
+   "zero": 0.189,
+   "hash": "40d711b01cbd"
+  },
+  "too-expensive": {
+   "full": 0.998,
+   "zero": 0.138,
+   "hash": "9be5c00f0d5d"
+  },
+  "how-many-heard": {
+   "full": 0.907,
+   "zero": 0.199,
+   "hash": "3e68b726c57a"
   },
   "won": {
    "full": 0.748,
    "zero": 0.002,
    "hash": "5cbcfa50180c"
   },
-  "too-expensive": {
-   "full": 0.998,
-   "zero": 0.131,
-   "hash": "3a74e007a2c1"
-  },
-  "how-many-heard": {
-   "full": 0.907,
-   "zero": 0.195,
-   "hash": "96cf50ecb01f"
-  },
   "for-here-heard": {
    "full": 0.991,
-   "zero": 0.146,
-   "hash": "949f9ac6116e"
+   "zero": 0.175,
+   "hash": "a939b5c11e59"
   },
   "left": {
    "full": 0.498,
-   "zero": 0.022,
-   "hash": "57e5f152747e"
+   "zero": 0.024,
+   "hash": "e39a781665de"
   },
   "subway": {
    "full": 0.687,
-   "zero": 0.082,
-   "hash": "b224dfaed9a4"
+   "zero": 0.084,
+   "hash": "2d1f1115ebad"
   },
   "check-in": {
    "full": 0.869,
-   "zero": 0.114,
-   "hash": "056f7c4f92f0"
-  },
-  "sino-1000": {
-   "full": 0.806,
-   "zero": 0.009,
-   "hash": "256303a7df15"
+   "zero": 0.123,
+   "hash": "34a967fba93c"
   },
   "what-time-open": {
    "full": 0.904,
@@ -252,58 +322,58 @@
   },
   "pharmacy-where": {
    "full": 0.867,
-   "zero": 0.16,
-   "hash": "31a51cc6f35b"
+   "zero": 0.154,
+   "hash": "ba184c6f32dd"
   },
   "where-from-heard": {
    "full": 0.771,
    "zero": 0.115,
-   "hash": "3466e96c1d94"
+   "hash": "f17fbf331e87"
   },
   "excuse-me-passing": {
    "full": 0.943,
-   "zero": 0.193,
-   "hash": "5d36f9e8dc9d"
+   "zero": 0.182,
+   "hash": "f976ae25957b"
   },
   "i-dont-know": {
    "full": 0.982,
-   "zero": 0.084,
-   "hash": "33196cec4be8"
+   "zero": 0.085,
+   "hash": "aa7aafa70fee"
   },
   "receipt": {
    "full": 0.938,
-   "zero": 0.137,
-   "hash": "544fb62ac463"
+   "zero": 0.105,
+   "hash": "be8b6b8a1bfb"
+  },
+  "sino-1000": {
+   "full": 0.806,
+   "zero": 0.009,
+   "hash": "256303a7df15"
   },
   "one-of-this": {
    "full": 0.812,
-   "zero": 0.15,
-   "hash": "98b5d6aab84a"
-  },
-  "sino-10000": {
-   "full": 0.788,
-   "zero": 0.01,
-   "hash": "f075d4ebad63"
+   "zero": 0.145,
+   "hash": "4ee19af47d47"
   },
   "for-here": {
    "full": 0.784,
-   "zero": 0.081,
-   "hash": "21af98fe6031"
+   "zero": 0.13,
+   "hash": "683294b13d7b"
   },
   "right": {
    "full": 0.696,
-   "zero": 0.087,
-   "hash": "f63b8d92c223"
+   "zero": 0.103,
+   "hash": "35a44a114ff5"
   },
   "taxi": {
    "full": 0.979,
-   "zero": 0,
-   "hash": "5fb3f135c65c"
+   "zero": 0.001,
+   "hash": "e936b42707e5"
   },
   "check-out": {
    "full": 0.64,
-   "zero": 0.127,
-   "hash": "278c8e286f8b"
+   "zero": 0.126,
+   "hash": "926da695988d"
   },
   "what-time-close": {
    "full": 0.864,
@@ -313,62 +383,57 @@
   "hospital": {
    "full": 0.624,
    "zero": 0,
-   "hash": "00a08660e182"
+   "hash": "20c4ce2ac662"
   },
   "from-europe": {
    "full": 0.939,
-   "zero": 0.09,
-   "hash": "523d0c2358d4"
-  },
-  "sino-4": {
-   "full": 0.406,
-   "zero": 0.004,
-   "hash": "8015df264b85"
+   "zero": 0.091,
+   "hash": "37227394f807"
   },
   "welcome-heard": {
    "full": 0.805,
-   "zero": 0.141,
-   "hash": "786c31d4687c"
+   "zero": 0.142,
+   "hash": "254f9518d5b6"
   },
   "slowly-please": {
    "full": 0.85,
-   "zero": 0.138,
-   "hash": "5938bc76919d"
+   "zero": 0.134,
+   "hash": "9c8d53d3a009"
+  },
+  "sino-10000": {
+   "full": 0.788,
+   "zero": 0.01,
+   "hash": "f075d4ebad63"
   },
   "bag-please": {
    "full": 0.968,
-   "zero": 0.181,
-   "hash": "4f240fce9bf7"
+   "zero": 0.118,
+   "hash": "67d9b8c913af"
   },
   "not-spicy": {
    "full": 0.775,
-   "zero": 0.119,
-   "hash": "cf83b9dbda6e"
+   "zero": 0.114,
+   "hash": "04c9a8e8ab79"
   },
   "take-away": {
    "full": 0.84,
-   "zero": 0.115,
-   "hash": "5ab7f64ee81b"
+   "zero": 0.155,
+   "hash": "0ec646913956"
   },
   "go-straight": {
    "full": 0.743,
-   "zero": 0.15,
-   "hash": "2b62881f122b"
-  },
-  "sino-5": {
-   "full": 0.411,
-   "zero": 0,
-   "hash": "f9a9bfc2b54b"
+   "zero": 0.152,
+   "hash": "a4522136e34b"
   },
   "bus": {
    "full": 0.868,
-   "zero": 0.005,
-   "hash": "41681c9c0e60"
+   "zero": 0.011,
+   "hash": "ae1c54906389"
   },
   "checkout-time": {
    "full": 0.765,
-   "zero": 0.195,
-   "hash": "36799e0c3e80"
+   "zero": 0.176,
+   "hash": "2c47e338b1f1"
   },
   "open-now": {
    "full": 0.993,
@@ -377,63 +442,58 @@
   },
   "allergy": {
    "full": 0.831,
-   "zero": 0.127,
-   "hash": "7cabcf688f45"
+   "zero": 0.131,
+   "hash": "78025c1349a1"
   },
   "im-a-tourist": {
    "full": 0.847,
-   "zero": 0.055,
-   "hash": "19b165de735e"
+   "zero": 0.06,
+   "hash": "d9dd50012c98"
+  },
+  "sino-4": {
+   "full": 0.406,
+   "zero": 0.004,
+   "hash": "8015df264b85"
   },
   "sorry-light": {
    "full": 0.944,
-   "zero": 0.202,
-   "hash": "748d5f4c6139"
+   "zero": 0.218,
+   "hash": "ee1e946823f8"
   },
   "once-more": {
    "full": 0.927,
    "zero": 0.121,
-   "hash": "414734aa2f07"
-  },
-  "native-3": {
-   "full": 0.807,
-   "zero": 0.031,
-   "hash": "1cd42b99afdf"
+   "hash": "4b6e6a6718eb"
   },
   "no-bag": {
    "full": 0.864,
-   "zero": 0.086,
-   "hash": "641bf059c2f1"
+   "zero": 0.073,
+   "hash": "ffb322f9c9f0"
   },
   "is-it-spicy": {
    "full": 0.649,
-   "zero": 0.125,
-   "hash": "a7966adb36d7"
+   "zero": 0.145,
+   "hash": "a7986e72839e"
   },
   "wifi-password": {
    "full": 0.854,
-   "zero": 0.075,
-   "hash": "c93712e8a2b8"
+   "zero": 0.085,
+   "hash": "5e299d3ee739"
   },
   "over-there": {
    "full": 0.858,
-   "zero": 0.152,
-   "hash": "68cfb9749230"
+   "zero": 0.145,
+   "hash": "3dec3c02662a"
   },
   "t-money": {
    "full": 0.953,
-   "zero": 0.104,
-   "hash": "cc869b764231"
+   "zero": 0.107,
+   "hash": "b647aa0d49b9"
   },
   "keep-luggage": {
    "full": 0.89,
-   "zero": 0.081,
-   "hash": "88f29e2e948c"
-  },
-  "sino-6": {
-   "full": 0.078,
-   "zero": 0.003,
-   "hash": "7ec2951e6601"
+   "zero": 0.107,
+   "hash": "a7db865d9c3f"
   },
   "today": {
    "full": 0.692,
@@ -442,113 +502,123 @@
   },
   "call-ambulance": {
    "full": 0.872,
-   "zero": 0.063,
-   "hash": "5126b52a2ea0"
+   "zero": 0.085,
+   "hash": "7c4848ce9f86"
+  },
+  "sino-5": {
+   "full": 0.411,
+   "zero": 0,
+   "hash": "f9a9bfc2b54b"
   },
   "first-time-korea": {
    "full": 0.972,
-   "zero": 0.066,
-   "hash": "0e6a573e364b"
+   "zero": 0.111,
+   "hash": "b9b9f04c1844"
   },
   "not-at-all": {
    "full": 0.608,
-   "zero": 0.261,
-   "hash": "3940cc2166f3"
+   "zero": 0.256,
+   "hash": "2da2c6326d71"
   },
   "got-it": {
    "full": 0.946,
-   "zero": 0.185,
-   "hash": "a90874211ff4"
+   "zero": 0.197,
+   "hash": "f7dbb4916cad"
   },
   "just-looking": {
    "full": 0.944,
-   "zero": 0.087,
-   "hash": "5e218d2f8948"
+   "zero": 0.085,
+   "hash": "ee1b7b6e0e21"
   },
   "one-more": {
    "full": 0.955,
-   "zero": 0.098,
-   "hash": "f122bae31cc3"
-  },
-  "sino-7": {
-   "full": 0.671,
-   "zero": 0.002,
-   "hash": "aa9a761c18a3"
+   "zero": 0.122,
+   "hash": "6224bf494092"
   },
   "one-cup": {
    "full": 0.965,
-   "zero": 0.076,
-   "hash": "1338c821b0b0"
+   "zero": 0.059,
+   "hash": "b4c9e0e759b2"
   },
   "subway-station": {
    "full": 0.67,
-   "zero": 0.14,
-   "hash": "de89d93baf0f"
+   "zero": 0.128,
+   "hash": "ca110625e8d4"
   },
   "top-up": {
    "full": 0.865,
-   "zero": 0.154,
-   "hash": "fae243acb608"
+   "zero": 0.183,
+   "hash": "b15898d340e9"
+  },
+  "checkin-from-three-heard": {
+   "full": 0.936,
+   "zero": 0.078,
+   "hash": "9ae627033a6d"
   },
   "tomorrow": {
    "full": 0.698,
    "zero": 0.002,
    "hash": "75b101246bf9"
   },
+  "native-3": {
+   "full": 0.807,
+   "zero": 0.031,
+   "hash": "1cd42b99afdf"
+  },
   "call-police": {
    "full": 0.875,
-   "zero": 0.074,
-   "hash": "e1f95d361ebd"
+   "zero": 0.119,
+   "hash": "4ba285501384"
   },
   "can-i-take-photo": {
    "full": 0.776,
    "zero": 0.07,
-   "hash": "8bff0c381eea"
-  },
-  "sino-8": {
-   "full": 0.704,
-   "zero": 0.007,
-   "hash": "1b1fc5bf6390"
+   "hash": "6553b5edb6b6"
   },
   "thanks-for-help": {
    "full": 0.918,
-   "zero": 0.051,
-   "hash": "0812c7caa7d2"
+   "zero": 0.05,
+   "hash": "5c02b0861d64"
   },
   "good": {
    "full": 0.811,
    "zero": 0.249,
-   "hash": "c873983340e4"
+   "hash": "75f54f091cd6"
   },
   "ill-take-this": {
    "full": 0.848,
-   "zero": 0.178,
-   "hash": "532140bf799c"
+   "zero": 0.157,
+   "hash": "ab637c56d5b5"
   },
   "english-menu": {
    "full": 0.844,
-   "zero": 0.1,
-   "hash": "097366733fd2"
+   "zero": 0.104,
+   "hash": "ca20cf2550a2"
   },
   "hot-one": {
    "full": 0.775,
-   "zero": 0.039,
-   "hash": "fe5794c9cce6"
+   "zero": 0.073,
+   "hash": "2f5c4361b12c"
   },
   "is-it-close": {
    "full": 0.985,
-   "zero": 0.103,
-   "hash": "cf2f9428202e"
+   "zero": 0.106,
+   "hash": "e647833469b2"
   },
   "to-seoul-station": {
    "full": 0.897,
-   "zero": 0.053,
-   "hash": "f68d5e2f62ee"
+   "zero": 0.078,
+   "hash": "98b75da45c9f"
   },
-  "sino-9": {
-   "full": 0.576,
-   "zero": 0.001,
-   "hash": "12d4b3cc6884"
+  "sino-6": {
+   "full": 0.078,
+   "zero": 0.003,
+   "hash": "7ec2951e6601"
+  },
+  "checkout-heard": {
+   "full": 0.917,
+   "zero": 0.102,
+   "hash": "7e0f6585e4e4"
   },
   "now": {
    "full": 0.992,
@@ -557,43 +627,58 @@
   },
   "emergency-119": {
    "full": 0.659,
-   "zero": 0.014,
-   "hash": "ddcef17be59d"
+   "zero": 0.021,
+   "hash": "cb3bd837b503"
   },
   "take-our-photo": {
    "full": 0.91,
-   "zero": 0.042,
-   "hash": "bf82be4ac7fd"
+   "zero": 0.048,
+   "hash": "31e9e91cb1b3"
+  },
+  "keep-up-good-work": {
+   "full": 0.902,
+   "zero": 0.227,
+   "hash": "b2104763a2a3"
   },
   "that-one": {
    "full": 0.713,
    "zero": 0.008,
-   "hash": "8a623c8d826e"
+   "hash": "bf5ccca02c89"
   },
   "where-pay": {
    "full": 0.939,
-   "zero": 0.142,
-   "hash": "3c63c8861d46"
+   "zero": 0.123,
+   "hash": "f168074d6b05"
   },
   "what-is-good": {
    "full": 0.885,
-   "zero": 0.136,
-   "hash": "e16696f68a7a"
+   "zero": 0.141,
+   "hash": "0a14400eade6"
   },
-  "sino-10": {
-   "full": 0.647,
-   "zero": 0.074,
-   "hash": "686730f7b16a"
+  "americano": {
+   "full": 0.955,
+   "zero": 0.083,
+   "hash": "304d240ea097"
   },
   "how-do-i-get-here": {
    "full": 0.874,
-   "zero": 0.071,
-   "hash": "1c418e84808d"
+   "zero": 0.087,
+   "hash": "edc5dd695bd6"
+  },
+  "sino-7": {
+   "full": 0.671,
+   "zero": 0.002,
+   "hash": "aa9a761c18a3"
   },
   "does-bus-go": {
    "full": 0.98,
-   "zero": 0.045,
-   "hash": "bbda8635e716"
+   "zero": 0.114,
+   "hash": "00cd3a799e31"
+  },
+  "key-card-heard": {
+   "full": 0.925,
+   "zero": 0.122,
+   "hash": "77b89f085a6b"
   },
   "what-time-now": {
    "full": 0.949,
@@ -602,133 +687,358 @@
   },
   "lost-phone": {
    "full": 0.949,
-   "zero": 0.032,
-   "hash": "fb2858092616"
+   "zero": 0.044,
+   "hash": "0785993c28c1"
+  },
+  "first-time-heard": {
+   "full": 0.946,
+   "zero": 0.111,
+   "hash": "6314290b2b59"
   },
   "there-is": {
    "full": 0.881,
-   "zero": 0.238,
-   "hash": "e0bc22dacee3"
+   "zero": 0.248,
+   "hash": "f122a18e05d7"
   },
-  "two-of-them": {
-   "full": 0.918,
-   "zero": 0.209,
-   "hash": "6ee1bc34ed0d"
+  "looking-for-heard": {
+   "full": 0.944,
+   "zero": 0.114,
+   "hash": "01fc53b09273"
   },
   "ordering": {
    "full": 0.813,
-   "zero": 0.158,
-   "hash": "5e07507ccf95"
+   "zero": 0.174,
+   "hash": "623ec6c0fb32"
+  },
+  "hot-or-iced-heard": {
+   "full": 0.79,
+   "zero": 0.13,
+   "hash": "85ecf9844200"
+  },
+  "which-exit": {
+   "full": 0.829,
+   "zero": 0.083,
+   "hash": "18b3606e728e"
+  },
+  "sino-8": {
+   "full": 0.704,
+   "zero": 0.007,
+   "hash": "1b1fc5bf6390"
+  },
+  "how-long": {
+   "full": 0.803,
+   "zero": 0.11,
+   "hash": "266952833f5c"
+  },
+  "problem-heard": {
+   "full": 0.977,
+   "zero": 0.167,
+   "hash": "e0a10e0378ab"
+  },
+  "korean-good-heard": {
+   "full": 0.934,
+   "zero": 0.114,
+   "hash": "706c21d86c51"
+  },
+  "there-isnt": {
+   "full": 0.921,
+   "zero": 0.194,
+   "hash": "ca1701ee4095"
+  },
+  "passport-have-heard": {
+   "full": 0.901,
+   "zero": 0.192,
+   "hash": "d84599795ae2"
+  },
+  "more-side-dishes": {
+   "full": 0.996,
+   "zero": 0.125,
+   "hash": "6bcf47b57cba"
+  },
+  "size-heard": {
+   "full": 0.914,
+   "zero": 0.065,
+   "hash": "8ea961ba2ce2"
+  },
+  "convenience-store": {
+   "full": 0.85,
+   "zero": 0.038,
+   "hash": "873b0da73dd8"
+  },
+  "which-line": {
+   "full": 0.827,
+   "zero": 0.114,
+   "hash": "bd0cde43f2c1"
+  },
+  "sino-9": {
+   "full": 0.576,
+   "zero": 0.001,
+   "hash": "12d4b3cc6884"
+  },
+  "where-hurts-heard": {
+   "full": 0.788,
+   "zero": 0.223,
+   "hash": "50966c783ff3"
+  },
+  "how-is-korea-heard": {
+   "full": 0.822,
+   "zero": 0.247,
+   "hash": "ecd75fd4c3f9"
+  },
+  "is-it-possible": {
+   "full": 0.706,
+   "zero": 0.244,
+   "hash": "e9a928485b30"
+  },
+  "instalment-heard": {
+   "full": 0.785,
+   "zero": 0.107,
+   "hash": "e6ffacaff146"
+  },
+  "to-go": {
+   "full": 0.82,
+   "zero": 0.169,
+   "hash": "9f72d5f84937"
+  },
+  "buzzer-heard": {
+   "full": 0.837,
+   "zero": 0.03,
+   "hash": "a07253291fdc"
+  },
+  "im-lost": {
+   "full": 0.873,
+   "zero": 0.081,
+   "hash": "7636c710286c"
+  },
+  "where-transfer": {
+   "full": 0.969,
+   "zero": 0.125,
+   "hash": "3374b8c72a17"
+  },
+  "since-when-heard": {
+   "full": 0.934,
+   "zero": 0.072,
+   "hash": "495f488e6046"
+  },
+  "how-long-stay-heard": {
+   "full": 0.958,
+   "zero": 0.113,
+   "hash": "5d0da1b2776e"
+  },
+  "sino-10": {
+   "full": 0.647,
+   "zero": 0.074,
+   "hash": "686730f7b16a"
+  },
+  "not-possible": {
+   "full": 0.8,
+   "zero": 0.199,
+   "hash": "e7b5f6a27e90"
+  },
+  "points-card-heard": {
+   "full": 0.925,
+   "zero": 0.102,
+   "hash": "cd8eaa7857f7"
+  },
+  "before-meal": {
+   "full": 0.894,
+   "zero": 0.058,
+   "hash": "d1890a3ce1ca"
+  },
+  "enjoy-heard": {
+   "full": 0.806,
+   "zero": 0.169,
+   "hash": "a2084b51f67c"
+  },
+  "go-straight-right-heard": {
+   "full": 0.911,
+   "zero": 0.033,
+   "hash": "6e51fed56c92"
+  },
+  "airport": {
+   "full": 0.883,
+   "zero": 0.049,
+   "hash": "071a175eeeba"
+  },
+  "allergy-heard": {
+   "full": 0.837,
+   "zero": 0.166,
+   "hash": "9519cee51a09"
+  },
+  "enjoy-trip-heard": {
+   "full": 0.783,
+   "zero": 0.122,
+   "hash": "d35ff37c9bdf"
+  },
+  "dont-need": {
+   "full": 0.948,
+   "zero": 0.111,
+   "hash": "6d306415f93b"
+  },
+  "change-heard": {
+   "full": 0.859,
+   "zero": 0.05,
+   "hash": "de184416ee03"
   },
   "sino-100": {
    "full": 0.715,
    "zero": 0.015,
    "hash": "aaf9bcd65483"
   },
-  "which-exit": {
-   "full": 0.829,
-   "zero": 0.075,
-   "hash": "cd5471f18cbb"
+  "after-meal": {
+   "full": 0.894,
+   "zero": 0.045,
+   "hash": "824481f7eccc"
   },
-  "how-long": {
-   "full": 0.803,
-   "zero": 0.096,
-   "hash": "fb046d8bf968"
+  "line-four-heard": {
+   "full": 0.881,
+   "zero": 0.173,
+   "hash": "3c35c5d5617b"
   },
-  "there-isnt": {
-   "full": 0.921,
-   "zero": 0.19,
-   "hash": "6f5227696831"
+  "dosage-heard": {
+   "full": 0.906,
+   "zero": 0.072,
+   "hash": "da49de60f528"
   },
-  "more-side-dishes": {
-   "full": 0.996,
-   "zero": 0.084,
-   "hash": "3bfeca5bff0f"
+  "what-is-this": {
+   "full": 0.867,
+   "zero": 0.148,
+   "hash": "21b8c2ae5529"
   },
-  "convenience-store": {
-   "full": 0.85,
-   "zero": 0.048,
-   "hash": "7d00a758c52e"
+  "price-2000-heard": {
+   "full": 0.916,
+   "zero": 0.076,
+   "hash": "2071bbcaf9b6"
   },
-  "which-line": {
-   "full": 0.827,
-   "zero": 0.102,
-   "hash": "cfa1d2279ba8"
+  "beer": {
+   "full": 0.823,
+   "zero": 0.046,
+   "hash": "95869d0834c5"
+  },
+  "exit-six-heard": {
+   "full": 0.909,
+   "zero": 0.098,
+   "hash": "01f30b55a941"
+  },
+  "price-3200-heard": {
+   "full": 0.862,
+   "zero": 0.055,
+   "hash": "4ecdd4e1ed3c"
+  },
+  "that-one-please": {
+   "full": 0.832,
+   "zero": 0.119,
+   "hash": "68e119364079"
+  },
+  "announcement-heard": {
+   "full": 0.888,
+   "zero": 0,
+   "hash": "5c23ce430bdb"
   },
   "native-4": {
    "full": 0.789,
    "zero": 0.049,
    "hash": "da8ced32e753"
   },
-  "is-it-possible": {
-   "full": 0.706,
-   "zero": 0.244,
-   "hash": "828d6619a074"
+  "price-4000-heard": {
+   "full": 0.943,
+   "zero": 0.034,
+   "hash": "429943e6ffbb"
   },
-  "to-go": {
-   "full": 0.82,
-   "zero": 0.145,
-   "hash": "219b2043f811"
+  "pay-separately": {
+   "full": 0.839,
+   "zero": 0.137,
+   "hash": "29ea101f548e"
   },
-  "im-lost": {
-   "full": 0.873,
-   "zero": 0.066,
-   "hash": "280df101cf43"
+  "how-much-top-up-heard": {
+   "full": 0.95,
+   "zero": 0.1,
+   "hash": "c0c39d6ec607"
   },
-  "where-transfer": {
-   "full": 0.969,
-   "zero": 0.107,
-   "hash": "075869d7089b"
+  "price-12000-heard": {
+   "full": 0.986,
+   "zero": 0.016,
+   "hash": "42b8d0839801"
   },
-  "not-possible": {
-   "full": 0.8,
-   "zero": 0.199,
-   "hash": "cb27e364a4d9"
+  "sit-here-heard": {
+   "full": 0.982,
+   "zero": 0.128,
+   "hash": "2b7e7014edab"
   },
-  "before-meal": {
-   "full": 0.894,
-   "zero": 0.054,
-   "hash": "bd06c7a5faa2"
+  "top-up-cash-only-heard": {
+   "full": 0.803,
+   "zero": 0.099,
+   "hash": "ae2b98c226e9"
   },
-  "airport": {
-   "full": 0.883,
-   "zero": 0.057,
-   "hash": "f3eb53c555ff"
+  "price-23000-heard": {
+   "full": 0.99,
+   "zero": 0.011,
+   "hash": "e768e287d72d"
+  },
+  "spicy-heard": {
+   "full": 0.867,
+   "zero": 0.105,
+   "hash": "f1bf03b54dbd"
+  },
+  "certainly-heard": {
+   "full": 0.845,
+   "zero": 0.027,
+   "hash": "66bb63ba7406"
   },
   "native-5": {
    "full": 0.883,
    "zero": 0.18,
    "hash": "5a4cde975fab"
   },
-  "dont-need": {
-   "full": 0.948,
-   "zero": 0.111,
-   "hash": "5d2b718bef47"
+  "two-of-them": {
+   "full": 0.918,
+   "zero": 0.125,
+   "hash": "c8059f404078"
   },
-  "after-meal": {
-   "full": 0.894,
-   "zero": 0.034,
-   "hash": "bf15d3b988e7"
+  "sides-self-heard": {
+   "full": 0.958,
+   "zero": 0.082,
+   "hash": "be3fa79a9705"
   },
-  "what-is-this": {
-   "full": 0.867,
-   "zero": 0.146,
-   "hash": "35794b40957f"
+  "what-can-i-get-heard": {
+   "full": 0.811,
+   "zero": 0.104,
+   "hash": "8d077f4100ca"
   },
-  "beer": {
-   "full": 0.823,
-   "zero": 0.049,
-   "hash": "3a0b93e8b37c"
+  "together-heard": {
+   "full": 0.928,
+   "zero": 0.093,
+   "hash": "af0f9c348471"
+  },
+  "each-price-heard": {
+   "full": 0.94,
+   "zero": 0.13,
+   "hash": "2779f82bb56c"
+  },
+  "heat-it-up": {
+   "full": 0.935,
+   "zero": 0.162,
+   "hash": "15196df7bf0c"
+  },
+  "cash-only-heard": {
+   "full": 0.8,
+   "zero": 0.106,
+   "hash": "8f79ac367d69"
+  },
+  "heat-up-heard": {
+   "full": 0.902,
+   "zero": 0.106,
+   "hash": "85404af0ffba"
   },
   "youre-welcome": {
    "full": 0.865,
-   "zero": 0.222,
-   "hash": "c4e2a5806af9"
+   "zero": 0.225,
+   "hash": "72a910fd6f99"
   },
   "a-little-korean": {
    "full": 0.931,
-   "zero": 0.122,
-   "hash": "4a79aa5d3418"
+   "zero": 0.121,
+   "hash": "bd1499641ef4"
   },
   "native-6": {
    "full": 0.616,
@@ -737,98 +1047,93 @@
   },
   "pay-cash": {
    "full": 0.756,
-   "zero": 0.126,
-   "hash": "0fb28f93714a"
+   "zero": 0.123,
+   "hash": "1003a8a2c89e"
   },
   "no-meat": {
    "full": 0.987,
-   "zero": 0.092,
-   "hash": "322235fc0cc7"
+   "zero": 0.138,
+   "hash": "b3f9e80a4818"
   },
   "iced": {
    "full": 0.991,
-   "zero": 0.015,
-   "hash": "f9f6f762cb06"
+   "zero": 0.062,
+   "hash": "e2e4be9a17a6"
   },
   "there-near-you": {
    "full": 0.988,
-   "zero": 0.077,
-   "hash": "6e2cfaa11faa"
+   "zero": 0.092,
+   "hash": "fbce54e6cf77"
   },
   "this-station-heard": {
    "full": 0.928,
-   "zero": 0.014,
-   "hash": "536b71366ed3"
+   "zero": 0.067,
+   "hash": "014a8d47b5dd"
   },
   "more-towels": {
    "full": 0.905,
-   "zero": 0.109,
-   "hash": "3a9ff792f89a"
+   "zero": 0.115,
+   "hash": "c63ac557b7ff"
   },
   "three-oclock": {
    "full": 0.909,
    "zero": 0.001,
    "hash": "480861f024c2"
   },
+  "headache": {
+   "full": 0.972,
+   "zero": 0.168,
+   "hash": "4868a5c39d73"
+  },
+  "staying-a-month": {
+   "full": 0.847,
+   "zero": 0.22,
+   "hash": "4292558d64e1"
+  },
+  "hello-formal-heard": {
+   "full": 0.793,
+   "zero": 0.167,
+   "hash": "e50b12b1d140"
+  },
   "native-7": {
    "full": 0.679,
    "zero": 0.173,
    "hash": "5e21a38c85ea"
   },
-  "headache": {
-   "full": 0.972,
-   "zero": 0.112,
-   "hash": "a46c72618faa"
-  },
-  "like-korea": {
-   "full": 0.831,
-   "zero": 0.136,
-   "hash": "08c60a25766f"
-  },
-  "hello-formal-heard": {
-   "full": 0.793,
-   "zero": 0.167,
-   "hash": "5e762312c5e9"
-  },
   "write-it-please": {
    "full": 0.914,
-   "zero": 0.127,
-   "hash": "19ffba407f61"
+   "zero": 0.137,
+   "hash": "4570814e0dfc"
   },
   "cash": {
    "full": 0.679,
-   "zero": 0.005,
-   "hash": "a91931763f75"
+   "zero": 0.02,
+   "hash": "ea2c1a16fcea"
   },
   "vegetarian-menu": {
    "full": 0.835,
-   "zero": 0.141,
-   "hash": "c50d33971aff"
-  },
-  "native-8": {
-   "full": 0.726,
-   "zero": 0.003,
-   "hash": "eae3b04444de"
+   "zero": 0.146,
+   "hash": "c0835582a760"
   },
   "latte": {
    "full": 0.822,
-   "zero": 0.095,
-   "hash": "73157fac1425"
+   "zero": 0.069,
+   "hash": "18a2d27637f4"
   },
   "is-it-far": {
    "full": 0.748,
-   "zero": 0.117,
-   "hash": "09f11b37efee"
+   "zero": 0.14,
+   "hash": "843c51ef6ae0"
   },
-  "ticket": {
-   "full": 0.94,
-   "zero": 0.105,
-   "hash": "14c1b1dbc539"
+  "go-ahead-heard": {
+   "full": 0.986,
+   "zero": 0.163,
+   "hash": "2f7b7b39a1bb"
   },
   "no-hot-water": {
    "full": 0.938,
-   "zero": 0.093,
-   "hash": "ea54cdb9f88a"
+   "zero": 0.063,
+   "hash": "1e9bdda8e4aa"
   },
   "thirty-minutes": {
    "full": 0.927,
@@ -837,188 +1142,183 @@
   },
   "stomach-ache": {
    "full": 0.936,
-   "zero": 0.145,
-   "hash": "256e22d40621"
+   "zero": 0.159,
+   "hash": "4bfb8f895730"
   },
-  "whats-your-name": {
-   "full": 0.847,
-   "zero": 0.14,
-   "hash": "bbb29d7d6aae"
+  "native-8": {
+   "full": 0.726,
+   "zero": 0.003,
+   "hash": "eae3b04444de"
   },
-  "native-9": {
-   "full": 0.932,
-   "zero": 0.199,
-   "hash": "101197c8d978"
+  "one-more-photo-heard": {
+   "full": 0.85,
+   "zero": 0.086,
+   "hash": "766f79db8376"
   },
   "see-you-again": {
    "full": 0.632,
    "zero": 0.152,
-   "hash": "4925785578cd"
+   "hash": "fcc2d9df263c"
   },
   "just-a-moment": {
    "full": 0.84,
-   "zero": 0.128,
-   "hash": "a51a5678465c"
+   "zero": 0.119,
+   "hash": "8ffdc0439532"
   },
   "discount": {
    "full": 0.745,
-   "zero": 0.117,
-   "hash": "aae98d622999"
+   "zero": 0.097,
+   "hash": "8f52abb80b0d"
   },
   "eat-here": {
    "full": 0.925,
-   "zero": 0.097,
-   "hash": "04f213989600"
+   "zero": 0.138,
+   "hash": "1d03de38c8da"
   },
   "large-size": {
    "full": 0.653,
-   "zero": 0.116,
-   "hash": "8fa2fccf83b4"
+   "zero": 0.13,
+   "hash": "176094c12e0d"
   },
   "can-i-walk": {
    "full": 0.843,
-   "zero": 0.013,
-   "hash": "d9f3af8d02c0"
+   "zero": 0.027,
+   "hash": "6c2e76595b12"
   },
-  "native-10": {
-   "full": 0.519,
-   "zero": 0.001,
-   "hash": "4832817fabf5"
-  },
-  "ticket-to-busan": {
-   "full": 0.95,
-   "zero": 0.052,
-   "hash": "800c09cac52f"
+  "line-four-there-heard": {
+   "full": 0.897,
+   "zero": 0.111,
+   "hash": "e5d5078407d4"
   },
   "aircon-broken": {
    "full": 0.779,
-   "zero": 0.128,
-   "hash": "2b030879c08a"
+   "zero": 0.094,
+   "hash": "1655ac76eb39"
   },
   "yesterday": {
    "full": 0.953,
    "zero": 0.002,
    "hash": "aeff4fd31adf"
   },
+  "native-9": {
+   "full": 0.932,
+   "zero": 0.199,
+   "hash": "101197c8d978"
+  },
   "fever": {
    "full": 0.997,
-   "zero": 0.168,
-   "hash": "3fd59aeccc8c"
+   "zero": 0.169,
+   "hash": "3a1ab292357d"
   },
-  "its-fun": {
-   "full": 0.943,
-   "zero": 0.146,
-   "hash": "c6c2792c4a2f"
+  "like-korea": {
+   "full": 0.831,
+   "zero": 0.181,
+   "hash": "068e6c36534c"
   },
   "have-a-nice-day": {
    "full": 0.752,
-   "zero": 0.119,
-   "hash": "4a7f48e8067e"
+   "zero": 0.122,
+   "hash": "fa3004967851"
   },
   "help-me-please": {
    "full": 0.73,
-   "zero": 0.092,
-   "hash": "1a5627b945dc"
-  },
-  "counter-one": {
-   "full": 0.894,
-   "zero": 0.011,
-   "hash": "a643f90e51e3"
+   "zero": 0.091,
+   "hash": "125a155d352f"
   },
   "another-colour": {
    "full": 0.895,
-   "zero": 0.134,
-   "hash": "2d8ac8e5b0f5"
+   "zero": 0.142,
+   "hash": "6e3fe28c29dc"
   },
   "chopsticks": {
    "full": 0.806,
-   "zero": 0.056,
-   "hash": "2227fc0d0c7a"
+   "zero": 0.05,
+   "hash": "c837729afe79"
   },
   "less-sweet": {
    "full": 0.872,
-   "zero": 0.116,
-   "hash": "322bf12e214e"
+   "zero": 0.132,
+   "hash": "94d6ace4f110"
   },
   "exit": {
    "full": 0.591,
-   "zero": 0.025,
-   "hash": "1e798b717785"
+   "zero": 0.013,
+   "hash": "aae45292ad42"
   },
-  "train-station": {
-   "full": 0.829,
-   "zero": 0.063,
-   "hash": "e6162d9b175a"
+  "atm-there-heard": {
+   "full": 0.919,
+   "zero": 0.051,
+   "hash": "900c457c2954"
   },
   "breakfast-time": {
    "full": 0.881,
-   "zero": 0.189,
-   "hash": "dbce68afc9c8"
+   "zero": 0.148,
+   "hash": "21307e8bc75c"
+  },
+  "native-10": {
+   "full": 0.519,
+   "zero": 0.001,
+   "hash": "4832817fabf5"
   },
   "morning": {
    "full": 0.749,
    "zero": 0.022,
    "hash": "f2822da8cadd"
   },
-  "counter-two": {
-   "full": 0.501,
-   "zero": 0.001,
-   "hash": "67c44e08c111"
-  },
   "peanut-allergy": {
    "full": 0.803,
-   "zero": 0.065,
-   "hash": "4907f28d2af1"
+   "zero": 0.075,
+   "hash": "c0143bd014b4"
   },
-  "its-pretty": {
-   "full": 0.825,
-   "zero": 0.201,
-   "hash": "c059d31a46a9"
+  "whats-your-name": {
+   "full": 0.847,
+   "zero": 0.146,
+   "hash": "4920172e1d02"
   },
   "good-night": {
    "full": 0.932,
-   "zero": 0.148,
-   "hash": "2096917fbf43"
+   "zero": 0.155,
+   "hash": "0e03515c73ea"
   },
   "really": {
    "full": 0.913,
    "zero": 0.167,
-   "hash": "0d4815ab8c8d"
+   "hash": "cffe71502ea0"
   },
   "bigger-one": {
    "full": 0.95,
-   "zero": 0.102,
-   "hash": "b6d791e7a74a"
+   "zero": 0.1,
+   "hash": "40709fb41ba7"
   },
   "spoon": {
    "full": 0.817,
-   "zero": 0.061,
-   "hash": "46083e042d79"
-  },
-  "price-1000": {
-   "full": 0.956,
-   "zero": 0.003,
-   "hash": "c29fa3bed7cf"
+   "zero": 0.055,
+   "hash": "d63b4cf63e24"
   },
   "green-tea": {
    "full": 0.983,
-   "zero": 0.007,
-   "hash": "8caf1572420a"
+   "zero": 0.005,
+   "hash": "6c98f45b7e83"
   },
   "entrance": {
    "full": 0.996,
-   "zero": 0.006,
-   "hash": "e894ecdd8744"
+   "zero": 0.001,
+   "hash": "3ff763c7c075"
   },
-  "getting-off": {
-   "full": 0.918,
-   "zero": 0.091,
-   "hash": "a9320eb22deb"
+  "counter-one": {
+   "full": 0.894,
+   "zero": 0.011,
+   "hash": "a643f90e51e3"
+  },
+  "topped-up-heard": {
+   "full": 0.911,
+   "zero": 0.017,
+   "hash": "0d12c0cef2ca"
   },
   "key-card": {
    "full": 0.911,
-   "zero": 0.008,
-   "hash": "059706228ba0"
+   "zero": 0.041,
+   "hash": "ec262672f3a5"
   },
   "afternoon": {
    "full": 0.978,
@@ -1028,52 +1328,52 @@
   "medicine": {
    "full": 0.692,
    "zero": 0,
-   "hash": "0453e3fc7b72"
+   "hash": "1c8063a2581a"
   },
-  "the-best": {
-   "full": 0.892,
-   "zero": 0.161,
-   "hash": "37c0e9a52b7b"
-  },
-  "price-10000": {
-   "full": 0.925,
-   "zero": 0.005,
-   "hash": "fe95454d000b"
+  "its-fun": {
+   "full": 0.943,
+   "zero": 0.147,
+   "hash": "50cc4a3345bc"
   },
   "thanks-soft": {
    "full": 0.81,
    "zero": 0.157,
-   "hash": "f0084f94c2e4"
+   "hash": "5394fd7a28b7"
   },
   "try-on": {
    "full": 0.79,
-   "zero": 0.103,
-   "hash": "d3c34c01258a"
+   "zero": 0.1,
+   "hash": "d7e0fa8e3dee"
   },
   "tissue": {
    "full": 0.555,
-   "zero": 0.014,
-   "hash": "919752500f23"
+   "zero": 0.012,
+   "hash": "1fd0aec79bb2"
   },
   "milk": {
    "full": 0.195,
    "zero": 0,
-   "hash": "223b87ad9169"
+   "hash": "1789caf52272"
   },
   "which-floor": {
    "full": 0.804,
    "zero": 0.167,
-   "hash": "8190e5a8d0aa"
+   "hash": "a3a47a9d4578"
+  },
+  "counter-two": {
+   "full": 0.501,
+   "zero": 0.001,
+   "hash": "67c44e08c111"
+  },
+  "ticket": {
+   "full": 0.94,
+   "zero": 0.121,
+   "hash": "f43a2eeed75b"
   },
   "elevator": {
    "full": 0.697,
-   "zero": 0.042,
-   "hash": "c6b2f914fce4"
-  },
-  "counter-three": {
-   "full": 0.612,
-   "zero": 0.002,
-   "hash": "89bf3a39beb3"
+   "zero": 0.074,
+   "hash": "34361aa87fe2"
   },
   "evening": {
    "full": 0.753,
@@ -1082,38 +1382,48 @@
   },
   "cold-medicine": {
    "full": 0.861,
-   "zero": 0.114,
-   "hash": "3548e3b61dd6"
+   "zero": 0.187,
+   "hash": "0c61f976980d"
   },
-  "tired": {
-   "full": 0.928,
-   "zero": 0.227,
-   "hash": "331ae801f228"
+  "its-pretty": {
+   "full": 0.825,
+   "zero": 0.186,
+   "hash": "8f272fdb9a8d"
   },
   "tax-refund": {
    "full": 0.846,
-   "zero": 0.067,
-   "hash": "b2c4fa6a34e1"
+   "zero": 0.071,
+   "hash": "c9ad8553aefd"
   },
-  "soju": {
-   "full": 0.659,
-   "zero": 0.03,
-   "hash": "8a6fd3ab7e1a"
+  "no-english-menu-heard": {
+   "full": 0.882,
+   "zero": 0.065,
+   "hash": "e8fb6049f26d"
   },
   "power-outlet": {
    "full": 0.944,
-   "zero": 0.08,
-   "hash": "82d12fb9a3fc"
+   "zero": 0.095,
+   "hash": "4abfe6918211"
   },
   "atm-where": {
    "full": 0.954,
-   "zero": 0.076,
-   "hash": "3e55e37a285d"
+   "zero": 0.083,
+   "hash": "6908ee7c3bf6"
   },
-  "counter-four": {
-   "full": 0.765,
+  "ticket-to-busan": {
+   "full": 0.95,
+   "zero": 0.061,
+   "hash": "b9055c0c3ad1"
+  },
+  "price-1000": {
+   "full": 0.956,
    "zero": 0.003,
-   "hash": "23d0b09920f1"
+   "hash": "c29fa3bed7cf"
+  },
+  "luggage-tag-heard": {
+   "full": 0.784,
+   "zero": 0.038,
+   "hash": "899f75285d64"
   },
   "weekend": {
    "full": 0.886,
@@ -1122,38 +1432,48 @@
   },
   "lost-wallet": {
    "full": 0.988,
-   "zero": 0.041,
-   "hash": "62c67b6e5bc4"
+   "zero": 0.06,
+   "hash": "fbcf0473ed26"
   },
-  "its-hot": {
-   "full": 0.746,
-   "zero": 0.22,
-   "hash": "9e2e4103e2ca"
+  "the-best": {
+   "full": 0.892,
+   "zero": 0.163,
+   "hash": "b6041eff250d"
   },
-  "cheap": {
-   "full": 0.988,
-   "zero": 0.297,
-   "hash": "3b3e795a40e5"
+  "fitting-room-heard": {
+   "full": 0.955,
+   "zero": 0.053,
+   "hash": "7bba86beecbe"
   },
-  "rice": {
-   "full": 0.717,
-   "zero": 0.015,
-   "hash": "e20b2aa6cad0"
+  "popular-heard": {
+   "full": 0.881,
+   "zero": 0.026,
+   "hash": "0fb56299dd93"
   },
   "bottle-of-water": {
    "full": 0.934,
    "zero": 0.11,
-   "hash": "77f459c9990e"
-  },
-  "price-50000": {
-   "full": 0.932,
-   "zero": 0.007,
-   "hash": "e014350dfe1c"
+   "hash": "edc4ebd10fb5"
   },
   "map": {
    "full": 0.979,
-   "zero": 0.046,
-   "hash": "66c1700b43c0"
+   "zero": 0.051,
+   "hash": "2b2a7b50946c"
+  },
+  "train-station": {
+   "full": 0.829,
+   "zero": 0.033,
+   "hash": "4bc367ab9c0d"
+  },
+  "price-10000": {
+   "full": 0.925,
+   "zero": 0.005,
+   "hash": "fe95454d000b"
+  },
+  "room-heard": {
+   "full": 0.886,
+   "zero": 0.043,
+   "hash": "9230f65ab4d2"
   },
   "when": {
    "full": 0.797,
@@ -1162,18 +1482,48 @@
   },
   "urgent": {
    "full": 0.998,
-   "zero": 0.201,
-   "hash": "7148e37656ee"
+   "zero": 0.229,
+   "hash": "50a990d91372"
   },
-  "its-cold": {
-   "full": 0.641,
-   "zero": 0.225,
-   "hash": "3fdf31bf85a5"
+  "tired": {
+   "full": 0.928,
+   "zero": 0.227,
+   "hash": "f275bce24653"
   },
-  "pork-belly": {
-   "full": 0.813,
-   "zero": 0.078,
-   "hash": "5925f795324a"
+  "sold-out-heard": {
+   "full": 0.845,
+   "zero": 0.05,
+   "hash": "c45696d375b4"
+  },
+  "little-spicy-heard": {
+   "full": 0.873,
+   "zero": 0.119,
+   "hash": "6e8668681d9a"
+  },
+  "regular-size": {
+   "full": 0.756,
+   "zero": 0.081,
+   "hash": "ac9363777e07"
+  },
+  "five-minutes-walk-heard": {
+   "full": 0.698,
+   "zero": 0.003,
+   "hash": "4fe80902ba58"
+  },
+  "getting-off": {
+   "full": 0.918,
+   "zero": 0.139,
+   "hash": "55f07c60557e"
+  },
+  "breakfast-heard": {
+   "full": 0.953,
+   "zero": 0.02,
+   "hash": "c02f623ecd21"
+  },
+  "counter-three": {
+   "full": 0.612,
+   "zero": 0.002,
+   "hash": "89bf3a39beb3"
   },
   "open-sign": {
    "full": 0.473,
@@ -1183,27 +1533,182 @@
   "police-112": {
    "full": 0.773,
    "zero": 0.001,
-   "hash": "284aabc9736a"
+   "hash": "e0e63424661b"
   },
-  "zero": {
-   "full": 0.432,
-   "zero": 0.002,
-   "hash": "84b67e6ba6bc"
+  "its-hot": {
+   "full": 0.746,
+   "zero": 0.202,
+   "hash": "78889cba9f89"
   },
-  "good-restaurant-nearby": {
-   "full": 0.833,
-   "zero": 0.083,
-   "hash": "3157e7635b0c"
+  "this-colour-heard": {
+   "full": 0.983,
+   "zero": 0.155,
+   "hash": "293f9488f51a"
+  },
+  "yes-sir-heard": {
+   "full": 0.851,
+   "zero": 0.043,
+   "hash": "2353948c4d27"
+  },
+  "wifi-on-receipt-heard": {
+   "full": 0.954,
+   "zero": 0.094,
+   "hash": "b23069029e3d"
+  },
+  "dont-know-area-heard": {
+   "full": 0.873,
+   "zero": 0.062,
+   "hash": "2d9d129326f6"
+  },
+  "twenty-minutes-heard": {
+   "full": 0.709,
+   "zero": 0.067,
+   "hash": "b1c7d7f5f0bc"
+  },
+  "elevator-heard": {
+   "full": 0.824,
+   "zero": 0.008,
+   "hash": "25a45fe30e19"
   },
   "closed-sign": {
    "full": 0.361,
    "zero": 0.002,
    "hash": "888d2ae107b8"
   },
+  "counter-four": {
+   "full": 0.765,
+   "zero": 0.003,
+   "hash": "23d0b09920f1"
+  },
+  "since-yesterday": {
+   "full": 0.811,
+   "zero": 0.156,
+   "hash": "46f278b6d134"
+  },
+  "its-cold": {
+   "full": 0.641,
+   "zero": 0.199,
+   "hash": "222cd1884387"
+  },
+  "gift-wrap-heard": {
+   "full": 0.799,
+   "zero": 0.125,
+   "hash": "22ca6de8ca54"
+  },
+  "bring-some-heard": {
+   "full": 0.882,
+   "zero": 0.126,
+   "hash": "90a363c133d3"
+  },
+  "traffic-heard": {
+   "full": 0.964,
+   "zero": 0.06,
+   "hash": "7d3d6bd128ac"
+  },
+  "minibar-heard": {
+   "full": 0.973,
+   "zero": 0.1,
+   "hash": "c99769822729"
+  },
+  "medicine-ok-heard": {
+   "full": 0.956,
+   "zero": 0.081,
+   "hash": "424dd4507d76"
+  },
+  "cheap": {
+   "full": 0.988,
+   "zero": 0.163,
+   "hash": "222456bc2329"
+  },
+  "soju": {
+   "full": 0.659,
+   "zero": 0.015,
+   "hash": "24afbab806d7"
+  },
+  "price-50000": {
+   "full": 0.932,
+   "zero": 0.007,
+   "hash": "e014350dfe1c"
+  },
+  "back-when-heard": {
+   "full": 0.872,
+   "zero": 0.065,
+   "hash": "d5bcfcdfcb12"
+  },
+  "drowsy-heard": {
+   "full": 0.837,
+   "zero": 0.095,
+   "hash": "8d73e76db008"
+  },
+  "throw-it-away": {
+   "full": 0.927,
+   "zero": 0.147,
+   "hash": "4a4da87fd189"
+  },
+  "rice": {
+   "full": 0.717,
+   "zero": 0.026,
+   "hash": "8465482bca25"
+  },
+  "bag-price-heard": {
+   "full": 0.826,
+   "zero": 0.154,
+   "hash": "cd0a0c13fa3b"
+  },
+  "pork-belly": {
+   "full": 0.813,
+   "zero": 0.084,
+   "hash": "4840e79e07c8"
+  },
+  "price-3500-heard": {
+   "full": 0.853,
+   "zero": 0.056,
+   "hash": "3c31b11d0fa3"
+  },
+  "good-restaurant-nearby": {
+   "full": 0.833,
+   "zero": 0.095,
+   "hash": "93b49586ed23"
+  },
+  "price-5500-heard": {
+   "full": 0.902,
+   "zero": 0.062,
+   "hash": "3db48fa7c286"
+  },
   "hungry": {
    "full": 0.843,
-   "zero": 0.136,
-   "hash": "3345226b60ba"
+   "zero": 0.143,
+   "hash": "0155f2f00942"
+  },
+  "zero": {
+   "full": 0.432,
+   "zero": 0.002,
+   "hash": "84b67e6ba6bc"
+  },
+  "price-6800-heard": {
+   "full": 0.893,
+   "zero": 0.055,
+   "hash": "06cae8fa819e"
+  },
+  "price-11500-heard": {
+   "full": 0.901,
+   "zero": 0.058,
+   "hash": "0a71756d31e5"
+  },
+  "price-35000-heard": {
+   "full": 0.921,
+   "zero": 0.008,
+   "hash": "030c7f33f803"
+  },
+  "hotteok-heard": {
+   "full": 0.747,
+   "zero": 0.086,
+   "hash": "e1fea6ec54ea"
+  },
+  "two-for-heard": {
+   "full": 0.938,
+   "zero": 0.084,
+   "hash": "833a54e0afaf"
   }
  }
 }

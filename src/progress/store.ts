@@ -1,8 +1,10 @@
 import { catalog, expressionById, topics } from '../catalog/index.ts'
 import { db } from '../db.ts'
 import { computeStars, earnedStars, withInput, withoutIgnored } from '../domain/progress.ts'
+import { scheduleAfterRun } from '../domain/conversation.ts'
+import { learnedDirection } from '../domain/directions.ts'
 import { cardKey, gradeCard, isCorrect, newDirectionCard, refocusCard } from '../domain/scheduler.ts'
-import type { Direction, Grade, Session, SessionType } from '../domain/types.ts'
+import type { ConversationRun, Direction, Grade, Session, SessionType } from '../domain/types.ts'
 
 // Writes to Progress. Everything is keyed by Expression id, so Catalog edits keep Progress.
 
@@ -26,13 +28,17 @@ export async function finishSession(sessionId: string) {
   await db.sessions.put({ ...withInput(session, now), endedAt: now })
 }
 
-/** First exposure: the Expression now counts as introduced and its Speak Direction enters the schedule. */
+/**
+ * First exposure: the Expression now counts as introduced and its deciding Direction enters the schedule (Speak, or
+ * Listen for a Heard Expression).
+ */
 export async function introduce(expressionId: string) {
   const now = Date.now()
+  const expression = expressionById.get(expressionId)
   await db.transaction('rw', [db.introductions, db.cards, db.stars, db.ignored], async () => {
     if (await db.introductions.get(expressionId)) return
     await db.introductions.put({ expressionId, at: now })
-    await db.cards.put(newDirectionCard(expressionId, 'speak', now))
+    await db.cards.put(newDirectionCard(expressionId, expression ? learnedDirection(expression) : 'speak', now))
     await updateStars(expressionById.get(expressionId)?.topic)
   })
 }
@@ -43,19 +49,49 @@ export async function recordCheck(sessionId: string, expressionId: string, corre
   await touchSession(sessionId)
 }
 
+/**
+ * A Reply in a Conversation: recorded for XP, Practice time and Stats only. Playing a Conversation never changes an
+ * Expression's schedule.
+ */
+export async function recordReply(sessionId: string, conversationId: string, turnId: string, expressionId: string, correct: boolean) {
+  await db.answers.add({ at: Date.now(), sessionId, expressionId, kind: 'reply', correct, conversationId, turnId })
+  await touchSession(sessionId)
+}
+
+/** A Catch in a Conversation: like a Reply, recorded for XP, Practice time and Stats only. */
+export async function recordCatch(sessionId: string, conversationId: string, turnId: string, expressionId: string, correct: boolean) {
+  await db.answers.add({ at: Date.now(), sessionId, expressionId, kind: 'catch', correct, conversationId, turnId })
+  await touchSession(sessionId)
+}
+
+/**
+ * A finished Conversation run: stored, and applied to the Conversation's own schedule (the first finished Guided run
+ * puts it there; after that, Free runs grade it). Never touches an Expression's card.
+ */
+export async function finishConversationRun(run: Omit<ConversationRun, 'id' | 'endedAt'>) {
+  const now = Date.now()
+  await db.transaction('rw', [db.conversationRuns, db.conversationCards], async () => {
+    await db.conversationRuns.add({ ...run, endedAt: now })
+    const card = await db.conversationCards.get(run.conversationId)
+    const next = scheduleAfterRun(card, run.conversationId, run, now)
+    if (next) await db.conversationCards.put(next)
+  })
+}
+
 export interface GradeResult {
   /** The Expression became Learned for the first time with this answer. */
   becameLearned: boolean
 }
 
-/** Grades one Direction. The first correct Speak answer unlocks Listen and See. */
+/** Grades one Direction. The first correct Speak answer unlocks Listen and See (a Heard Expression has only Listen). */
 export async function grade(sessionId: string, expressionId: string, direction: Direction, g: Grade): Promise<GradeResult> {
   const now = Date.now()
+  const learnedBy = learnedDirection(expressionById.get(expressionId) ?? {})
   let becameLearned = false
   await db.transaction('rw', [db.cards, db.answers, db.stars, db.sessions, db.focus, db.ignored, db.introductions], async () => {
     const key = cardKey(expressionId, direction)
     const card = (await db.cards.get(key)) ?? newDirectionCard(expressionId, direction, now)
-    const next = gradeCard(card, g, now, !!(await db.focus.get(expressionId)))
+    const next = gradeCard(card, g, now, !!(await db.focus.get(expressionId)), learnedBy)
     becameLearned = !card.learnedAt && !!next.learnedAt
     await db.cards.put(next)
     await db.answers.add({ at: now, sessionId, expressionId, kind: direction, correct: isCorrect(g), grade: g })
@@ -80,10 +116,10 @@ async function updateStars(topic: string | undefined) {
     ignored,
   ).map((e) => e.id)
   const introduced = new Set((await db.introductions.where('expressionId').anyOf(ids).toArray()).map((i) => i.expressionId))
-  const speak = await db.cards.bulkGet(ids.map((id) => cardKey(id, 'speak')))
-  const speakCards = new Map(speak.filter((c) => !!c).map((c) => [c.expressionId, c]))
+  const deciding = await db.cards.bulkGet(ids.map((id) => cardKey(id, learnedDirection(expressionById.get(id)!))))
+  const learnedCards = new Map(deciding.filter((c) => !!c).map((c) => [c.expressionId, c]))
   const previous = (await db.stars.get(topic))?.stars ?? 0
-  const stars = earnedStars(previous, computeStars(ids, introduced, speakCards))
+  const stars = earnedStars(previous, computeStars(ids, introduced, learnedCards))
   if (stars !== previous) await db.stars.put({ topic, stars })
 }
 
@@ -125,8 +161,10 @@ export async function setIgnored(expressionId: string, on: boolean) {
 }
 
 export async function resetProgress() {
-  await db.transaction('rw', [db.introductions, db.cards, db.answers, db.sessions, db.stars, db.focus, db.ignored], async () => {
+  await db.transaction('rw', [db.introductions, db.cards, db.answers, db.sessions, db.stars, db.focus, db.ignored, db.conversationCards, db.conversationRuns], async () => {
     await Promise.all([
+      db.conversationCards.clear(),
+      db.conversationRuns.clear(),
       db.introductions.clear(),
       db.cards.clear(),
       db.answers.clear(),

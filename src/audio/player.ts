@@ -6,11 +6,12 @@ const audio = typeof Audio !== 'undefined' ? new Audio() : undefined
 const lastHeard = new Map<string, Voice>()
 
 /**
- * Plays a Clip: Normal picks a random Voice, Slow repeats the Voice just heard for that Expression.
+ * Plays a Clip: Normal picks a random Voice, Slow repeats the Voice just heard for that Expression. A Conversation
+ * passes its speaker's Voice instead, so each speaker keeps one Voice for the whole run.
  * Never rejects; autoplay that the browser blocks is silently skipped (the play buttons still work).
  */
-export async function playClip(expressionId: string, speed: Speed): Promise<void> {
-  const voice = pickVoice(speed, lastHeard.get(expressionId))
+export async function playClip(expressionId: string, speed: Speed, fixedVoice?: Voice): Promise<void> {
+  const voice = fixedVoice ?? pickVoice(speed, lastHeard.get(expressionId))
   lastHeard.set(expressionId, voice)
   if (!audio) return
   audio.src = clipUrl(expressionId, voice, speed)
@@ -21,6 +22,24 @@ export async function playClip(expressionId: string, speed: Speed): Promise<void
     // Clip missing: fall back to the device's Korean voice.
     speakWithDevice(expressionId, speed)
   }
+}
+
+/**
+ * Plays a Clip and resolves once it has finished, failed or been replaced, so a Conversation can play one speaker
+ * after the other. A safety timeout keeps a stalled Clip from blocking.
+ */
+export function playClipToEnd(expressionId: string, speed: Speed, fixedVoice?: Voice): Promise<void> {
+  return new Promise((resolve) => {
+    if (!audio) return resolve()
+    const events = ['ended', 'error', 'pause', 'emptied'] as const
+    const timer = setTimeout(done, 10_000)
+    function done() {
+      clearTimeout(timer)
+      events.forEach((e) => audio!.removeEventListener(e, done))
+      resolve()
+    }
+    playClip(expressionId, speed, fixedVoice).then(() => events.forEach((e) => audio!.addEventListener(e, done)))
+  })
 }
 
 export function stopClip() {

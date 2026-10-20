@@ -105,9 +105,13 @@ export function focusQueue(cards: DirectionCard[], focus: Set<string>, now: numb
 }
 
 /** Stars a Topic has earned right now (before applying "never drops"). */
-export function computeStars(topicIds: string[], introduced: Set<string>, speakCards: Map<string, DirectionCard>): number {
+export function computeStars(topicIds: string[], introduced: Set<string>, learnedCards: Map<string, DirectionCard>): number {
   if (topicIds.length === 0) return 0
-  const learned = topicIds.filter((id) => isLearned(speakCards.get(id))).length / topicIds.length
+  // Each card is the Expression's deciding Direction: Speak, or Listen for a Heard Expression.
+  const learned = topicIds.filter((id) => {
+    const card = learnedCards.get(id)
+    return isLearned(card, card?.direction)
+  }).length / topicIds.length
   if (learned >= 1) return 3
   if (learned >= 0.8) return 2
   return topicIds.every((id) => introduced.has(id)) ? 1 : 0
@@ -181,6 +185,8 @@ export function accuracyBy(answers: Answer[]): Record<Answer['kind'], AccuracySt
     listen: { answers: 0, correct: 0 },
     see: { answers: 0, correct: 0 },
     check: { answers: 0, correct: 0 },
+    reply: { answers: 0, correct: 0 },
+    catch: { answers: 0, correct: 0 },
   }
   for (const a of answers) {
     out[a.kind].answers++
